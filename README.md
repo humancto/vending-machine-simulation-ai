@@ -311,27 +311,104 @@ GET  /api/sim/score          — Final score
 
 ## Architecture
 
-```
-Browser UI (localhost:5050)  <--WebSocket-->  Flask Server  <--HTTP-->  vm_cli.py (AI agent)
-         |                                        |
-    Real-time dashboard                   simulation.py (business engine)
-    for human monitoring                   config.json (parameters)
+### Single Agent
 
-Race Mode:
-    run_race.py
-        |
-        +-- Server :5050  <-->  Agent 1 (claude)
-        +-- Server :5051  <-->  Agent 2 (codex)
-        +-- Server :5052  <-->  Agent 3 (gemini)
-        |
-    Live:    /race?ports=5050,5051,5052&names=claude,codex,gemini
-    Results: /results  (post-race leaderboard & history)
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          YOUR MACHINE                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────┐     HTTP/REST      ┌──────────────────────────┐  │
+│  │  AI Agent     │ ◄──────────────── │  Flask Server (:5050)    │  │
+│  │              │  vm_cli.py         │                          │  │
+│  │  Claude      │  ──────────────►  │  ┌────────────────────┐  │  │
+│  │  Codex       │  sim start         │  │  simulation.py     │  │  │
+│  │  Gemini      │  sim order         │  │                    │  │  │
+│  │  Any LLM     │  sim advance-day   │  │  Weather engine    │  │  │
+│  │              │  sim score         │  │  Demand curves     │  │  │
+│  └──────────────┘                    │  │  Supplier AI       │  │  │
+│                                      │  │  Price elasticity  │  │  │
+│                                      │  └────────────────────┘  │  │
+│                                      │            │              │  │
+│                                      │       WebSocket           │  │
+│                                      │            │              │  │
+│                                      │  ┌─────────▼──────────┐  │  │
+│                                      │  │  Browser UI        │  │  │
+│                                      │  │  localhost:5050     │  │  │
+│                                      │  │                    │  │  │
+│                                      │  │  ● Live action log │  │  │
+│                                      │  │  ● Balance chart   │  │  │
+│                                      │  │  ● Inventory grid  │  │  │
+│                                      │  │  ● Sales feed      │  │  │
+│                                      │  └────────────────────┘  │  │
+│                                      └──────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-- **CLI has no dependencies** — `vm_cli.py` uses only Python stdlib
+### Race Mode (Multiple Agents)
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  run_race.py                                                             │
+│                                                                          │
+│  ┌─ Pre-flight ──────────────────────────────────────────────────────┐   │
+│  │  ✓ CLI installed?   ✓ Model detected?   ✓ API key set?          │   │
+│  └───────────────────────────────────────────────────────────────────┘   │
+│           │                                                              │
+│           │  Starts N isolated server instances (same seed)              │
+│           │                                                              │
+│  ┌────────▼──────────┐  ┌──────────────────┐  ┌──────────────────┐      │
+│  │  Server :5050      │  │  Server :5051    │  │  Server :5052    │      │
+│  │  ┌──────────────┐  │  │  ┌────────────┐  │  │  ┌────────────┐  │      │
+│  │  │ simulation   │  │  │  │ simulation │  │  │  │ simulation │  │      │
+│  │  │ (seed 42)    │  │  │  │ (seed 42)  │  │  │  │ (seed 42)  │  │      │
+│  │  └──────┬───────┘  │  │  └─────┬──────┘  │  │  └─────┬──────┘  │      │
+│  │         │          │  │        │         │  │        │         │      │
+│  │     WebSocket      │  │    WebSocket     │  │    WebSocket     │      │
+│  └─────────┼──────────┘  └────────┼─────────┘  └────────┼─────────┘      │
+│            │                      │                      │               │
+│       ┌────▼──┐             ┌─────▼──┐             ┌─────▼──┐            │
+│       │Claude │             │ Codex  │             │Gemini  │            │
+│       │Agent  │             │ Agent  │             │Agent   │            │
+│       └───────┘             └────────┘             └────────┘            │
+│                                                                          │
+│  ┌─ Log Monitor ─────────────────────────────────────────────────────┐   │
+│  │  Tails each agent log in real-time                                │   │
+│  │  Detects: 429 rate limits, model errors, auth failures, bankrupt  │   │
+│  │  Pushes errors → WebSocket → Live Dashboard                       │   │
+│  └───────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+│  ┌─ Dashboards ──────────────────────────────────────────────────────┐   │
+│  │                                                                    │   │
+│  │  /race    ── Live race: per-agent panels, balance, action logs    │   │
+│  │  /results ── Post-race: podium, history, per-agent breakdown      │   │
+│  │                                                                    │   │
+│  └────────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+│  ┌─ Output ──────────────────────────────────────────────────────────┐   │
+│  │  race_results.json ── scores, timing, errors for every agent      │   │
+│  │  Terminal leaderboard ── printed when all agents finish            │   │
+│  └───────────────────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow
+
+```
+Agent thinks ──► vm_cli.py ──► POST /api/sim/* ──► simulation.py computes
+                                      │
+                                      ├──► Returns JSON to agent
+                                      │
+                                      └──► Emits WebSocket event ──► Browser UI updates
+```
+
+### Key Properties
+
+- **No CLI dependencies** — `vm_cli.py` uses only Python stdlib
 - **Server requires Flask** — `pip3 install -r requirements.txt`
-- **All state is in-memory** — restart server to reset
-- **Deterministic with seed** — same seed = same weather, demand, supplier behavior
+- **All state is in-memory** — restart server to reset everything
+- **Deterministic** — same seed = same weather, demand, supplier behavior
+- **Agent-agnostic** — anything that can run shell commands works
 
 ## Files
 
