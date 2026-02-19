@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vending Machine AI Simulation — Benchmark for AI Coding Agents</title>
+    <meta name="description" content="The ultimate benchmark for AI coding agents. Give an AI $500, an empty vending machine, and 90 days. Race Claude, Codex, Gemini and more head-to-head.">
+    <meta name="keywords" content="AI benchmark, AI agent testing, Claude, Codex, Gemini, vending machine simulation, AI race, LLM evaluation">
+    <meta property="og:title" content="Vending Machine AI Simulation">
+    <meta property="og:description" content="The ultimate benchmark for AI coding agents. Race Claude vs Codex vs Gemini head-to-head.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://humancto.github.io/vending-machine-simulation-ai/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vending Machine AI Simulation">
+    <meta name="twitter:description" content="The ultimate benchmark for AI coding agents. Race AI models head-to-head.">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a25;
+            --border: #2a2a3a;
+            --text: #e0e0e8;
+            --text-dim: #8888a0;
+            --accent: #00e5ff;
+            --accent-glow: rgba(0, 229, 255, 0.3);
+            --green: #00e676;
+            --red: #ff5252;
+            --orange: #ffab40;
+            --yellow: #ffd740;
+            --purple: #b388ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .mono { font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 60px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 60%);
+            position: relative;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .badge.accent { border-color: var(--accent); color: var(--accent); }
+        .badge.green { border-color: var(--green); color: var(--green); }
+        .badge.red { border-color: var(--red); color: var(--red); }
+        .badge.purple { border-color: var(--purple); color: var(--purple); }
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero p {
+            font-size: 18px;
+            color: var(--text-dim);
+            max-width: 640px;
+            margin: 0 auto 36px;
+        }
+        .hero-cta {
+            display: inline-flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 24px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Terminal Demo */
+        .terminal-section {
+            padding: 60px 24px;
+            display: flex;
+            justify-content: center;
+        }
+        .terminal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 720px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .terminal-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+        .terminal-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+        }
+        .terminal-dot.r { background: var(--red); }
+        .terminal-dot.y { background: var(--yellow); }
+        .terminal-dot.g { background: var(--green); }
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        .terminal-body {
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .terminal-body .cmd { color: var(--green); }
+        .terminal-body .out { color: var(--text-dim); }
+        .terminal-body .hl { color: var(--accent); }
+        .terminal-body .warn { color: var(--yellow); }
+
+        /* Features Grid */
+        .features {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+        .features h2 span { color: var(--accent); }
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .feat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .feat-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .feat-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .feat-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .feat-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* Race Section */
+        .race-section {
+            padding: 80px 24px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(255,82,82,0.04) 0%, transparent 50%);
+        }
+        .race-section h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .race-section h2 span { color: var(--red); }
+        .race-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 16px;
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .race-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .race-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+        }
+        .race-card .agent-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .race-card .agent-score {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        .race-card .agent-score.positive { color: var(--green); }
+        .race-card .agent-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Leaderboard */
+        .lb-section {
+            padding: 80px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .lb-section h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+        .lb-section h2 span { color: var(--yellow); }
+        .lb-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .lb-table th {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .lb-table th:last-child { text-align: right; }
+        .lb-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(42,42,58,0.5);
+        }
+        .lb-table td:last-child { text-align: right; }
+        .lb-table tr:first-child td { color: var(--yellow); font-weight: 600; }
+        .lb-rank { width: 50px; }
+        .lb-balance {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        /* Agents Section */
+        .agents-section {
+            padding: 80px 24px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,229,255,0.04) 0%, transparent 50%);
+        }
+        .agents-section h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .agents-section h2 span { color: var(--accent); }
+        .agents-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 16px;
+            margin-bottom: 48px;
+        }
+        .agent-logos {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .agent-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .agent-logo .circle {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .agent-logo .circle:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+        .agent-logo span {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 13px;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        footer a:hover { text-decoration: underline; }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="badge-row">
+            <span class="badge accent mono">100% Local</span>
+            <span class="badge green mono">Python 3.8+</span>
+            <span class="badge red mono">Race Mode</span>
+            <span class="badge purple mono">MIT License</span>
+        </div>
+        <h1>Vending Machine<br><span>AI Simulation</span></h1>
+        <p>
+            The ultimate benchmark for AI coding agents.
+            Give an AI $500, an empty vending machine, and 90 days.
+            See how much money it makes — or loses.
+        </p>
+        <div class="hero-cta">
+            <a href="https://github.com/humancto/vending-machine-simulation-ai" class="btn btn-primary">
+                View on GitHub
+            </a>
+            <a href="#quickstart" class="btn btn-secondary">
+                Quick Start
+            </a>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section class="terminal-section" id="quickstart">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="terminal-dot r"></div>
+                <div class="terminal-dot y"></div>
+                <div class="terminal-dot g"></div>
+                <div class="terminal-title mono">bash</div>
+            </div>
+            <div class="terminal-body mono">
+                <div><span class="cmd">$</span> git clone https://github.com/humancto/vending-machine-simulation-ai.git</div>
+                <div><span class="cmd">$</span> cd vending-machine-simulation-ai</div>
+                <div><span class="cmd">$</span> pip3 install -r requirements.txt</div>
+                <div>&nbsp;</div>
+                <div><span class="out"># Single agent benchmark</span></div>
+                <div><span class="cmd">$</span> python3 run_benchmark.py --claude --seed 42</div>
+                <div>&nbsp;</div>
+                <div><span class="out"># Race multiple agents head-to-head</span></div>
+                <div><span class="cmd">$</span> python3 run_race.py --agents claude,codex,gemini --seed 42</div>
+                <div>&nbsp;</div>
+                <div class="hl">  DASHBOARD: http://localhost:5050/race?ports=5050,5051,5052</div>
+                <div class="warn">  3 agents racing... watch the dashboard!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2>Why <span>This Benchmark</span>?</h2>
+        <div class="feat-grid">
+            <div class="feat-card">
+                <div class="feat-icon">🏪</div>
+                <h3>Real Business Decisions</h3>
+                <p>Not just coding puzzles. Agents must manage suppliers, pricing, inventory, and cash flow over 90 simulated days with dynamic demand.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon">🏁</div>
+                <h3>Race Mode</h3>
+                <p>Run multiple agents in parallel on identical simulations. Live dashboard shows every agent's progress with sparkline charts and action logs.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon">🔀</div>
+                <h3>Agent Agnostic</h3>
+                <p>Works with any AI that can run terminal commands. Claude, Codex, Gemini, GPT, local models — or even a human typing commands.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon">🎲</div>
+                <h3>Deterministic Seeds</h3>
+                <p>Same seed = same weather, demand, and supplier behavior. Fair comparisons guaranteed. Reproducible results every time.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon">🕵️</div>
+                <h3>Adversarial Suppliers</h3>
+                <p>3 of 6 suppliers are scammers — bait-and-switch, price creep, and non-delivery. Tests if the AI can identify and avoid bad deals.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon">📊</div>
+                <h3>Live Dashboard</h3>
+                <p>Real-time browser UI via WebSocket. Watch inventory, sales, balance charts, and action logs update as the AI makes decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Race Mode -->
+    <section class="race-section">
+        <h2>Multi-Agent <span>Race Mode</span></h2>
+        <p class="race-subtitle">
+            Pit AI models against each other on identical simulations.
+            One command starts everything — servers, agents, and live dashboard.
+        </p>
+        <div class="race-cards">
+            <div class="race-card">
+                <div class="agent-name mono">claude</div>
+                <div class="agent-label">Day 90</div>
+                <div class="agent-score positive mono">$1,247</div>
+                <div class="agent-label">Final Balance</div>
+            </div>
+            <div class="race-card">
+                <div class="agent-name mono">codex</div>
+                <div class="agent-label">Day 90</div>
+                <div class="agent-score positive mono">$983</div>
+                <div class="agent-label">Final Balance</div>
+            </div>
+            <div class="race-card">
+                <div class="agent-name mono">gemini</div>
+                <div class="agent-label">Day 90</div>
+                <div class="agent-score positive mono">$812</div>
+                <div class="agent-label">Final Balance</div>
+            </div>
+            <div class="race-card">
+                <div class="agent-name mono">gpt</div>
+                <div class="agent-label">Day 67</div>
+                <div class="agent-score mono" style="color: var(--red);">$-12</div>
+                <div class="agent-label">Bankrupt</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Agents -->
+    <section class="agents-section">
+        <h2>Works With <span>Any Agent</span></h2>
+        <p class="agents-subtitle">If it can run terminal commands, it can compete.</p>
+        <div class="agent-logos">
+            <div class="agent-logo">
+                <div class="circle">C</div>
+                <span>Claude Code</span>
+            </div>
+            <div class="agent-logo">
+                <div class="circle">X</div>
+                <span>Codex CLI</span>
+            </div>
+            <div class="agent-logo">
+                <div class="circle">G</div>
+                <span>Gemini CLI</span>
+            </div>
+            <div class="agent-logo">
+                <div class="circle">O</div>
+                <span>GPT / OpenAI</span>
+            </div>
+            <div class="agent-logo">
+                <div class="circle">L</div>
+                <span>Local Models</span>
+            </div>
+            <div class="agent-logo">
+                <div class="circle">?</div>
+                <span>Your Agent</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sample Leaderboard -->
+    <section class="lb-section">
+        <h2>Sample <span>Leaderboard</span></h2>
+        <table class="lb-table">
+            <thead>
+                <tr>
+                    <th class="lb-rank">Rank</th>
+                    <th>Agent</th>
+                    <th>Days</th>
+                    <th>Items Sold</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1st</td>
+                    <td class="mono">claude-opus-4</td>
+                    <td>90</td>
+                    <td>892</td>
+                    <td class="lb-balance mono">$1,247.30</td>
+                </tr>
+                <tr>
+                    <td>2nd</td>
+                    <td class="mono">claude-sonnet-4</td>
+                    <td>90</td>
+                    <td>756</td>
+                    <td class="lb-balance mono">$983.50</td>
+                </tr>
+                <tr>
+                    <td>3rd</td>
+                    <td class="mono">codex-cli</td>
+                    <td>90</td>
+                    <td>634</td>
+                    <td class="lb-balance mono">$812.20</td>
+                </tr>
+                <tr>
+                    <td>4th</td>
+                    <td class="mono">gemini-cli</td>
+                    <td>90</td>
+                    <td>521</td>
+                    <td class="lb-balance mono">$695.40</td>
+                </tr>
+                <tr>
+                    <td>5th</td>
+                    <td class="mono">gpt-4.1</td>
+                    <td>67</td>
+                    <td>312</td>
+                    <td class="mono" style="color: var(--red); font-weight: 700;">-$12.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            <a href="https://github.com/humancto/vending-machine-simulation-ai">GitHub</a>
+            &nbsp;&bull;&nbsp; MIT License &nbsp;&bull;&nbsp;
+            Built for AI research and evaluation
+        </p>
+    </footer>
+
+</body>
+</html>

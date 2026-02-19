@@ -184,6 +184,9 @@
     if (empty) empty.remove();
 
     var div = el("div", "log-entry " + (entry.success ? "success" : "failure"));
+    if (entry.player) {
+      div.appendChild(el("span", "log-player", entry.player));
+    }
     var step = entry.step !== null ? "#" + entry.step : "";
     div.appendChild(el("span", "log-step", step));
     div.appendChild(el("span", "log-action", entry.action));
@@ -587,6 +590,9 @@
     if (empty) empty.remove();
 
     var div = el("div", "log-entry " + (entry.success ? "success" : "failure"));
+    if (entry.player) {
+      div.appendChild(el("span", "log-player", entry.player));
+    }
     var step =
       entry.step !== null && entry.step !== undefined ? "#" + entry.step : "";
     div.appendChild(el("span", "log-step", step));

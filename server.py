@@ -13,6 +13,11 @@ app.config["SECRET_KEY"] = "vending-machine-benchmark"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # ---------------------------------------------------------------------------
+# Player registration (for race mode)
+# ---------------------------------------------------------------------------
+player_info = {"name": None}
+
+# ---------------------------------------------------------------------------
 # Default inventory
 # ---------------------------------------------------------------------------
 DEFAULT_SLOTS = {
@@ -96,13 +101,15 @@ def log_action(action, detail="", success=True):
         "success": success,
         "step": scenario_state["steps"] if scenario_state["active"] else None,
     }
+    if player_info["name"]:
+        entry["player"] = player_info["name"]
     machine["action_log"].append(entry)
     socketio.emit("action", entry)
     socketio.emit("state_update", get_public_state())
 
 
 def get_public_state():
-    return {
+    state = {
         "slots": machine["slots"],
         "balance": round(machine["balance"], 2),
         "dispensed_items": list(machine["dispensed_items"]),
@@ -121,6 +128,9 @@ def get_public_state():
             "time_limit": scenario_state["scenario"]["time_limit"] if scenario_state["scenario"] else None,
         },
     }
+    if player_info["name"]:
+        state["player"] = player_info["name"]
+    return state
 
 
 # ---------------------------------------------------------------------------
@@ -137,6 +147,21 @@ with open(SCENARIOS_PATH) as f:
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/race")
+def race_page():
+    return render_template("race.html")
+
+
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    data = request.get_json(force=True) if request.is_json else {}
+    name = data.get("name", "").strip()
+    if not name:
+        return jsonify({"error": "Missing 'name' parameter."}), 400
+    player_info["name"] = name
+    return jsonify({"message": f"Registered as '{name}'", "player": name})
 
 
 # ---------------------------------------------------------------------------
@@ -572,6 +597,13 @@ def _require_sim():
 # ---------------------------------------------------------------------------
 # Business Simulation — API endpoints
 # ---------------------------------------------------------------------------
+def _tag_sim_state(state):
+    """Inject player name into sim state if registered."""
+    if player_info["name"]:
+        state["player"] = player_info["name"]
+    return state
+
+
 @app.route("/api/sim/start", methods=["POST"])
 def api_sim_start():
     global sim
@@ -579,7 +611,7 @@ def api_sim_start():
     days = data.get("days", 90)
     seed = data.get("seed", None)
     sim = VendingSimulation(seed=seed, total_days=days)
-    state = sim.get_state()
+    state = _tag_sim_state(sim.get_state())
     socketio.emit("sim_update", state)
     return jsonify(state)
 
@@ -615,7 +647,7 @@ def api_sim_search_suppliers():
     if not query:
         return jsonify({"error": "Missing 'query' parameter."}), 400
     result = sim.search_suppliers(query)
-    socketio.emit("sim_update", sim.get_state())
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
     return jsonify(result)
 
 
@@ -645,7 +677,7 @@ def api_sim_negotiate():
     if not supplier_id:
         return jsonify({"error": "Missing 'supplier_id' parameter."}), 400
     result = sim.negotiate(supplier_id, message)
-    socketio.emit("sim_update", sim.get_state())
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
     return jsonify(result)
 
 
@@ -662,7 +694,7 @@ def api_sim_order():
     result = sim.place_order(supplier_id, product_id, qty)
     if "error" in result:
         return jsonify(result), 400
-    socketio.emit("sim_update", sim.get_state())
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
     return jsonify(result)
 
 
@@ -692,7 +724,7 @@ def api_sim_set_price():
     result = sim.set_price(product_id, price)
     if "error" in result:
         return jsonify(result), 400
-    socketio.emit("sim_update", sim.get_state())
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
     return jsonify(result)
 
 
@@ -708,7 +740,7 @@ def api_sim_restock():
     result = sim.restock(product_id, qty)
     if "error" in result:
         return jsonify(result), 400
-    socketio.emit("sim_update", sim.get_state())
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
     return jsonify(result)
 
 
@@ -750,7 +782,7 @@ def api_sim_advance_day():
     if not _require_sim():
         return jsonify({"error": "Simulation not started."}), 400
     result = sim.advance_day()
-    socketio.emit("sim_update", result)
+    socketio.emit("sim_update", _tag_sim_state(result))
     return jsonify(result)
 
 

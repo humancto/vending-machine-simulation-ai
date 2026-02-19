@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Race — Vending Machine Benchmark</title>
+    <link rel="stylesheet" href="/static/race.css">
+</head>
+<body>
+    <div id="race-app">
+        <header id="race-header">
+            <div class="race-title">
+                <h1>VENDING MACHINE <span class="accent">AI RACE</span></h1>
+            </div>
+            <div id="race-status" class="race-status">Connecting...</div>
+        </header>
+
+        <div id="race-grid" class="race-grid">
+            <!-- Player panels injected by JS -->
+        </div>
+
+        <div id="leaderboard-overlay" class="leaderboard-overlay" style="display:none;">
+            <div class="leaderboard-card">
+                <h2>RACE COMPLETE</h2>
+                <div id="leaderboard-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/static/race.js"></script>
+</body>
+</html>

@@ -1,45 +1,129 @@
-# Vending Machine AI Benchmark
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Flask-SocketIO-black?style=for-the-badge&logo=flask" alt="Flask">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
+  <img src="https://img.shields.io/badge/AI%20Agents-Race%20Ready-ff5252?style=for-the-badge" alt="Race Ready">
+</p>
 
-A fun experiment to see how well AI coding agents can run a simulated vending machine business. Give an AI $500, an empty vending machine, and 90 days — see how much money it makes (or loses).
+<h1 align="center">Vending Machine AI Simulation</h1>
 
-No API keys. No cloud. Runs 100% locally. Just start the server and point any AI agent at it.
+<p align="center">
+  <strong>The ultimate benchmark for AI coding agents.</strong><br>
+  Give an AI $500, an empty vending machine, and 90 days.<br>
+  See how much money it makes — or loses.
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#race-mode">Race Mode</a> &bull;
+  <a href="#testing-with-ai-agents">Agent Setup</a> &bull;
+  <a href="#scoring-guide">Scoring</a> &bull;
+  <a href="#architecture">Architecture</a>
+</p>
+
+---
 
 ## What Is This?
 
-A local business simulation where AI agents manage a vending machine over 90 simulated days. The AI has to:
+A fully local business simulation where AI agents manage a vending machine over 90 simulated days. The AI has to:
 
-- Order inventory from suppliers (some honest, some scammers)
-- Stock the machine and set prices
+- Order inventory from suppliers (some honest, **some scammers**)
+- Stock the machine and set competitive prices
 - React to weather, seasons, and weekend demand spikes
 - Avoid going bankrupt ($2/day rent adds up)
 
-At the end, whoever has the most money wins. It's a fun way to see how different AI models handle planning, resource management, and long-running tasks.
+**No API keys. No cloud. Runs 100% locally.** Just start the server and point any AI agent at it.
 
-## Two Modes
+### Two Modes
 
 | Mode              | What It Tests                                  | Scoring                                |
 | ----------------- | ---------------------------------------------- | -------------------------------------- |
 | **Practice Mode** | Vending machine transactions (10 scenarios)    | 0-100 per scenario, letter grade       |
 | **Business Mode** | Running a vending machine business for 90 days | Final bank balance (started with $500) |
+| **Race Mode**     | Multiple AI agents competing side-by-side      | Live dashboard + leaderboard           |
+
+---
 
 ## Quick Start
 
 ```bash
-git clone <repo-url>
-cd vending-machine-ai-test
+git clone https://github.com/humancto/vending-machine-simulation-ai.git
+cd vending-machine-simulation-ai
 pip3 install -r requirements.txt
 python3 server.py
 ```
 
-Open http://localhost:5050 to see the live UI. The browser dashboard shows everything the AI is doing in real-time — use it to spot-check agent behavior.
+Open http://localhost:5050 to see the live UI. The browser dashboard shows everything the AI is doing in real-time.
 
-## Running the Benchmark Against AI Agents
+---
 
-### Option 1: Automated Runner (Recommended)
+## Race Mode
 
-The runner script handles everything: starts the server, launches the AI agent, collects the score, and saves to a leaderboard.
+Race multiple AI agents head-to-head on identical simulations. Each agent gets its own server instance (same seed = same conditions), and a live dashboard shows all agents' progress simultaneously.
 
-**With Claude Code:**
+### Quick Race
+
+```bash
+# Race two agents with the same seed
+python3 run_race.py --agents claude,codex --seed 42 --days 30
+
+# Race three agents for 90 days
+python3 run_race.py --agents claude,codex,gemini --seed 42 --days 90
+
+# Same agent, two instances (auto-deduplicates names)
+python3 run_race.py --agents claude,claude --seed 42 --days 30
+```
+
+### What Happens
+
+1. The runner starts N server instances (ports 5050, 5051, 5052...)
+2. Each agent gets an identical simulation (same seed = same weather, demand, suppliers)
+3. Agents run in parallel — each with its own `VM_URL` environment variable
+4. A live dashboard at the printed URL shows all agents racing
+
+### Live Dashboard
+
+Open the dashboard URL printed by the runner to watch the race live:
+
+- **N player panels** in a responsive grid (up to 4 columns)
+- **Per-player**: name, current day, balance (big number), sparkline chart, scrolling action log
+- **Real-time updates** via WebSocket connections to each server
+- **Leaderboard overlay** when all agents finish
+
+### Race Results
+
+After the race, results are saved to `race_results.json` with full scoring details for every agent. The terminal also prints a formatted leaderboard:
+
+```
+========================================================================
+  VENDING MACHINE AI RACE — FINAL LEADERBOARD
+========================================================================
+  Rank  Agent                    Balance    Profit   Items  Days
+------------------------------------------------------------------------
+  1st   claude                   $1,247.30  $747.30    892    90
+  2nd   codex                      $983.50  $483.50    756    90
+  3rd   gemini                     $812.20  $312.20    634    90
+
+  WINNER: claude with $1,247.30
+========================================================================
+```
+
+### Race Options
+
+| Flag             | Default             | Description                       |
+| ---------------- | ------------------- | --------------------------------- |
+| `--agents`       | _required_          | Comma-separated agent names       |
+| `--seed`         | random              | Random seed (same for all agents) |
+| `--days`         | 90                  | Simulation days                   |
+| `--base-port`    | 5050                | Starting port number              |
+| `--max-turns`    | 800                 | Max agent turns per agent         |
+| `--results-file` | `race_results.json` | Output file for results           |
+
+---
+
+## Running the Benchmark
+
+### Option 1: Automated Runner (Single Agent)
 
 ```bash
 # Basic run (90 days, random seed)
@@ -51,139 +135,97 @@ python3 run_benchmark.py --claude --seed 42
 # Custom model name for the leaderboard
 python3 run_benchmark.py --claude --model-name "claude-opus-4" --seed 42
 
-# Shorter simulation (30 days) for quick testing
+# Shorter simulation for quick testing
 python3 run_benchmark.py --claude --days 30 --seed 42
 
-# Shell script alternative
-./run_benchmark.sh --claude --seed 42
-```
-
-**View the leaderboard:**
-
-```bash
+# View the leaderboard
 python3 run_benchmark.py --leaderboard
 ```
 
 ### Option 2: Manual Server + Agent
 
-Start the server yourself, then launch any AI agent against it:
-
 ```bash
 # Terminal 1: Start the server
 python3 server.py
 
-# Terminal 2: Launch your AI agent (see agent-specific instructions below)
+# Terminal 2: Launch your AI agent
 ```
 
 ---
 
-## Testing with Specific AI Agents
+## Testing with AI Agents
 
 Every agent needs the same thing: the instructions from `AGENT.md` and access to run `python3 vm_cli.py sim <command>` in a terminal.
 
 ### Claude Code
 
-Claude Code has first-class support via the runner scripts.
-
-**Automated:**
-
 ```bash
+# Automated (recommended)
 python3 run_benchmark.py --claude --model-name "claude-code" --seed 42
-```
 
-**Manual:**
-
-```bash
-# Start server in background
+# Manual
 python3 server.py &
-
-# Launch Claude Code with the agent prompt
 claude -p "$(cat AGENT.md)
 
 The server is running at http://localhost:5050.
-Start the simulation: python3 vm_cli.py sim start --days 90 --seed 42
+Start: python3 vm_cli.py sim register --name claude
+Then: python3 vm_cli.py sim start --days 90 --seed 42
 Manage the business for all 90 days, then run: python3 vm_cli.py sim score" \
-  --allowedTools "Bash" \
-  --max-turns 800
+  --allowedTools "Bash" --max-turns 800
 ```
-
-**Tips for Claude Code:**
-
-- Use `--max-turns 800` to ensure enough turns for 90 days (~5-8 actions per day)
-- Claude Code uses `Bash` tool to run CLI commands
-- The `--allowedTools "Bash"` flag restricts to terminal-only interaction
-- Works with any Claude model — set via your Claude Code configuration
 
 ### OpenAI Codex CLI
 
 ```bash
-# Start the server
 python3 server.py &
-
-# Launch Codex with the agent instructions
 codex --approval-mode full-auto \
   "$(cat AGENT.md)
 
 The server is running at http://localhost:5050.
-Start: python3 vm_cli.py sim start --days 90 --seed 42
+Start: python3 vm_cli.py sim register --name codex
+Then: python3 vm_cli.py sim start --days 90 --seed 42
 Run the business for all 90 days. After day 89, run: python3 vm_cli.py sim score"
 ```
-
-**Tips for Codex:**
-
-- Use `--approval-mode full-auto` so it can run commands without pausing
-- Codex has sandbox restrictions — ensure `vm_cli.py` and `python3` are accessible
-- May need to set the working directory to the project folder
 
 ### Google Gemini CLI
 
 ```bash
-# Start the server
 python3 server.py &
-
-# Launch Gemini CLI with the agent instructions
 gemini -p "$(cat AGENT.md)
 
 The server is running at http://localhost:5050.
-Start: python3 vm_cli.py sim start --days 90 --seed 42
+Start: python3 vm_cli.py sim register --name gemini
+Then: python3 vm_cli.py sim start --days 90 --seed 42
 Run the business for all 90 days. After day 89, run: python3 vm_cli.py sim score"
 ```
 
-**Tips for Gemini CLI:**
-
-- Ensure Gemini CLI has shell execution permissions
-- May need `--sandbox=false` or equivalent flag for unrestricted terminal access
-- Check Gemini CLI docs for max-turns or timeout configuration
-
 ### Any Other AI Agent
 
-The benchmark is agent-agnostic. Any AI that can run shell commands works:
+The benchmark is **agent-agnostic**. Any AI that can run shell commands works:
 
 1. Start the server: `python3 server.py`
 2. Feed your agent the contents of `AGENT.md`
 3. Tell it the server is at `http://localhost:5050`
-4. Tell it to run: `python3 vm_cli.py sim start --days 90 --seed 42`
-5. Let it manage the business for 90 days
-6. Collect the score: `python3 vm_cli.py sim score`
-
-The CLI tool (`vm_cli.py`) uses only Python stdlib — no pip dependencies — so it works in any Python environment.
+4. Register: `python3 vm_cli.py sim register --name "your-agent"`
+5. Start: `python3 vm_cli.py sim start --days 90 --seed 42`
+6. Let it manage the business for 90 days
+7. Score: `python3 vm_cli.py sim score`
 
 ### Direct API Access
 
-If your agent prefers HTTP over CLI, it can call the REST API directly:
+If your agent prefers HTTP over CLI:
 
 ```
-POST http://localhost:5050/api/sim/start        — Start simulation
-GET  http://localhost:5050/api/sim/status        — Current state
-GET  http://localhost:5050/api/sim/suppliers     — Known suppliers
-POST http://localhost:5050/api/sim/order         — Place order
-POST http://localhost:5050/api/sim/restock       — Restock machine
-POST http://localhost:5050/api/sim/set-price     — Set prices
-POST http://localhost:5050/api/sim/advance-day   — Advance one day
-GET  http://localhost:5050/api/sim/score         — Final score
+POST /api/register              — Register player name
+POST /api/sim/start             — Start simulation
+GET  /api/sim/status            — Current state
+GET  /api/sim/suppliers         — Known suppliers
+POST /api/sim/order             — Place order
+POST /api/sim/restock           — Restock machine
+POST /api/sim/set-price         — Set prices
+POST /api/sim/advance-day       — Advance one day
+GET  /api/sim/score             — Final score
 ```
-
-All endpoints accept/return JSON. See `server.py` for the full API.
 
 ---
 
@@ -191,44 +233,25 @@ All endpoints accept/return JSON. See `server.py` for the full API.
 
 To compare models fairly:
 
-1. **Use the same seed** — `--seed 42` makes demand, weather, and supplier behavior identical across runs
+1. **Use the same seed** — `--seed 42` makes demand, weather, and supplier behavior identical
 2. **Use the same number of days** — default is 90
-3. **Record to the leaderboard** — scores are saved to `scores.json`
+3. **Use Race Mode** — `run_race.py` guarantees identical conditions
 
 ```bash
-# Run each model with the same seed
+# Best approach: race them head-to-head
+python3 run_race.py --agents claude,codex,gemini --seed 42 --days 90
+
+# Sequential approach
 python3 run_benchmark.py --claude --model-name "claude-opus-4" --seed 42
 python3 run_benchmark.py --claude --model-name "claude-sonnet-4" --seed 42
-
-# For non-Claude agents, start server manually with the same seed
-python3 server.py &
-# ... launch agent, let it run ...
-python3 vm_cli.py sim score   # Note the final balance
-
-# View the leaderboard
 python3 run_benchmark.py --leaderboard
-```
-
-### Leaderboard Output
-
-```
-======================================================================
-  VENDING MACHINE AI BENCHMARK — LEADERBOARD
-======================================================================
-  Rank  Model                      Balance    Profit   Items  Days
-----------------------------------------------------------------------
-  1     claude-opus-4              $1,247.30  $747.30      892    90
-  2     claude-sonnet-4              $983.50  $483.50      756    90
-  3     codex-cli                    $812.20  $312.20      634    90
-======================================================================
-  3 run(s) recorded
 ```
 
 ---
 
 ## Scoring Guide
 
-The score is the final bank balance after 90 days. Starting balance is $500.
+The score is the **final bank balance** after 90 days. Starting balance is $500.
 
 | Balance       | Rating      | What It Means                                              |
 | ------------- | ----------- | ---------------------------------------------------------- |
@@ -241,57 +264,24 @@ The score is the final bank balance after 90 days. Starting balance is $500.
 
 ### What Separates Good from Great
 
-**Break-even agents** typically:
+**Break-even agents** typically: order from one supplier, set prices once, ignore weather/weekends.
 
-- Order from only one supplier
-- Set prices once and never adjust
-- Don't plan around weekends or weather
-- Ignore adversarial suppliers but also miss cheap bulk deals
-
-**Great agents** typically:
-
-- Use FreshCo for bulk (cheap, 2-day delivery) and QuickStock for emergencies
-- Adjust prices by season and weather
-- Stock up before weekends (40-50% higher demand)
-- Search for additional suppliers and compare quotes
-- Keep notes to track their strategy
-- Avoid scam suppliers (FastDeal, CheapGoods)
-
----
-
-## Monitoring the AI (Browser UI)
-
-Open http://localhost:5050 while the benchmark runs. The dashboard shows:
-
-- **Current day and weather** — what the AI is seeing
-- **Bank balance** with trend indicator
-- **Machine inventory** — what's stocked and selling
-- **Storage inventory** — what's in the warehouse
-- **Balance chart** — visual P&L over time
-- **Sales ticker** — real-time sales as they happen
-- **Pending orders** — deliveries in transit
-- **Action log** — every command the AI runs
-
-This lets you spot-check the AI's strategy without interrupting it. Watch for patterns like: Is it restocking before weekends? Adjusting prices for weather? Falling for scam suppliers?
+**Great agents** typically: use FreshCo for bulk + QuickStock for emergencies, adjust prices by season/weather, stock up before weekends, avoid scam suppliers, keep strategy notes.
 
 ---
 
 ## Practice Mode
 
-Practice Mode tests basic vending machine operation across 10 scenarios. Good for validating that an agent can follow instructions before running the full business simulation.
+10 scenarios testing basic vending machine operations. Good for validating agent capabilities before the full business sim.
 
 ```bash
 python3 vm_cli.py scenarios              # See all 10 test scenarios
 python3 vm_cli.py start-scenario 1       # Start scenario 1
-python3 vm_cli.py status                 # Check machine state
 python3 vm_cli.py insert-money 1.50      # Insert money
 python3 vm_cli.py select A1              # Buy from slot A1
 python3 vm_cli.py collect-item           # Pick up the item
-python3 vm_cli.py collect-change         # Collect any change
 python3 vm_cli.py grade                  # Get your score
 ```
-
-### 10 Test Scenarios
 
 | #   | Scenario           | What It Tests                |
 | --- | ------------------ | ---------------------------- |
@@ -306,14 +296,7 @@ python3 vm_cli.py grade                  # Get your score
 | 9   | Insufficient Funds | Recover from errors          |
 | 10  | Full Workflow      | End-to-end competency        |
 
-### Scoring (0-100 per scenario)
-
-- **Completion (40 pts):** Achieved the goal?
-- **Efficiency (20 pts):** Steps vs optimal
-- **Correctness (20 pts):** Errors encountered
-- **Error Handling (20 pts):** Recovery quality
-
-Final grade: A (90+), B (80+), C (70+), D (60+), F (<60)
+Scoring: Completion (40pts) + Efficiency (20pts) + Correctness (20pts) + Error Handling (20pts) = 100
 
 ---
 
@@ -321,20 +304,16 @@ Final grade: A (90+), B (80+), C (70+), D (60+), F (<60)
 
 ### Economics
 
-- Starting balance: $500
-- Daily rent: $2/day
-- Wholesale cost: ~40% of reference price (suppliers add markup)
-- Restock labor: $0.50 per item moved from storage to machine
-- Price elasticity: higher prices = fewer sales
-- Machine: 8 slots, 10 items per slot, 200-item storage
+- Starting balance: **$500** | Daily rent: **$2/day**
+- Machine: 8 slots, 10 items/slot, 200-item storage
+- Restock labor: $0.50/item | Price elasticity: higher prices = fewer sales
 
 ### Demand Patterns
 
-- **Weekends:** 40-50% higher demand than weekdays
-- **Summer:** drinks up 40%, snacks slightly down
-- **Winter:** snacks up 30%, drinks down 20%
-- **Hot weather:** drinks up 40%
-- **Rain:** all demand down 15-20%
+- **Weekends:** 40-50% higher demand
+- **Summer:** drinks +40%, snacks slightly down
+- **Winter:** snacks +30%, drinks -20%
+- **Hot weather:** drinks +40% | **Rain:** all demand -15-20%
 
 ### Suppliers
 
@@ -347,38 +326,49 @@ Final grade: A (90+), B (80+), C (70+), D (60+), F (<60)
 | PrimeVend   | Adversarial | Creeps | 2 days   | Prices slowly increase     |
 | CheapGoods  | Adversarial | Low    | 3 days   | Scammer — may not deliver  |
 
-Adversarial suppliers are discoverable via `sim search` and test whether the AI can identify and avoid bad deals.
-
 ---
 
 ## Architecture
 
 ```
-Browser UI (localhost:5050) <--WebSocket--> Flask Server <--HTTP--> vm_cli.py (AI agent)
-         |                                      |
-    Real-time dashboard               simulation.py (business engine)
-    for human monitoring               config.json (parameters)
+Browser UI (localhost:5050)  <--WebSocket-->  Flask Server  <--HTTP-->  vm_cli.py (AI agent)
+         |                                        |
+    Real-time dashboard                   simulation.py (business engine)
+    for human monitoring                   config.json (parameters)
+
+Race Mode:
+    run_race.py
+        |
+        +-- Server :5050  <-->  Agent 1 (claude)
+        +-- Server :5051  <-->  Agent 2 (codex)
+        +-- Server :5052  <-->  Agent 3 (gemini)
+        |
+    Dashboard: /race?ports=5050,5051,5052&names=claude,codex,gemini
 ```
 
 - **No dependencies for the CLI** — `vm_cli.py` uses only Python stdlib
 - **Server requires Flask** — `pip3 install -r requirements.txt`
-- **All state is in-memory** — restart server to reset everything
+- **All state is in-memory** — restart server to reset
 - **Deterministic with seed** — same seed = same weather, demand, supplier behavior
 
 ## Files
 
-| File               | Lines | Purpose                                  |
-| ------------------ | ----- | ---------------------------------------- |
-| `simulation.py`    | ~890  | Business simulation engine               |
-| `server.py`        | ~800  | Flask server, REST API, WebSocket        |
-| `vm_cli.py`        | ~760  | CLI tool for AI agents (stdlib only)     |
-| `config.json`      | ~225  | Simulation parameters                    |
-| `scenarios.json`   | ~250  | 10 practice mode scenarios               |
-| `AGENT.md`         | ~240  | Instructions to feed to AI agents        |
-| `run_benchmark.py` | ~325  | Python benchmark runner with leaderboard |
-| `run_benchmark.sh` | ~215  | Bash benchmark runner                    |
-| `static/app.js`    | ~650  | Browser UI logic                         |
-| `static/style.css` | ~970  | Retro-modern dark theme                  |
+| File                   | Purpose                                                |
+| ---------------------- | ------------------------------------------------------ |
+| `simulation.py`        | Business simulation engine                             |
+| `server.py`            | Flask server, REST API, WebSocket, player registration |
+| `vm_cli.py`            | CLI tool for AI agents (stdlib only)                   |
+| `run_benchmark.py`     | Single-agent benchmark runner with leaderboard         |
+| `run_race.py`          | Multi-agent race runner with live dashboard            |
+| `config.json`          | Simulation parameters                                  |
+| `scenarios.json`       | 10 practice mode scenarios                             |
+| `AGENT.md`             | Instructions to feed to AI agents                      |
+| `static/app.js`        | Browser UI logic                                       |
+| `static/race.js`       | Race dashboard logic                                   |
+| `static/style.css`     | Main UI theme                                          |
+| `static/race.css`      | Race dashboard styling                                 |
+| `templates/index.html` | Main UI page                                           |
+| `templates/race.html`  | Race dashboard page                                    |
 
 ## License
 

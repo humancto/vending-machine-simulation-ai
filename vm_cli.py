@@ -181,6 +181,14 @@ def _sim_error(result):
     sys.exit(1)
 
 
+def cmd_sim_register(args):
+    """Register a player name."""
+    result, code = _post("/api/register", {"name": args.name})
+    if code >= 400:
+        _sim_error(result)
+    print(f"Registered as: {result.get('player', args.name)}")
+
+
 def cmd_sim_start(args):
     """Start a new simulation."""
     data = {"days": args.days}
@@ -659,6 +667,9 @@ Simulation:
     p_sim = sub.add_parser("sim", help="Business simulation commands")
     sim_sub = p_sim.add_subparsers(dest="sim_command")
 
+    p_sim_register = sim_sub.add_parser("register", help="Register player name")
+    p_sim_register.add_argument("--name", type=str, required=True, help="Player name (e.g., claude-opus-4)")
+
     p_sim_start = sim_sub.add_parser("start", help="Start a new simulation")
     p_sim_start.add_argument("--days", type=int, default=90, help="Number of days (default: 90)")
     p_sim_start.add_argument("--seed", type=int, default=None, help="Random seed (default: random)")
@@ -716,6 +727,7 @@ Simulation:
             p_sim.print_help()
             sys.exit(1)
         sim_commands = {
+            "register": cmd_sim_register,
             "start": cmd_sim_start,
             "status": cmd_sim_status,
             "financials": cmd_sim_financials,
