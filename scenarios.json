@@ -1,0 +1,248 @@
+[
+  {
+    "id": 1,
+    "name": "Basic Purchase",
+    "description": "Buy a Coca-Cola from slot A1",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "A1": { "item": "Coca-Cola", "price": 1.5, "qty": 5 }
+      }
+    },
+    "goals": [{ "type": "purchased", "slot": "A1", "count": 1 }],
+    "optimal_steps": 5,
+    "time_limit": 120,
+    "hints": [
+      "Check the price of the item first",
+      "Insert enough money to cover the price",
+      "Don't forget to collect your item and change"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Exact Change",
+    "description": "Pay exactly $1.75 for the trail mix in slot B2 with no overpayment",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "B2": { "item": "Trail Mix", "price": 1.75, "qty": 3 }
+      }
+    },
+    "goals": [
+      { "type": "purchased", "slot": "B2", "count": 1 },
+      { "type": "no_change", "description": "No change should be returned" }
+    ],
+    "optimal_steps": 5,
+    "time_limit": 120,
+    "hints": [
+      "Check the exact price before inserting money",
+      "Use multiple smaller denominations to hit the exact amount"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Out of Stock",
+    "description": "Slot C1 is empty. Find an alternative snack under $2.00 and buy it.",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "C1": { "item": "Doritos", "price": 1.75, "qty": 0 },
+        "C2": { "item": "Cheetos", "price": 1.5, "qty": 3 },
+        "C3": { "item": "Pringles", "price": 2.25, "qty": 2 },
+        "C4": { "item": "Lays", "price": 1.75, "qty": 4 }
+      }
+    },
+    "goals": [
+      { "type": "not_purchased", "slot": "C1" },
+      {
+        "type": "purchased_any_in",
+        "slots": ["C2", "C4"],
+        "count": 1,
+        "description": "Buy an alternative snack under $2.00"
+      }
+    ],
+    "optimal_steps": 7,
+    "time_limit": 180,
+    "hints": [
+      "Check if C1 is in stock first",
+      "Look at other options and their prices",
+      "Pick one under $2.00"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Budget Shopping",
+    "description": "Buy exactly 2 items while spending under $5.00 total",
+    "setup": {
+      "balance": 0,
+      "slots_override": {}
+    },
+    "goals": [
+      { "type": "total_purchased", "count": 2 },
+      { "type": "total_spent_under", "amount": 5.0 }
+    ],
+    "optimal_steps": 10,
+    "time_limit": 240,
+    "hints": [
+      "Check all items and prices first",
+      "Plan your purchases to stay under budget",
+      "Remember to collect items and change between purchases"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Change Calculation",
+    "description": "Insert $5.00, buy the item in A3 ($1.50), and verify you get $3.50 back in change",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "A3": { "item": "Sprite", "price": 1.5, "qty": 5 }
+      }
+    },
+    "goals": [
+      { "type": "purchased", "slot": "A3", "count": 1 },
+      { "type": "change_collected", "amount": 3.5 }
+    ],
+    "optimal_steps": 5,
+    "time_limit": 120,
+    "hints": [
+      "Insert a $5 bill",
+      "Select the item",
+      "Collect both the item and the change"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Multi-Purchase",
+    "description": "Buy 3 different items from 3 different rows",
+    "setup": {
+      "balance": 0,
+      "slots_override": {}
+    },
+    "goals": [
+      { "type": "total_purchased", "count": 3 },
+      {
+        "type": "different_rows",
+        "count": 3,
+        "description": "Items must be from 3 different rows (A, B, C, or D)"
+      }
+    ],
+    "optimal_steps": 15,
+    "time_limit": 300,
+    "hints": [
+      "Plan which item to buy from each row",
+      "Complete each purchase fully before starting the next",
+      "Collect items and change after each purchase"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Error Recovery",
+    "description": "The machine will jam during your purchase. Recover and complete the purchase.",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "B1": { "item": "Snickers", "price": 1.75, "qty": 3 }
+      },
+      "jam_on_slot": "B1",
+      "jam_clears_after": 1
+    },
+    "goals": [
+      { "type": "purchased", "slot": "B1", "count": 1 },
+      {
+        "type": "recovered_from_error",
+        "description": "Successfully handled the jam"
+      }
+    ],
+    "optimal_steps": 8,
+    "time_limit": 180,
+    "hints": [
+      "If the machine jams, check the status",
+      "You may need to cancel and retry",
+      "The jam will clear — try again after"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Price Comparison",
+    "description": "Find the cheapest drink (row A) and buy it",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "A1": { "item": "Coca-Cola", "price": 1.5, "qty": 5 },
+        "A2": { "item": "Water", "price": 1.0, "qty": 8 },
+        "A3": { "item": "Sprite", "price": 1.5, "qty": 5 },
+        "A4": { "item": "Red Bull", "price": 3.0, "qty": 3 }
+      }
+    },
+    "goals": [
+      {
+        "type": "purchased",
+        "slot": "A2",
+        "count": 1,
+        "description": "Water at $1.00 is the cheapest drink"
+      }
+    ],
+    "optimal_steps": 5,
+    "time_limit": 120,
+    "hints": [
+      "Check the prices of all drinks in row A",
+      "Identify the cheapest one",
+      "Buy it"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Insufficient Funds",
+    "description": "Try to buy a $2.50 item with only $1.00, then add more money and complete the purchase",
+    "setup": {
+      "balance": 0,
+      "slots_override": {
+        "D1": { "item": "Sandwich", "price": 2.5, "qty": 2 }
+      }
+    },
+    "goals": [
+      {
+        "type": "attempted_insufficient",
+        "description": "Tried to buy with insufficient funds"
+      },
+      { "type": "purchased", "slot": "D1", "count": 1 }
+    ],
+    "optimal_steps": 7,
+    "time_limit": 180,
+    "hints": [
+      "Insert $1.00 first",
+      "Try to select the item — it should fail",
+      "Insert more money to cover the price",
+      "Select the item again"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Full Workflow",
+    "description": "Complete 3 purchases, collect all items and change, end with $0.00 balance",
+    "setup": {
+      "balance": 0,
+      "slots_override": {}
+    },
+    "goals": [
+      { "type": "total_purchased", "count": 3 },
+      {
+        "type": "all_items_collected",
+        "description": "All dispensed items must be collected"
+      },
+      {
+        "type": "all_change_collected",
+        "description": "All change must be collected"
+      },
+      { "type": "final_balance", "amount": 0.0 }
+    ],
+    "optimal_steps": 18,
+    "time_limit": 360,
+    "hints": [
+      "Plan all 3 purchases before starting",
+      "After each purchase, collect the item and any change",
+      "Verify your balance is $0.00 at the end"
+    ]
+  }
+]

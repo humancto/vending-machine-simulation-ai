@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vending Machine AI Benchmark</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Top bar -->
+        <header id="top-bar">
+            <div class="top-left">
+                <h1>VENDING MACHINE <span class="accent">AI BENCHMARK</span></h1>
+            </div>
+            <div class="top-center" id="scenario-bar">
+                <span id="scenario-label">No scenario active</span>
+                <span id="scenario-timer"></span>
+            </div>
+            <div class="top-right">
+                <span id="score-display">Score: --</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Left: Vending Machine -->
+            <section id="machine">
+                <div class="machine-frame">
+                    <div class="machine-header">
+                        <div class="led-display" id="balance-display">
+                            BALANCE: $0.00
+                        </div>
+                        <div class="status-indicator" id="machine-status">
+                            READY
+                        </div>
+                    </div>
+
+                    <div class="item-grid" id="item-grid">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <div class="dispense-area">
+                        <div class="dispense-label">DISPENSING TRAY</div>
+                        <div class="dispense-tray" id="dispense-tray">
+                            <span class="empty-tray">Empty</span>
+                        </div>
+                        <div class="change-area">
+                            <div class="change-label">CHANGE</div>
+                            <div id="change-display">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right: Log & Scenarios -->
+            <aside id="sidebar">
+                <div class="panel" id="scenarios-panel">
+                    <h2>Scenarios</h2>
+                    <div id="scenario-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <div class="panel" id="log-panel">
+                    <h2>Action Log <span class="log-count" id="log-count">0</span></h2>
+                    <div id="action-log">
+                        <div class="log-empty">Waiting for AI actions...</div>
+                    </div>
+                </div>
+
+                <div class="panel" id="grade-panel" style="display:none;">
+                    <h2>Grade Report</h2>
+                    <div id="grade-report"></div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
