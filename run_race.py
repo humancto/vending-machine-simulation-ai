@@ -253,6 +253,7 @@ You start with $500. You pay $2/day rent. The machine starts empty.
 - Then start: python3 vm_cli.py sim start --days {days} {seed_flag}
 - Manage the business for ALL {days} days
 - After the final day, run: python3 vm_cli.py sim score
+- IMPORTANT: If a command fails with "Cannot connect to server", wait 3 seconds and retry. The server may still be starting up. Retry at least 5 times before giving up.
 
 ## STRATEGY TIPS
 - Order inventory ASAP on day 0 (delivery takes 1-3 days)
@@ -297,7 +298,7 @@ def build_agent_command(agent_name, agent_type, prompt, max_turns, port, model_o
     elif agent_type == "codex":
         cmd = [
             "codex", "exec",
-            "--full-auto",
+            "--dangerously-bypass-approvals-and-sandbox",
         ]
         if model_override:
             cmd.extend(["-c", f'model="{model_override}"'])
@@ -714,6 +715,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 s.terminate()
             sys.exit(1)
     print("  All servers ready!")
+    # Give Flask a few extra seconds to fully stabilize (WebSocket, routes, etc.)
+    time.sleep(3)
     print()
 
     # Print dashboard URL
