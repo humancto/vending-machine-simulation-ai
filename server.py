@@ -1019,7 +1019,7 @@ def api_sim_start():
 def api_sim_status():
     if not _require_sim():
         return jsonify({"error": "Simulation not started. POST /api/sim/start first."}), 400
-    state = sim.get_state()
+    state = _tag_sim_state(sim.get_state())
     return jsonify(state)
 
 
