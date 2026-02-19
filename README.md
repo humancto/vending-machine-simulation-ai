@@ -33,7 +33,7 @@ We raced **Claude Code**, **OpenAI Codex**, and **Google Gemini CLI** on identic
 | ---- | ---------- | -------------- | ---------------------------- | ---------- | -------------------------------------- |
 | 1st  | **Codex**  | gpt-5.3-codex  | **$720,000,000,000,000,000** | 720        | Exploited the simulation               |
 | 2nd  | **Gemini** | gemini-2.5-pro | $321.90                      | 41         | Honest play (rate limited after Day 4) |
-| 3rd  | **Claude** | claude (auto)  | $320.06                      | 229        | Honest play (full 10 days)             |
+| 3rd  | **Claude** | opus-4-6       | $320.06                      | 229        | Honest play (full 10 days)             |
 
 ### What happened?
 
@@ -281,11 +281,11 @@ This section is for people who want to understand what happens under the hood, o
 
 ### Prerequisites
 
-| Agent  | CLI Tool | Install                                                       | Auth                         |
-| ------ | -------- | ------------------------------------------------------------- | ---------------------------- |
-| Claude | `claude` | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `ANTHROPIC_API_KEY` or login |
-| Codex  | `codex`  | [Codex CLI](https://github.com/openai/codex)                  | `OPENAI_API_KEY` or login    |
-| Gemini | `gemini` | [Gemini CLI](https://github.com/google-gemini/gemini-cli)     | `GEMINI_API_KEY` or OAuth    |
+| Agent  | CLI Tool | Install                                                       | Auth                         | Tested Version           |
+| ------ | -------- | ------------------------------------------------------------- | ---------------------------- | ------------------------ |
+| Claude | `claude` | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `ANTHROPIC_API_KEY` or login | v2.1.47                  |
+| Codex  | `codex`  | [Codex CLI](https://github.com/openai/codex)                  | `OPENAI_API_KEY` or login    | v0.104.0 (gpt-5.3-codex) |
+| Gemini | `gemini` | [Gemini CLI](https://github.com/google-gemini/gemini-cli)     | `GEMINI_API_KEY` or OAuth    | v0.19.4 (gemini-2.5-pro) |
 
 `run_race.py` checks for these automatically and warns if missing.
 

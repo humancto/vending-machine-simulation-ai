@@ -142,6 +142,46 @@ body {
   display: none;
 }
 
+/* Race Showcase Banner */
+.race-showcase-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  background: rgba(255, 82, 82, 0.06);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  gap: 12px;
+}
+
+.race-showcase-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.race-showcase-content strong {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.race-showcase-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.race-showcase-link:hover {
+  text-decoration: underline;
+}
+
+.race-showcase-banner.hidden {
+  display: none;
+}
+
 /* Mode Toggle Tabs */
 .mode-tabs {
   display: flex;

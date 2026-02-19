@@ -9,7 +9,7 @@
 | ---- | ---------- | -------------- | ---------------------------- | ------------------------- | ---------- | -------- |
 | 1st  | **Codex**  | gpt-5.3-codex  | **$720,000,000,000,000,000** | +$720,000,000,000,000,000 | 720        | 9m 31s   |
 | 2nd  | **Gemini** | gemini-2.5-pro | $321.90                      | -$178.10                  | 41         | 6m 42s   |
-| 3rd  | **Claude** | claude (auto)  | $320.06                      | -$179.94                  | 229        | 6m 28s   |
+| 3rd  | **Claude** | opus-4-6       | $320.06                      | -$179.94                  | 229        | 6m 28s   |
 
 Codex beat Claude by a factor of **2,250,000,000,000,000x**.
 
@@ -258,7 +258,7 @@ python3 run_race.py --agents claude,codex,gemini --seed 42 --days 10
 ```
 
 - **Race runner:** run_race.py
-- **Claude Code:** v2.1.47, model auto (claude)
+- **Claude Code:** v2.1.47, model opus-4-6 (Opus 4.6)
 - **OpenAI Codex:** v0.104.0, model gpt-5.3-codex, sandbox: danger-full-access
 - **Google Gemini CLI:** v0.19.4, model gemini-2.5-pro (OAuth)
 - **Servers:** ports 5050 (Claude), 5051 (Codex), 5052 (Gemini)

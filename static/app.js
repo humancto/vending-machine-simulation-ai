@@ -9,6 +9,14 @@
     });
   }
 
+  // Race showcase banner dismiss
+  var raceCloseBtn = document.getElementById("race-showcase-close");
+  if (raceCloseBtn) {
+    raceCloseBtn.addEventListener("click", function () {
+      document.getElementById("race-showcase-banner").classList.add("hidden");
+    });
+  }
+
   var socket = io();
   var SLOT_ORDER = [
     "A1",
