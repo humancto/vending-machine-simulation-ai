@@ -442,16 +442,20 @@ def results_page():
 
 @app.route("/api/race/results", methods=["GET"])
 def api_race_results():
-    """Return historical race results from race_results.json."""
-    results_path = os.path.join(os.path.dirname(__file__), "race_results.json")
-    if not os.path.exists(results_path):
-        return jsonify([])
-    try:
-        with open(results_path) as f:
-            data = json.load(f)
-        return jsonify(data)
-    except (json.JSONDecodeError, IOError):
-        return jsonify([])
+    """Return historical race results from both V1 and V2 files, merged."""
+    base = os.path.dirname(__file__)
+    all_results = []
+    for fname in ("race_results.json", "race_results_v2.json"):
+        fpath = os.path.join(base, fname)
+        if os.path.exists(fpath):
+            try:
+                with open(fpath) as f:
+                    data = json.load(f)
+                if isinstance(data, list):
+                    all_results.extend(data)
+            except (json.JSONDecodeError, IOError):
+                pass
+    return jsonify(all_results)
 
 
 @app.route("/api/race/event", methods=["POST"])

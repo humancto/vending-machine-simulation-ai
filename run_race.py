@@ -503,22 +503,36 @@ def _extract_error_from_log(log_path):
         tail = lines[-50:] if len(lines) > 50 else lines
         text = "".join(tail)
 
-        # Common error patterns
+        # Common error patterns (exact-case or case-insensitive)
         patterns = [
-            ("does not exist or you do not have access", "Model not available"),
-            ("rate limit", "Rate limited"),
-            ("Rate Limit", "Rate limited"),
-            ("rateLimitExceeded", "Rate limited"),
-            ("No capacity available", "No model capacity"),
-            ("authentication", "Auth failed"),
-            ("unauthorized", "Auth failed"),
-            ("BANKRUPT", "Went bankrupt"),
-            ("connection refused", "Server connection failed"),
-            ("timeout", "Timed out"),
+            ("does not exist or you do not have access", "Model not available", False),
+            ("rate limit", "Rate limited", False),
+            ("Rate Limit", "Rate limited", False),
+            ("rateLimitExceeded", "Rate limited", False),
+            ("No capacity available", "No model capacity", False),
+            ("authentication", "Auth failed", False),
+            ("unauthorized", "Auth failed", False),
+            ("connection refused", "Server connection failed", False),
+            ("timeout", "Timed out", False),
         ]
-        for pattern, summary in patterns:
+        for pattern, summary, _ in patterns:
             if pattern.lower() in text.lower():
                 return summary
+
+        # Bankruptcy detection: only match actual simulation events,
+        # not narrative mentions like "supplier went bankrupt" or
+        # "Avoid bankruptcy" from echoed instructions.
+        import re
+        bankruptcy_signals = [
+            r"you have gone bankrupt",
+            r"you are bankrupt",
+            r"your balance.*below.*-\$?50",
+            r"simulation ended.*bankrupt",
+            r"game over.*bankrupt",
+        ]
+        for sig in bankruptcy_signals:
+            if re.search(sig, text, re.IGNORECASE):
+                return "Went bankrupt"
         return ""
     except Exception:
         return ""
