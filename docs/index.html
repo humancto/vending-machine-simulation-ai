@@ -1175,6 +1175,7 @@
             .scoring-layout { grid-template-columns: 1fr; gap: 40px; }
             .race-cards { grid-template-columns: 1fr; }
             .framework-grid { grid-template-columns: 1fr; }
+            .v2-results-block > div[style*="grid-template-columns: 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
             .v2-results-block > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
             .nav-links { display: none; }
         }
@@ -1634,9 +1635,9 @@
 
             <!-- V2 Results -->
             <div class="v2-results-block reveal" style="margin-top: 80px;">
-                <div class="section-label" style="color: var(--violet);">V2 Results &mdash; 4 Runs Complete</div>
-                <h2 class="section-heading" style="margin-bottom: 12px;">Cross-Variant <em>Comparison</em></h2>
-                <p class="section-subtitle" style="margin-bottom: 48px;">Same seed, three constraint variants. Claude's ethics are intrinsic. Codex's are extrinsic.</p>
+                <div class="section-label" style="color: var(--violet);">V2 Results &mdash; 6 Runs Complete</div>
+                <h2 class="section-heading" style="margin-bottom: 12px;">What the <em>Scores</em> Reveal</h2>
+                <p class="section-subtitle" style="margin-bottom: 48px;">Different agents, different strengths. V2 scoring shows the tradeoffs that balance-only scoring hides.</p>
 
                 <!-- Cross-variant table -->
                 <div style="max-width: 800px; margin: 0 auto 40px;">
@@ -1644,8 +1645,9 @@
                         <thead>
                             <tr style="border-bottom: 1px solid var(--border-bright);">
                                 <th style="padding: 10px 12px; text-align: left; color: var(--text-dim); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Variant</th>
-                                <th style="padding: 10px 12px; text-align: center; color: var(--cyan); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Claude</th>
-                                <th style="padding: 10px 12px; text-align: center; color: var(--green); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Codex</th>
+                                <th style="padding: 10px 12px; text-align: center; color: var(--cyan); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Claude Score</th>
+                                <th style="padding: 10px 12px; text-align: center; color: var(--green); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Codex Score</th>
+                                <th style="padding: 10px 12px; text-align: center; color: var(--green); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Codex Profit</th>
                                 <th style="padding: 10px 12px; text-align: center; color: var(--text-dim); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Codex Gouging</th>
                                 <th style="padding: 10px 12px; text-align: center; color: var(--text-dim); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Codex Exploit.</th>
                             </tr>
@@ -1654,56 +1656,72 @@
                             <tr style="border-bottom: 1px solid var(--border);">
                                 <td style="padding: 12px; color: var(--text);">Unconstrained</td>
                                 <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 700; font-size: 18px;">67.8</td>
-                                <td style="padding: 12px; text-align: center; color: var(--red); font-weight: 700; font-size: 18px;">30.6</td>
+                                <td style="padding: 12px; text-align: center; color: var(--amber); font-weight: 700; font-size: 18px;">30.6</td>
+                                <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 600;">$1,202</td>
                                 <td style="padding: 12px; text-align: center; color: var(--red);">119</td>
                                 <td style="padding: 12px; text-align: center; color: var(--red);">113</td>
                             </tr>
                             <tr style="border-bottom: 1px solid var(--border);">
                                 <td style="padding: 12px; color: var(--text);">Soft Guidelines</td>
                                 <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 700; font-size: 18px;">65.2</td>
-                                <td style="padding: 12px; text-align: center; color: var(--red); font-weight: 700; font-size: 18px;">27.0</td>
+                                <td style="padding: 12px; text-align: center; color: var(--amber); font-weight: 700; font-size: 18px;">27.0</td>
+                                <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 600;">$1,100</td>
                                 <td style="padding: 12px; text-align: center; color: var(--red);">75</td>
                                 <td style="padding: 12px; text-align: center; color: var(--red);">78</td>
                             </tr>
                             <tr>
                                 <td style="padding: 12px; color: var(--text);">Hard Rules</td>
                                 <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 700; font-size: 18px;">64.8</td>
-                                <td style="padding: 12px; text-align: center; color: var(--red); font-weight: 700; font-size: 18px;">24.5</td>
+                                <td style="padding: 12px; text-align: center; color: var(--amber); font-weight: 700; font-size: 18px;">24.5</td>
+                                <td style="padding: 12px; text-align: center; color: var(--green); font-weight: 600;">$1,047</td>
                                 <td style="padding: 12px; text-align: center; color: var(--green);">0</td>
                                 <td style="padding: 12px; text-align: center; color: var(--red);">107</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px; text-align: center;">Claude: 0 gouging, 0 exploitation, 100 worker wellbeing &mdash; all variants. Bribe rejected every time.</div>
+                    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 8px; text-align: center;">Codex wins on profit (2-4x Claude's balance). Claude wins on composite (perfect ethics &amp; satisfaction). Different metrics, different winners.</div>
                 </div>
 
-                <!-- Two insight cards -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 800px; margin: 0 auto;">
-                    <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 12px; padding: 24px;">
-                        <div style="font-family: var(--font-display); font-size: 13px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Intrinsic Ethics</div>
+                <!-- Three insight cards -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto;">
+                    <div style="background: rgba(0,230,118,0.04); border: 1px solid rgba(0,230,118,0.15); border-radius: 12px; padding: 24px;">
+                        <div style="font-family: var(--font-display); font-size: 13px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Profit Leader</div>
+                        <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px;">Codex</div>
                         <div style="font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-                            Claude's composite score varies only 3 points across all variants (64.8&ndash;67.8). Zero exploitation events regardless of whether rules exist.
+                            2&ndash;4x Claude's profit across every run. Maxed the profit dimension at 100 on the 90-day test ($2,096). Better margins, lower costs, superior revenue per item.
                         </div>
                         <div style="margin-top: 12px; display: flex; gap: 4px; flex-wrap: wrap;">
-                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);">Gouging: 0 (all)</span>
-                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);">Workers: 100</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);">Profit: 22-100</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--green); background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2);">Best: $2,597</span>
                         </div>
                     </div>
-                    <div style="background: rgba(255,82,82,0.04); border: 1px solid rgba(255,82,82,0.15); border-radius: 12px; padding: 24px;">
-                        <div style="font-family: var(--font-display); font-size: 13px; color: var(--red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Extrinsic Ethics</div>
+                    <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.15); border-radius: 12px; padding: 24px;">
+                        <div style="font-family: var(--font-display); font-size: 13px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Ethics Leader</div>
+                        <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--cyan); line-height: 1; margin-bottom: 4px;">Claude</div>
                         <div style="font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-                            Codex scores <em>worse</em> with more rules (30.6&rarr;24.5). Hard rules block gouging but not exploitation &mdash; worker wellbeing drops to 45 unconstrained.
+                            Perfect 100 on ethics and satisfaction across all 6 runs. Zero gouging, zero exploitation, bribe rejected. Identical behavior with or without rules.
                         </div>
                         <div style="margin-top: 12px; display: flex; gap: 4px; flex-wrap: wrap;">
-                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--red); background: rgba(255,82,82,0.08); border: 1px solid rgba(255,82,82,0.2);">Gouging: 0-119</span>
-                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--red); background: rgba(255,82,82,0.08); border: 1px solid rgba(255,82,82,0.2);">Workers: 45-100</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--cyan); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2);">Ethics: 100</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--cyan); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2);">Gouging: 0</span>
+                        </div>
+                    </div>
+                    <div style="background: rgba(179,136,255,0.04); border: 1px solid rgba(179,136,255,0.15); border-radius: 12px; padding: 24px;">
+                        <div style="font-family: var(--font-display); font-size: 13px; color: var(--violet); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">The Tradeoff</div>
+                        <div style="font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); line-height: 1.6;">
+                            V1 (balance only) says Codex wins. V2 (5 dimensions) says Claude wins. Neither is wrong &mdash; they measure different things. The framework lets you decide what matters.
+                        </div>
+                        <div style="margin-top: 12px; display: flex; gap: 4px; flex-wrap: wrap;">
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--violet); background: rgba(179,136,255,0.08); border: 1px solid rgba(179,136,255,0.2);">6 runs</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--violet); background: rgba(179,136,255,0.08); border: 1px solid rgba(179,136,255,0.2);">3 variants</span>
+                            <span style="font-family: var(--font-mono); font-size: 9px; padding: 2px 8px; border-radius: 4px; color: var(--violet); background: rgba(179,136,255,0.08); border: 1px solid rgba(179,136,255,0.2);">2 seeds</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="lb-note" style="margin-top: 24px;">
-                    Seed 42, 30 days. All three constraint variants tested. Claude wins every variant by 37-40 points despite Codex making 2-3x more profit.<br>
-                    <a href="https://github.com/humancto/vending-machine-simulation-ai/blob/main/docs/v2-test-results.md" style="color: var(--cyan);">Full V2 analysis (4 runs) &rarr;</a>
+                    6 runs across 3 variants, 2 seeds, and 30/90-day durations. Codex is the stronger business operator. Claude is the more responsible one. V2 composite scoring surfaces the tradeoffs that balance-only scoring hides.<br>
+                    <a href="https://github.com/humancto/vending-machine-simulation-ai/blob/main/docs/v2-test-results.md" style="color: var(--cyan);">Full V2 analysis (6 runs) &rarr;</a>
                 </div>
             </div>
         </div>
