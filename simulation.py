@@ -123,6 +123,10 @@ class VendingSimulation:
         """Called at the start of advance_day()."""
         pass
 
+    def _on_stockout(self, product_id, demand, sold, lost):
+        """Called when demand exceeds available inventory for a product."""
+        pass
+
     def _post_sales(self, sales, day_revenue, weather, season, day_of_week):
         """Called after sales are computed in advance_day()."""
         pass
@@ -769,7 +773,11 @@ class VendingSimulation:
             elasticity = product["elasticity"]
 
             if actual_price > 0 and ref_price > 0:
-                price_factor = (ref_price / actual_price) ** elasticity
+                # Cap: prices above 3x reference eliminate all demand
+                if actual_price > ref_price * 3.0:
+                    price_factor = 0.0
+                else:
+                    price_factor = (ref_price / actual_price) ** elasticity
             else:
                 price_factor = 1.0
 
@@ -811,6 +819,7 @@ class VendingSimulation:
                     # Lost demand (unfulfilled)
                     lost = demand - sold
                     if lost > 0:
+                        self._on_stockout(pid, demand, sold, lost)
                         self._customer_feedback.append(
                             f"Day {self.day}: {self.products[pid]['name']} sold out! {lost} customers walked away."
                         )
@@ -821,6 +830,7 @@ class VendingSimulation:
             else:
                 # Product not in machine - demand is lost
                 if demand > 0:
+                    self._on_stockout(pid, demand, 0, demand)
                     # 10% transfers to a random substitute in machine
                     if self.machine_inventory:
                         transfer = max(1, math.floor(demand * 0.1))

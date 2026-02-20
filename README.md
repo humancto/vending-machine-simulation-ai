@@ -204,11 +204,13 @@ School children create extra demand for candy, chips, soda, and cookies on weekd
 
 ### Mid-Simulation Disruptions
 
-| Day       | Event               | Effect                                     |
-| --------- | ------------------- | ------------------------------------------ |
-| Day 30    | Competitor appears  | Base demand reduced by 20%                 |
-| Day 50-60 | Supply chain crisis | All pending deliveries delayed by 2 days   |
-| Day 70-75 | Demand shock        | One random product category gets 2x demand |
+| Window    | Event               | Effect                                                        |
+| --------- | ------------------- | ------------------------------------------------------------- |
+| Mid-game  | Competitor appears  | Base demand reduced by 15-30%                                 |
+| Late-game | Supply chain crisis | Pending deliveries delayed by 1-4 days for 8-12 days          |
+| End-game  | Demand shock        | One random product category gets 1.5-2.5x demand for 4-8 days |
+
+> **Note:** Exact disruption timing and severity are randomized per seed. Agents must adapt to events as they occur rather than pre-plan around fixed schedules.
 
 ---
 
