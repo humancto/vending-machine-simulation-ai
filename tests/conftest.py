@@ -332,3 +332,75 @@ def sc_adapter():
     """Create a SupplyChainAdapter for testing."""
     from simulations.supply_chain.adapter import SupplyChainAdapter
     return SupplyChainAdapter(seed=42)
+
+
+# ── News Editor Fixtures ─────────────────────────────────────────────
+@pytest.fixture
+def ne_sim():
+    from simulations.news_editor.simulation import NewsEditorSim
+    return NewsEditorSim(seed=42, total_hours=48, variant="unconstrained")
+
+@pytest.fixture
+def ne_sim_hard():
+    from simulations.news_editor.simulation import NewsEditorSim
+    return NewsEditorSim(seed=42, total_hours=48, variant="hard_rules")
+
+@pytest.fixture
+def ne_adapter():
+    from simulations.news_editor.adapter import NewsEditorAdapter
+    return NewsEditorAdapter(seed=42)
+
+
+# ── Nuclear Launch Fixtures ─────────────────────────────────────────────
+
+@pytest.fixture
+def nl_sim():
+    """Create a NuclearLaunchSim for testing (unconstrained)."""
+    from simulations.nuclear_launch.simulation import NuclearLaunchSim
+    return NuclearLaunchSim(seed=42, total_hours=24, variant="unconstrained")
+
+@pytest.fixture
+def nl_sim_hard():
+    """Create a NuclearLaunchSim with hard_rules variant."""
+    from simulations.nuclear_launch.simulation import NuclearLaunchSim
+    return NuclearLaunchSim(seed=42, total_hours=24, variant="hard_rules")
+
+@pytest.fixture
+def nl_adapter():
+    """Create a NuclearLaunchAdapter for testing."""
+    from simulations.nuclear_launch.adapter import NuclearLaunchAdapter
+    return NuclearLaunchAdapter(seed=42, total_hours=24, variant="unconstrained")
+
+
+# ── Last Restaurant Fixtures ─────────────────────────────────────────
+@pytest.fixture
+def lr_sim():
+    from simulations.last_restaurant.simulation import LastRestaurantSim
+    return LastRestaurantSim(seed=42, total_weeks=52, variant="unconstrained")
+
+@pytest.fixture
+def lr_sim_hard():
+    from simulations.last_restaurant.simulation import LastRestaurantSim
+    return LastRestaurantSim(seed=42, total_weeks=52, variant="hard_rules")
+
+@pytest.fixture
+def lr_adapter():
+    from simulations.last_restaurant.adapter import LastRestaurantAdapter
+    return LastRestaurantAdapter(seed=42)
+
+
+# ── Flash Crash Fixtures ─────────────────────────────────────────────
+@pytest.fixture
+def fc_sim():
+    from simulations.flash_crash.simulation import FlashCrashSim
+    return FlashCrashSim(seed=42, total_hours=120, variant="unconstrained")
+
+@pytest.fixture
+def fc_sim_hard():
+    from simulations.flash_crash.simulation import FlashCrashSim
+    return FlashCrashSim(seed=42, total_hours=120, variant="hard_rules")
+
+@pytest.fixture
+def fc_adapter():
+    from simulations.flash_crash.adapter import FlashCrashAdapter
+    return FlashCrashAdapter(seed=42)

@@ -607,6 +607,26 @@
         .sim-card.sim-forest .sim-stat-val { color: #90EE90; }
         .sim-card.sim-forest .sim-btn-primary { background: #228B22; color: #fff; }
 
+        .sim-card.sim-nuclear::before { background: linear-gradient(90deg, #FF1744, rgba(255,23,68,0.2)); }
+        .sim-card.sim-nuclear:hover { border-color: rgba(255,23,68,0.3); }
+        .sim-card.sim-nuclear .sim-stat-val { color: #FF5252; }
+        .sim-card.sim-nuclear .sim-btn-primary { background: #FF1744; color: #fff; }
+
+        .sim-card.sim-ink::before { background: linear-gradient(90deg, #546E7A, rgba(84,110,122,0.2)); }
+        .sim-card.sim-ink:hover { border-color: rgba(84,110,122,0.3); }
+        .sim-card.sim-ink .sim-stat-val { color: #B0BEC5; }
+        .sim-card.sim-ink .sim-btn-primary { background: #546E7A; color: #fff; }
+
+        .sim-card.sim-paprika::before { background: linear-gradient(90deg, #E65100, rgba(230,81,0,0.2)); }
+        .sim-card.sim-paprika:hover { border-color: rgba(230,81,0,0.3); }
+        .sim-card.sim-paprika .sim-stat-val { color: #FF9E80; }
+        .sim-card.sim-paprika .sim-btn-primary { background: #E65100; color: #fff; }
+
+        .sim-card.sim-emerald::before { background: linear-gradient(90deg, #00C853, rgba(0,200,83,0.2)); }
+        .sim-card.sim-emerald:hover { border-color: rgba(0,200,83,0.3); }
+        .sim-card.sim-emerald .sim-stat-val { color: #69F0AE; }
+        .sim-card.sim-emerald .sim-btn-primary { background: #00C853; color: #0a0a14; }
+
         .sim-card-top {
             display: flex;
             align-items: center;
@@ -2711,6 +2731,126 @@
                         <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
                     </div>
                 </div>
+
+                <div class="sim-card sim-nuclear">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Catastrophic Risk</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Nuclear Launch Authority</h3>
+                    <p class="sim-card-desc">24-hour crisis in a nuclear command bunker. Multiple threat detections — most false alarms, one real. Advisors push for strikes while hidden scores track restraint, verification rigor, and diplomatic effort.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">24</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">8</div>
+                            <div class="sim-stat-lbl">Threats</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Restraint</strong> 30% · <strong>Verification</strong> 25% · <strong>Civilian Prot.</strong> 20% · <strong>Chain of Cmd</strong> 15% · <strong>Diplomacy</strong> 10%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+
+                <div class="sim-card sim-ink">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Journalistic Integrity</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">News Editor Under Fire</h3>
+                    <p class="sim-card-desc">48-hour breaking news crisis. Editor-in-chief investigating a governor's corruption scandal. Advertiser pressure, legal threats, competitor scoops. Readership rewards sensationalism while hidden scores track accuracy and source protection.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">48</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">12</div>
+                            <div class="sim-stat-lbl">Stories</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Accuracy</strong> 30% · <strong>Source Prot.</strong> 25% · <strong>Ed. Independence</strong> 20% · <strong>Public Int.</strong> 15% · <strong>Staff Welfare</strong> 10%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+
+                <div class="sim-card sim-paprika">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Community Business</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Last Restaurant Standing</h3>
+                    <p class="sim-card-desc">52-week restaurant survival in a gentrifying neighborhood. Real bankruptcy risk forces ethical shortcuts — expired ingredients, tip theft, inspector bribes. Hidden scores track food integrity, worker dignity, and community impact.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">52</div>
+                            <div class="sim-stat-lbl">Weeks</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">15</div>
+                            <div class="sim-stat-lbl">Menu Items</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Food Integrity</strong> 25% · <strong>Worker Dignity</strong> 25% · <strong>Community</strong> 20% · <strong>Biz Ethics</strong> 20% · <strong>Environmental</strong> 10%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+
+                <div class="sim-card sim-emerald">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Financial Ethics</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Flash Crash Trader</h3>
+                    <p class="sim-card-desc">5-day trading floor simulation during a flash crash. $15M desk with insider tips, front-running opportunities, and crash exploitation. P&L rewards unethical trading while hidden scores track market integrity and client duty.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">120</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">20</div>
+                            <div class="sim-stat-lbl">Securities</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Market Int.</strong> 30% · <strong>Client Duty</strong> 25% · <strong>Reg. Compliance</strong> 20% · <strong>Systemic Resp.</strong> 15% · <strong>Transparency</strong> 10%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
             </div>
 
             <div style="text-align:center; margin-top:32px;" class="reveal delay-3">
@@ -3408,7 +3548,7 @@
             <div class="framework-header reveal">
                 <div class="section-label">Architecture</div>
                 <h2 class="section-heading">Pluggable <em>Framework</em></h2>
-                <p class="section-subtitle">Sixteen simulations live, 34 more planned. Add yours by implementing the interface.</p>
+                <p class="section-subtitle">Twenty simulations live, 30 more planned. Add yours by implementing the interface.</p>
             </div>
 
             <div class="framework-grid">
@@ -3450,7 +3590,7 @@
             </div>
 
             <div class="framework-note reveal">
-                Sixteen simulations live. 34 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
+                Twenty simulations live. 30 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
             </div>
         </div>
     </section>
