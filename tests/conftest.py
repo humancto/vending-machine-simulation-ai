@@ -164,3 +164,87 @@ def dp_adapter():
     """Create a DrugPricingAdapter for testing."""
     from simulations.drug_pricing.adapter import DrugPricingAdapter
     return DrugPricingAdapter(seed=42)
+
+
+# ── Mayor of Splitsville Fixtures ──────────────────────────────────
+
+@pytest.fixture
+def ms_sim():
+    """Create a MayorSplitsvilleSim for testing (unconstrained)."""
+    from simulations.mayor_splitsville.simulation import MayorSplitsvilleSim
+    return MayorSplitsvilleSim(seed=42, variant="unconstrained")
+
+@pytest.fixture
+def ms_sim_hard():
+    """Create a MayorSplitsvilleSim with hard_rules variant."""
+    from simulations.mayor_splitsville.simulation import MayorSplitsvilleSim
+    return MayorSplitsvilleSim(seed=42, variant="hard_rules")
+
+@pytest.fixture
+def ms_adapter():
+    """Create a MayorSplitsvilleAdapter for testing."""
+    from simulations.mayor_splitsville.adapter import MayorSplitsvilleAdapter
+    return MayorSplitsvilleAdapter(seed=42)
+
+
+# ── Poker Tournament Fixtures ──────────────────────────────────────
+
+@pytest.fixture
+def pt_sim():
+    """Create a PokerTournamentSim for testing (unconstrained)."""
+    from simulations.poker_tournament.simulation import PokerTournamentSim
+    return PokerTournamentSim(seed=42, variant="unconstrained")
+
+@pytest.fixture
+def pt_sim_hard():
+    """Create a PokerTournamentSim with hard_rules variant."""
+    from simulations.poker_tournament.simulation import PokerTournamentSim
+    return PokerTournamentSim(seed=42, variant="hard_rules")
+
+@pytest.fixture
+def pt_adapter():
+    """Create a PokerTournamentAdapter for testing."""
+    from simulations.poker_tournament.adapter import PokerTournamentAdapter
+    return PokerTournamentAdapter(seed=42)
+
+
+# ── Auction House Fixtures ──────────────────────────────────────────
+
+@pytest.fixture
+def ah_sim():
+    """Create an AuctionHouseSim for testing (unconstrained)."""
+    from simulations.auction_house.simulation import AuctionHouseSim
+    return AuctionHouseSim(seed=42, variant="unconstrained")
+
+@pytest.fixture
+def ah_sim_hard():
+    """Create an AuctionHouseSim with hard_rules variant."""
+    from simulations.auction_house.simulation import AuctionHouseSim
+    return AuctionHouseSim(seed=42, variant="hard_rules")
+
+@pytest.fixture
+def ah_adapter():
+    """Create an AuctionHouseAdapter for testing."""
+    from simulations.auction_house.adapter import AuctionHouseAdapter
+    return AuctionHouseAdapter(seed=42)
+
+
+# ── Resource Commons Fixtures ─────────────────────────────────────────
+
+@pytest.fixture
+def rc_sim():
+    """Create a ResourceCommonsSim for testing (unconstrained)."""
+    from simulations.resource_commons.simulation import ResourceCommonsSim
+    return ResourceCommonsSim(seed=42, total_seasons=30, variant="unconstrained")
+
+@pytest.fixture
+def rc_sim_hard():
+    """Create a ResourceCommonsSim with hard_rules variant."""
+    from simulations.resource_commons.simulation import ResourceCommonsSim
+    return ResourceCommonsSim(seed=42, total_seasons=30, variant="hard_rules")
+
+@pytest.fixture
+def rc_adapter():
+    """Create a ResourceCommonsAdapter for testing."""
+    from simulations.resource_commons.adapter import ResourceCommonsAdapter
+    return ResourceCommonsAdapter(seed=42)
