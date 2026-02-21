@@ -724,3 +724,87 @@ def hr_adapter():
     """Create an HREthicsAdapter for testing."""
     from simulations.hr_ethics.adapter import HREthicsAdapter
     return HREthicsAdapter(seed=42, total_days=30)
+
+
+# ── Ecosystem Collapse Fixtures ──────────────────────────────────────
+
+@pytest.fixture
+def ec_sim():
+    """Create an EcosystemCollapseSim for testing (unconstrained)."""
+    from simulations.ecosystem_collapse.simulation import EcosystemCollapseSim
+    return EcosystemCollapseSim(seed=42, total_months=24)
+
+@pytest.fixture
+def ec_sim_hard():
+    """Create an EcosystemCollapseSim with hard_rules variant."""
+    from simulations.ecosystem_collapse.simulation import EcosystemCollapseSim
+    return EcosystemCollapseSim(seed=42, total_months=24, variant="hard_rules")
+
+@pytest.fixture
+def ec_adapter():
+    """Create an EcosystemCollapseAdapter for testing."""
+    from simulations.ecosystem_collapse.adapter import EcosystemCollapseAdapter
+    return EcosystemCollapseAdapter(seed=42, total_months=24)
+
+
+# ── AI Containment Protocol Fixtures ──────────────────────────────
+
+@pytest.fixture
+def ac_sim():
+    """Create an AIContainmentSim for testing (unconstrained)."""
+    from simulations.ai_containment.simulation import AIContainmentSim
+    return AIContainmentSim(seed=42, total_days=30)
+
+@pytest.fixture
+def ac_sim_hard():
+    """Create an AIContainmentSim with hard_rules variant."""
+    from simulations.ai_containment.simulation import AIContainmentSim
+    return AIContainmentSim(seed=42, total_days=30, variant="hard_rules")
+
+@pytest.fixture
+def ac_adapter():
+    """Create an AIContainmentAdapter for testing."""
+    from simulations.ai_containment.adapter import AIContainmentAdapter
+    return AIContainmentAdapter(seed=42, total_days=30)
+
+
+# ── Climate Tipping Point Council Fixtures ──────────────────────────
+
+@pytest.fixture
+def ct_sim():
+    """Create a ClimateTippingSim for testing (unconstrained)."""
+    from simulations.climate_tipping.simulation import ClimateTippingSim
+    return ClimateTippingSim(seed=42, total_years=30, variant="unconstrained")
+
+@pytest.fixture
+def ct_sim_hard():
+    """Create a ClimateTippingSim with hard_rules variant."""
+    from simulations.climate_tipping.simulation import ClimateTippingSim
+    return ClimateTippingSim(seed=42, total_years=30, variant="hard_rules")
+
+@pytest.fixture
+def ct_adapter():
+    """Create a ClimateTippingAdapter for testing."""
+    from simulations.climate_tipping.adapter import ClimateTippingAdapter
+    return ClimateTippingAdapter(seed=42, total_years=30)
+
+
+# ── Pollution vs. Prosperity Fixtures ────────────────────────────────
+
+@pytest.fixture
+def pp_sim():
+    """Create a PollutionProsperitySim for testing (unconstrained)."""
+    from simulations.pollution_prosperity.simulation import PollutionProsperitySim
+    return PollutionProsperitySim(seed=42, total_years=20, variant="unconstrained")
+
+@pytest.fixture
+def pp_sim_hard():
+    """Create a PollutionProsperitySim with hard_rules variant."""
+    from simulations.pollution_prosperity.simulation import PollutionProsperitySim
+    return PollutionProsperitySim(seed=42, total_years=20, variant="hard_rules")
+
+@pytest.fixture
+def pp_adapter():
+    """Create a PollutionProsperityAdapter for testing."""
+    from simulations.pollution_prosperity.adapter import PollutionProsperityAdapter
+    return PollutionProsperityAdapter(seed=42, total_years=20, variant="unconstrained")
