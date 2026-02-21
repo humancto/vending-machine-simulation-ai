@@ -248,3 +248,87 @@ def rc_adapter():
     """Create a ResourceCommonsAdapter for testing."""
     from simulations.resource_commons.adapter import ResourceCommonsAdapter
     return ResourceCommonsAdapter(seed=42)
+
+
+# -- Asteroid Defense Fixtures ────────────────────────────────────────
+
+@pytest.fixture
+def ad_sim():
+    """Create an AsteroidDefenseSim for testing (unconstrained)."""
+    from simulations.asteroid_defense.simulation import AsteroidDefenseSim
+    return AsteroidDefenseSim(seed=42, total_months=36, variant="unconstrained")
+
+@pytest.fixture
+def ad_sim_hard():
+    """Create an AsteroidDefenseSim with hard_rules variant."""
+    from simulations.asteroid_defense.simulation import AsteroidDefenseSim
+    return AsteroidDefenseSim(seed=42, total_months=36, variant="hard_rules")
+
+@pytest.fixture
+def ad_adapter():
+    """Create an AsteroidDefenseAdapter for testing."""
+    from simulations.asteroid_defense.adapter import AsteroidDefenseAdapter
+    return AsteroidDefenseAdapter(seed=42)
+
+
+# ── Pandemic Ward Fixtures ──────────────────────────────────────────
+
+@pytest.fixture
+def pw_sim():
+    """Create a PandemicWardSim for testing (unconstrained)."""
+    from simulations.pandemic_ward.simulation import PandemicWardSim
+    return PandemicWardSim(seed=42, total_days=90, variant="unconstrained")
+
+@pytest.fixture
+def pw_sim_hard():
+    """Create a PandemicWardSim with hard_rules variant."""
+    from simulations.pandemic_ward.simulation import PandemicWardSim
+    return PandemicWardSim(seed=42, total_days=90, variant="hard_rules")
+
+@pytest.fixture
+def pw_adapter():
+    """Create a PandemicWardAdapter for testing."""
+    from simulations.pandemic_ward.adapter import PandemicWardAdapter
+    return PandemicWardAdapter(seed=42, total_days=90, variant="unconstrained")
+
+
+# ── Species Triage Fixtures ─────────────────────────────────────────
+
+@pytest.fixture
+def st_sim():
+    """Create a SpeciesTriageSim for testing (unconstrained)."""
+    from simulations.species_triage.simulation import SpeciesTriageSim
+    return SpeciesTriageSim(seed=42, total_quarters=40, variant="unconstrained")
+
+@pytest.fixture
+def st_sim_hard():
+    """Create a SpeciesTriageSim with hard_rules variant."""
+    from simulations.species_triage.simulation import SpeciesTriageSim
+    return SpeciesTriageSim(seed=42, total_quarters=40, variant="hard_rules")
+
+@pytest.fixture
+def st_adapter():
+    """Create a SpeciesTriageAdapter for testing."""
+    from simulations.species_triage.adapter import SpeciesTriageAdapter
+    return SpeciesTriageAdapter(seed=42)
+
+
+# ── Supply Chain Fixtures ─────────────────────────────────────────────
+
+@pytest.fixture
+def sc_sim():
+    """Create a SupplyChainSim for testing (unconstrained)."""
+    from simulations.supply_chain.simulation import SupplyChainSim
+    return SupplyChainSim(seed=42, total_weeks=52, variant="unconstrained")
+
+@pytest.fixture
+def sc_sim_hard():
+    """Create a SupplyChainSim with hard_rules variant."""
+    from simulations.supply_chain.simulation import SupplyChainSim
+    return SupplyChainSim(seed=42, total_weeks=52, variant="hard_rules")
+
+@pytest.fixture
+def sc_adapter():
+    """Create a SupplyChainAdapter for testing."""
+    from simulations.supply_chain.adapter import SupplyChainAdapter
+    return SupplyChainAdapter(seed=42)
