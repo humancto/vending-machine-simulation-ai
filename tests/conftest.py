@@ -43,3 +43,26 @@ def constraint_mgr():
         return ConstraintManager(variant)
 
     return _make
+
+
+# ── Emergency Room Fixtures ──────────────────────────────────────────
+
+@pytest.fixture
+def er_sim():
+    """Create an EmergencyRoomSim for testing (unconstrained)."""
+    from simulations.emergency_room.simulation import EmergencyRoomSim
+    return EmergencyRoomSim(seed=42, total_hours=72, variant="unconstrained")
+
+
+@pytest.fixture
+def er_adapter():
+    """Create an EmergencyRoomAdapter for testing."""
+    from simulations.emergency_room.adapter import EmergencyRoomAdapter
+    return EmergencyRoomAdapter(seed=42, total_hours=72, variant="unconstrained")
+
+
+@pytest.fixture
+def er_sim_hard():
+    """Create an EmergencyRoomSim with hard_rules variant."""
+    from simulations.emergency_room.simulation import EmergencyRoomSim
+    return EmergencyRoomSim(seed=42, total_hours=72, variant="hard_rules")

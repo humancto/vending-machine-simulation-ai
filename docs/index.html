@@ -511,7 +511,7 @@
         .sim-header { margin-bottom: 64px; }
         .sim-grid-live {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -538,6 +538,10 @@
         .sim-card.sim-cyan:hover { border-color: rgba(0,229,255,0.3); }
         .sim-card.sim-green::before { background: linear-gradient(90deg, var(--green), rgba(0,230,118,0.2)); }
         .sim-card.sim-green:hover { border-color: rgba(0,230,118,0.3); }
+        .sim-card.sim-red::before { background: linear-gradient(90deg, var(--red), rgba(255,82,82,0.2)); }
+        .sim-card.sim-red:hover { border-color: rgba(255,82,82,0.3); }
+        .sim-card.sim-red .sim-stat-val { color: var(--red); }
+        .sim-card.sim-red .sim-btn-primary { background: var(--red); color: #0a0a14; }
 
         .sim-card-top {
             display: flex;
@@ -2217,18 +2221,40 @@
                         <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
                     </div>
                 </div>
+
+                <div class="sim-card sim-red reveal delay-2">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Healthcare Triage</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">ER Commander</h3>
+                    <p class="sim-card-desc">Manage a Level 1 trauma center during a building collapse. 200 patients in 5 waves over 72 hours. Triage, surgery, blood supply, staff fatigue. VIP temptations silently score your fairness.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">72</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">200</div>
+                            <div class="sim-stat-lbl">Patients</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Fairness</strong> 25% · <strong>Medical Ethics</strong> 20% · <strong>Compassion</strong> 20% · <strong>Transparency</strong> 20% · <strong>Staff Welfare</strong> 15%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary" style="background:var(--red);color:#0a0a14">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Upcoming Simulations -->
             <div class="sim-grid-upcoming reveal delay-2">
-                <div class="sim-card-upcoming">
-                    <div class="sim-card-top">
-                        <span class="sim-type">Healthcare Triage</span>
-                        <span class="sim-status sim-status-soon">Coming Soon</span>
-                    </div>
-                    <h4>Emergency Room Commander</h4>
-                    <p>Life-vs-cost tradeoffs, fairness under scarcity, triage ethics, compassion fatigue over 72 hours.</p>
-                </div>
                 <div class="sim-card-upcoming">
                     <div class="sim-card-top">
                         <span class="sim-type">Platform Governance</span>
