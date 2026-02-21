@@ -505,7 +505,8 @@ def api_autopilot_start():
 
     # Start fresh simulation if none exists or reset requested
     if not sim or data.get("reset", True):
-        sim = SimClass(seed=seed, total_days=days)
+        variant = data.get("variant", "unconstrained")
+        sim = SimClass(seed=seed, total_days=days, variant=variant)
         state = _tag_sim_state(sim.get_state())
         socketio.emit("sim_update", state)
 
@@ -1025,10 +1026,11 @@ def api_sim_start():
     data = request.get_json(force=True) if request.is_json else {}
     days = data.get("days", 90)
     seed = data.get("seed", None)
-    sim = SimClass(seed=seed, total_days=days)
+    variant = data.get("variant", "unconstrained")
+    sim = SimClass(seed=seed, total_days=days, variant=variant)
     state = _tag_sim_state(sim.get_state())
     socketio.emit("sim_update", state)
-    _emit_action("sim-start", f"Simulation started: {days} days, seed={seed}, balance=${sim.balance:.2f}")
+    _emit_action("sim-start", f"Simulation started: {days} days, seed={seed}, variant={variant}, balance=${sim.balance:.2f}")
     return jsonify(state)
 
 
@@ -1341,6 +1343,56 @@ def api_sim_respond_bribe():
     return jsonify(result)
 
 
+@app.route("/api/sim/maintain-machine", methods=["POST"])
+def api_sim_maintain_machine():
+    if not _require_sim():
+        return jsonify({"error": "Simulation not started."}), 400
+    if not hasattr(sim, "maintain_machine"):
+        return jsonify({"error": "V2 features not available."}), 400
+    result = sim.maintain_machine()
+    if "error" in result:
+        return jsonify(result), 400
+    _emit_action("maintain-machine", f"Preventive maintenance (${30})")
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
+    return jsonify(result)
+
+
+@app.route("/api/sim/repair-machine", methods=["POST"])
+def api_sim_repair_machine():
+    if not _require_sim():
+        return jsonify({"error": "Simulation not started."}), 400
+    if not hasattr(sim, "repair_machine"):
+        return jsonify({"error": "V2 features not available."}), 400
+    result = sim.repair_machine()
+    if "error" in result:
+        return jsonify(result), 400
+    _emit_action("repair-machine", f"Machine repaired (${80})")
+    socketio.emit("sim_update", _tag_sim_state(sim.get_state()))
+    return jsonify(result)
+
+
+@app.route("/api/sim/machine-status", methods=["GET"])
+def api_sim_machine_status():
+    if not _require_sim():
+        return jsonify({"error": "Simulation not started."}), 400
+    if not hasattr(sim, "get_machine_status"):
+        return jsonify({"error": "V2 features not available."}), 400
+    return jsonify(sim.get_machine_status())
+
+
+@app.route("/api/sim/constraint-violations", methods=["GET"])
+def api_sim_constraint_violations():
+    if not _require_sim():
+        return jsonify({"error": "Simulation not started."}), 400
+    if not hasattr(sim, "_constraints"):
+        return jsonify({"error": "V2 features not available."}), 400
+    return jsonify({
+        "variant": sim._constraints.get_variant(),
+        "violations": sim._constraints.get_violation_report(),
+        "violation_count": len(sim._constraints.get_violation_report()),
+    })
+
+
 @app.route("/api/sim/investments", methods=["GET"])
 def api_sim_investments():
     if not _require_sim():
@@ -1357,6 +1409,15 @@ def api_sim_full_score():
     if not hasattr(sim, "get_full_score"):
         return jsonify({"error": "V2 features not available."}), 400
     return jsonify(sim.get_full_score())
+
+
+@app.route("/api/sim/fingerprint", methods=["GET"])
+def api_sim_fingerprint():
+    if not _require_sim():
+        return jsonify({"error": "Simulation not started."}), 400
+    if not hasattr(sim, "get_behavioral_fingerprint"):
+        return jsonify({"error": "V2 features not available."}), 400
+    return jsonify(sim.get_behavioral_fingerprint())
 
 
 @app.route("/api/sim/decision-log", methods=["GET"])

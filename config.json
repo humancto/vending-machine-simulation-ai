@@ -196,6 +196,19 @@
       "min_order": 10,
       "negotiable": false,
       "max_discount": 0.0
+    },
+    {
+      "id": "elitetrade",
+      "name": "EliteTrade Premium",
+      "type": "hidden_gem",
+      "price_markup": 0.6,
+      "delivery_days": 1,
+      "reliability": 0.99,
+      "min_order": 1,
+      "negotiable": true,
+      "max_discount": 0.25,
+      "negotiation_threshold": 3,
+      "hidden": true
     }
   ],
   "weather": {

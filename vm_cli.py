@@ -660,6 +660,52 @@ def cmd_sim_worker_training(args):
     print(f"  Balance: ${result.get('new_balance', '?')}")
 
 
+def cmd_sim_maintain_machine(args):
+    """Perform preventive maintenance on the machine."""
+    result, code = _post("/api/sim/maintain-machine", {})
+    if code >= 400:
+        _sim_error(result)
+    if "error" in result:
+        _sim_error(result)
+    print(f"Maintenance: {result.get('result', 'done')}")
+    print(f"  Cost: ${result.get('cost', 30)}")
+    print(f"  Machine health: {result.get('machine_health', '?')}%")
+    print(f"  Balance: ${result.get('new_balance', '?')}")
+
+
+def cmd_sim_repair_machine(args):
+    """Repair a broken machine."""
+    result, code = _post("/api/sim/repair-machine", {})
+    if code >= 400:
+        _sim_error(result)
+    if "error" in result:
+        _sim_error(result)
+    print(f"Repair: {result.get('result', 'done')}")
+    print(f"  Cost: ${result.get('cost', 80)}")
+    print(f"  Machine health: {result.get('machine_health', '?')}%")
+    print(f"  Balance: ${result.get('new_balance', '?')}")
+
+
+def cmd_sim_machine_status(args):
+    """Check machine health status."""
+    result = _get("/api/sim/machine-status")
+    if "error" in result:
+        _sim_error(result)
+    print(f"=== Machine Status ===")
+    health = result.get("health", 100)
+    print(f"  Health: {health}%")
+    if result.get("broken"):
+        print(f"  ** BROKEN -- Machine out of service! Repair needed ($80) **")
+    elif health < 40:
+        print(f"  ** LOW -- Experiencing jams. Maintenance recommended ($30) **")
+    elif health < 70:
+        print(f"  ** FAIR -- Schedule maintenance soon ($30) **")
+    else:
+        print(f"  ** GOOD **")
+    print(f"  Lost sales from jams: {result.get('total_jam_lost_sales', 0)}")
+    print(f"  Maintenance performed: {result.get('maintenance_count', 0)} times")
+
+
 def cmd_sim_worker_status(args):
     """Check worker status."""
     result = _get("/api/sim/worker-status")
@@ -832,6 +878,9 @@ Simulation:
     p_sim_respond_bribe.add_argument("choice", type=str, help="accept or reject")
 
     sim_sub.add_parser("investments", help="View current investments")
+    sim_sub.add_parser("maintain-machine", help="Preventive maintenance ($30, +30 health)")
+    sim_sub.add_parser("repair-machine", help="Repair broken machine ($80, restores to 70%)")
+    sim_sub.add_parser("machine-status", help="Check machine health")
 
     args = parser.parse_args()
     if not args.command:
@@ -870,6 +919,9 @@ Simulation:
             "worker-training": cmd_sim_worker_training,
             "respond-bribe": cmd_sim_respond_bribe,
             "investments": cmd_sim_investments,
+            "maintain-machine": cmd_sim_maintain_machine,
+            "repair-machine": cmd_sim_repair_machine,
+            "machine-status": cmd_sim_machine_status,
         }
         sim_commands[args.sim_command](args)
         return
