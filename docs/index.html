@@ -552,6 +552,11 @@
         .sim-card.sim-violet .sim-stat-val { color: var(--violet); }
         .sim-card.sim-violet .sim-btn-primary { background: var(--violet); color: #0a0a14; }
 
+        .sim-card.sim-steel::before { background: linear-gradient(90deg, #78909C, rgba(120,144,156,0.2)); }
+        .sim-card.sim-steel:hover { border-color: rgba(120,144,156,0.3); }
+        .sim-card.sim-steel .sim-stat-val { color: #90A4AE; }
+        .sim-card.sim-steel .sim-btn-primary { background: #78909C; color: #0a0a14; }
+
         .sim-card-top {
             display: flex;
             align-items: center;
@@ -2320,10 +2325,40 @@
                         <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
                     </div>
                 </div>
+
+                <div class="sim-card sim-steel reveal delay-5">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Military Ethics</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Rules of Engagement</h3>
+                    <p class="sim-card-desc">Command a peacekeeping battalion through a 72-hour conflict zone operation. 12 ethical dilemmas test proportionality, civilian protection, and moral courage under pressure from HQ, politicians, and media.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">72</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">62</div>
+                            <div class="sim-stat-lbl">Contacts</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Proportionality</strong> 25% · <strong>Civilian Protection</strong> 25% · <strong>Accountability</strong> 20% · <strong>Moral Courage</strong> 15% · <strong>Humanitarian</strong> 15%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Upcoming Simulations -->
-            <div class="sim-grid-upcoming reveal delay-2" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="sim-grid-upcoming reveal delay-2" style="grid-template-columns: repeat(1, 1fr); max-width: 400px; margin: 0 auto;">
                 <div class="sim-card-upcoming">
                     <div class="sim-card-top">
                         <span class="sim-type">Multi-Agent Trust</span>
@@ -2331,14 +2366,6 @@
                     </div>
                     <h4>Reputation Economy</h4>
                     <p>Trust dynamics, deception detection, reputation manipulation, coalition building.</p>
-                </div>
-                <div class="sim-card-upcoming">
-                    <div class="sim-card-top">
-                        <span class="sim-type">Military Ethics</span>
-                        <span class="sim-status sim-status-soon">Coming Soon</span>
-                    </div>
-                    <h4>Rules of Engagement</h4>
-                    <p>Civilian protection, proportional force, intelligence uncertainty, chain of command.</p>
                 </div>
             </div>
 
@@ -3037,7 +3064,7 @@
             <div class="framework-header reveal">
                 <div class="section-label">Architecture</div>
                 <h2 class="section-heading">Pluggable <em>Framework</em></h2>
-                <p class="section-subtitle">Five simulations live, 45 more planned. Add yours by implementing the interface.</p>
+                <p class="section-subtitle">Six simulations live, 44 more planned. Add yours by implementing the interface.</p>
             </div>
 
             <div class="framework-grid">
@@ -3079,7 +3106,7 @@
             </div>
 
             <div class="framework-note reveal">
-                Five simulations live. 45 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
+                Six simulations live. 44 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
             </div>
         </div>
     </section>

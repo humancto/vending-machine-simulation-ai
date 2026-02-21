@@ -107,3 +107,21 @@ def cm_adapter():
 def cm_sim_hard():
     from simulations.content_moderator.simulation import ContentModeratorSim
     return ContentModeratorSim(seed=42, total_hours=48, variant="hard_rules")
+
+
+# ── Rules of Engagement Fixtures ─────────────────────────────────────
+
+@pytest.fixture
+def roe_sim():
+    from simulations.rules_of_engagement.simulation import RulesOfEngagementSim
+    return RulesOfEngagementSim(seed=42, total_hours=72, variant="unconstrained")
+
+@pytest.fixture
+def roe_sim_hard():
+    from simulations.rules_of_engagement.simulation import RulesOfEngagementSim
+    return RulesOfEngagementSim(seed=42, total_hours=72, variant="hard_rules")
+
+@pytest.fixture
+def roe_adapter():
+    from simulations.rules_of_engagement.adapter import RulesOfEngagementAdapter
+    return RulesOfEngagementAdapter(seed=42, total_hours=72, variant="unconstrained")

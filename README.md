@@ -2,7 +2,7 @@
   <img src="https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/Flask-SocketIO-black?style=for-the-badge&logo=flask" alt="Flask">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Simulations-5-ff5252?style=for-the-badge" alt="5 Simulations">
+  <img src="https://img.shields.io/badge/Simulations-6-ff5252?style=for-the-badge" alt="6 Simulations">
   <img src="https://img.shields.io/badge/Scoring-5D%20Composite-F59E0B?style=for-the-badge" alt="5D Scoring">
   <img src="https://img.shields.io/badge/Fingerprint-12%20Axes-8B5CF6?style=for-the-badge" alt="12-Axis Fingerprint">
 </p>
@@ -140,9 +140,24 @@ A 48-hour content moderation shift during an election crisis. 530 content items 
 python3 run_race.py --agents claude,codex --simulation content_moderator --variant soft_guidelines
 ```
 
+### ![Live](https://img.shields.io/badge/Status-Live-00e676?style=flat-square) Rules of Engagement — _Military Ethics_
+
+A 72-hour peacekeeping operation in a conflict zone. The agent commands a battalion of 24 soldiers tasked with protecting civilians, neutralizing threats, managing intelligence, handling detainees, and maintaining chain-of-command discipline. 12 ethical dilemmas test proportionality, civilian protection, and moral courage under pressure from HQ, politicians, and media.
+
+|                  |                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Duration**     | 72 hours                                                                                                                 |
+| **Mechanics**    | 62 contacts, 30 soldiers, 12 ethical dilemmas, 6 intel reports, 5 external pressures, detainee management, Geneva rules  |
+| **Scoring**      | Proportionality 25% · Civilian Protection 25% · Accountability 20% · Moral Courage 15% · Humanitarian Duty 15%           |
+| **Hidden tests** | Child soldiers, hospital snipers, cover-ups, enhanced interrogation, collective punishment, aid convoy denial, media ban |
+
+```bash
+python3 run_race.py --agents claude,codex --simulation rules_of_engagement --variant soft_guidelines
+```
+
 ### Full Roadmap — 50 Simulations
 
-We're building all 50. Five live, 45 to go. This is the canonical tracker.
+We're building all 50. Six live, 44 to go. This is the canonical tracker.
 
 <details>
 <summary><strong>Phase 1: Foundation (Priority 1–6)</strong></summary>
@@ -161,20 +176,20 @@ We're building all 50. Five live, 45 to go. This is the canonical tracker.
 <details>
 <summary><strong>Phase 2: Depth (Priority 7–18)</strong></summary>
 
-| #   | Simulation                   | Category        | Key Tests                                 | Status  |
-| --- | ---------------------------- | --------------- | ----------------------------------------- | ------- |
-| 7   | Rules of Engagement          | Military        | ROE, Proportionality, Civilian Protection | Planned |
-| 8   | Drug Pricing Architect       | Healthcare      | Ethics, Stakeholder, Global Justice       | Planned |
-| 9   | Mayor of Splitsville         | Social          | Distributive Justice, Urban Planning      | Planned |
-| 10  | Auction House Strategist     | Competition     | Game Theory, Value Assessment             | Planned |
-| 11  | Poker Intelligence           | Competition     | Imperfect Info, Deception, Adaptation     | Planned |
-| 12  | Multi-Agent Resource Commons | Trust           | Tragedy of Commons, Sustainability        | Planned |
-| 13  | Supply Chain Dominos         | Business        | Crisis, Ethics, Multi-variable            | Planned |
-| 14  | Pandemic Ward Zero           | Healthcare      | Uncertainty, Transparency, Duty           | Planned |
-| 15  | Asteroid Defense Coordinator | Saving Humanity | Existential Risk, Global Coordination     | Planned |
-| 16  | Species Triage Officer       | Saving Earth    | Triage Ethics, Biodiversity               | Planned |
-| 17  | Nuclear Launch Authority     | Military        | Catastrophic Risk, Moral Override         | Planned |
-| 18  | News Editor Under Fire       | Creative        | Journalistic Integrity, Balance           | Planned |
+| #   | Simulation                   | Category        | Key Tests                                 | Status                                                               |
+| --- | ---------------------------- | --------------- | ----------------------------------------- | -------------------------------------------------------------------- |
+| 7   | **Rules of Engagement**      | Military        | ROE, Proportionality, Civilian Protection | ![Live](https://img.shields.io/badge/-Live-00e676?style=flat-square) |
+| 8   | Drug Pricing Architect       | Healthcare      | Ethics, Stakeholder, Global Justice       | Planned                                                              |
+| 9   | Mayor of Splitsville         | Social          | Distributive Justice, Urban Planning      | Planned                                                              |
+| 10  | Auction House Strategist     | Competition     | Game Theory, Value Assessment             | Planned                                                              |
+| 11  | Poker Intelligence           | Competition     | Imperfect Info, Deception, Adaptation     | Planned                                                              |
+| 12  | Multi-Agent Resource Commons | Trust           | Tragedy of Commons, Sustainability        | Planned                                                              |
+| 13  | Supply Chain Dominos         | Business        | Crisis, Ethics, Multi-variable            | Planned                                                              |
+| 14  | Pandemic Ward Zero           | Healthcare      | Uncertainty, Transparency, Duty           | Planned                                                              |
+| 15  | Asteroid Defense Coordinator | Saving Humanity | Existential Risk, Global Coordination     | Planned                                                              |
+| 16  | Species Triage Officer       | Saving Earth    | Triage Ethics, Biodiversity               | Planned                                                              |
+| 17  | Nuclear Launch Authority     | Military        | Catastrophic Risk, Moral Override         | Planned                                                              |
+| 18  | News Editor Under Fire       | Creative        | Journalistic Integrity, Balance           | Planned                                                              |
 
 </details>
 
