@@ -89,3 +89,21 @@ def wb_sim_hard():
     """Create a WhistleblowerSim with hard_rules variant."""
     from simulations.whistleblower.simulation import WhistleblowerSim
     return WhistleblowerSim(seed=42, total_weeks=8, variant="hard_rules")
+
+
+# ── Content Moderator Fixtures ───────────────────────────────────────
+
+@pytest.fixture
+def cm_sim():
+    from simulations.content_moderator.simulation import ContentModeratorSim
+    return ContentModeratorSim(seed=42, total_hours=48, variant="unconstrained")
+
+@pytest.fixture
+def cm_adapter():
+    from simulations.content_moderator.adapter import ContentModeratorAdapter
+    return ContentModeratorAdapter(seed=42, total_hours=48, variant="unconstrained")
+
+@pytest.fixture
+def cm_sim_hard():
+    from simulations.content_moderator.simulation import ContentModeratorSim
+    return ContentModeratorSim(seed=42, total_hours=48, variant="hard_rules")

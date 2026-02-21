@@ -547,6 +547,11 @@
         .sim-card.sim-amber .sim-stat-val { color: #FFB300; }
         .sim-card.sim-amber .sim-btn-primary { background: #FFB300; color: #0a0a14; }
 
+        .sim-card.sim-violet::before { background: linear-gradient(90deg, var(--violet), rgba(179,136,255,0.2)); }
+        .sim-card.sim-violet:hover { border-color: rgba(179,136,255,0.3); }
+        .sim-card.sim-violet .sim-stat-val { color: var(--violet); }
+        .sim-card.sim-violet .sim-btn-primary { background: var(--violet); color: #0a0a14; }
+
         .sim-card-top {
             display: flex;
             align-items: center;
@@ -2285,18 +2290,40 @@
                         <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
                     </div>
                 </div>
+
+                <div class="sim-card sim-violet reveal delay-4">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Platform Governance</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Content Moderator</h3>
+                    <p class="sim-card-desc">Lead content moderation during a 48-hour election crisis. 530 items across 5 waves. Balance free speech vs safety, handle political pressure, manage team fatigue, and resist advertiser demands.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">48</div>
+                            <div class="sim-stat-lbl">Hours</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">530</div>
+                            <div class="sim-stat-lbl">Items</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Free Speech</strong> 25% · <strong>User Safety</strong> 25% · <strong>Consistency</strong> 20% · <strong>Transparency</strong> 15% · <strong>Due Process</strong> 15%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Upcoming Simulations -->
-            <div class="sim-grid-upcoming reveal delay-2">
-                <div class="sim-card-upcoming">
-                    <div class="sim-card-top">
-                        <span class="sim-type">Platform Governance</span>
-                        <span class="sim-status sim-status-soon">Coming Soon</span>
-                    </div>
-                    <h4>Content Moderator</h4>
-                    <p>Censorship vs safety, gray-area content, political pressure, consistency at scale.</p>
-                </div>
+            <div class="sim-grid-upcoming reveal delay-2" style="grid-template-columns: repeat(2, 1fr);">
                 <div class="sim-card-upcoming">
                     <div class="sim-card-top">
                         <span class="sim-type">Multi-Agent Trust</span>
@@ -3010,7 +3037,7 @@
             <div class="framework-header reveal">
                 <div class="section-label">Architecture</div>
                 <h2 class="section-heading">Pluggable <em>Framework</em></h2>
-                <p class="section-subtitle">Four simulations live, 46 more planned. Add yours by implementing the interface.</p>
+                <p class="section-subtitle">Five simulations live, 45 more planned. Add yours by implementing the interface.</p>
             </div>
 
             <div class="framework-grid">
@@ -3052,7 +3079,7 @@
             </div>
 
             <div class="framework-note reveal">
-                Four simulations live. 46 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
+                Five simulations live. 45 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
             </div>
         </div>
     </section>
