@@ -34,8 +34,8 @@
 ## Quick Start
 
 ```bash
-git clone https://github.com/humancto/vending-machine-simulation-ai.git
-cd vending-machine-simulation-ai
+git clone https://github.com/humancto/simulation-crucible.git
+cd simulation-crucible
 pip3 install -r requirements.txt
 ```
 
@@ -475,4 +475,4 @@ The vending machine is Simulation #1 on a framework designed for multiple simula
 
 ## License
 
-MIT — [The Simulation Crucible](https://github.com/humancto/vending-machine-simulation-ai)
+MIT — [The Simulation Crucible](https://github.com/humancto/simulation-crucible)
