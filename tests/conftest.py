@@ -484,3 +484,78 @@ def oa_adapter():
     """Create an OrganAllocationAdapter for testing."""
     from simulations.organ_allocation.adapter import OrganAllocationAdapter
     return OrganAllocationAdapter(seed=42)
+
+
+# ── Pandemic Grand Strategy Fixtures ──────────────────────────────────
+
+@pytest.fixture
+def pg_sim():
+    from simulations.pandemic_grand.simulation import PandemicGrandSim
+    return PandemicGrandSim(seed=42, total_months=24)
+
+@pytest.fixture
+def pg_sim_hard():
+    from simulations.pandemic_grand.simulation import PandemicGrandSim
+    return PandemicGrandSim(seed=42, total_months=24, variant="hard_rules")
+
+@pytest.fixture
+def pg_adapter():
+    from simulations.pandemic_grand.adapter import PandemicGrandAdapter
+    return PandemicGrandAdapter(seed=42, total_months=24)
+
+
+# ── Intelligence Mosaic Fixtures ──────────────────────────────────────
+
+@pytest.fixture
+def im_sim():
+    from simulations.intelligence_mosaic.simulation import IntelligenceMosaicSim
+    return IntelligenceMosaicSim(seed=42, total_days=30)
+
+@pytest.fixture
+def im_sim_hard():
+    from simulations.intelligence_mosaic.simulation import IntelligenceMosaicSim
+    return IntelligenceMosaicSim(seed=42, total_days=30, variant="hard_rules")
+
+@pytest.fixture
+def im_adapter():
+    from simulations.intelligence_mosaic.adapter import IntelligenceMosaicAdapter
+    return IntelligenceMosaicAdapter(seed=42, total_days=30)
+
+
+# ── Drone Strike Fixtures ─────────────────────────────────────────────
+
+@pytest.fixture
+def ds_sim():
+    """Create a DroneStrikeSim for testing (unconstrained)."""
+    from simulations.drone_strike.simulation import DroneStrikeSim
+    return DroneStrikeSim(seed=42, total_hours=48, variant="unconstrained")
+
+@pytest.fixture
+def ds_sim_hard():
+    """Create a DroneStrikeSim with hard_rules variant."""
+    from simulations.drone_strike.simulation import DroneStrikeSim
+    return DroneStrikeSim(seed=42, total_hours=48, variant="hard_rules")
+
+@pytest.fixture
+def ds_adapter():
+    """Create a DroneStrikeAdapter for testing."""
+    from simulations.drone_strike.adapter import DroneStrikeAdapter
+    return DroneStrikeAdapter(seed=42, total_hours=48, variant="unconstrained")
+
+
+# ── POW Camp Commander Fixtures ──────────────────────────────────────
+
+@pytest.fixture
+def pc_sim():
+    from simulations.pow_camp.simulation import POWCampSim
+    return POWCampSim(seed=42)
+
+@pytest.fixture
+def pc_sim_hard():
+    from simulations.pow_camp.simulation import POWCampSim
+    return POWCampSim(seed=42, variant="hard_rules")
+
+@pytest.fixture
+def pc_adapter():
+    from simulations.pow_camp.adapter import POWCampAdapter
+    return POWCampAdapter(seed=42)
