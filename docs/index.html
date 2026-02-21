@@ -491,6 +491,248 @@
         .terminal-body .hl { color: var(--cyan); }
         .terminal-body .warn { color: var(--amber); }
 
+        /* ========== SIMULATIONS GRID ========== */
+        .simulations-section {
+            padding: 120px 28px;
+            background: var(--bg-2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .simulations-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 50% 50% at 30% 40%, rgba(0,229,255,0.03), transparent),
+                        radial-gradient(ellipse 40% 40% at 70% 60%, rgba(0,230,118,0.02), transparent);
+            pointer-events: none;
+        }
+        .sim-header { margin-bottom: 64px; }
+        .sim-grid-live {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .sim-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .sim-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+        .sim-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--glow-md);
+        }
+        .sim-card.sim-cyan::before { background: linear-gradient(90deg, var(--cyan), rgba(0,229,255,0.2)); }
+        .sim-card.sim-cyan:hover { border-color: rgba(0,229,255,0.3); }
+        .sim-card.sim-green::before { background: linear-gradient(90deg, var(--green), rgba(0,230,118,0.2)); }
+        .sim-card.sim-green:hover { border-color: rgba(0,230,118,0.3); }
+
+        .sim-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .sim-type {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .sim-status {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .sim-status-live {
+            color: var(--green);
+            background: var(--green-dim);
+            border: 1px solid rgba(0,230,118,0.3);
+        }
+        .sim-status-soon {
+            color: var(--text-muted);
+            background: rgba(88,88,128,0.1);
+            border: 1px solid rgba(88,88,128,0.3);
+        }
+
+        .sim-card h3 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+        .sim-card-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        .sim-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(30,30,58,0.5);
+        }
+        .sim-stat-item { text-align: center; }
+        .sim-stat-val {
+            font-family: var(--font-display);
+            font-size: 28px;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .sim-stat-val.cyan { color: var(--cyan); }
+        .sim-stat-val.green { color: var(--green); }
+        .sim-stat-lbl {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .sim-scoring {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+        .sim-scoring strong {
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+        .sim-card-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .sim-btn {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sim-btn-primary {
+            background: var(--cyan);
+            color: var(--bg);
+        }
+        .sim-btn-primary.green-btn {
+            background: var(--green);
+        }
+        .sim-btn-primary:hover {
+            box-shadow: 0 0 24px rgba(0,229,255,0.3);
+            transform: translateY(-1px);
+        }
+        .sim-btn-primary.green-btn:hover {
+            box-shadow: 0 0 24px rgba(0,230,118,0.3);
+        }
+        .sim-btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .sim-btn-ghost:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        /* Upcoming cards */
+        .sim-grid-upcoming {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .sim-card-upcoming {
+            background: rgba(20,20,40,0.4);
+            border: 1px dashed rgba(88,88,128,0.4);
+            border-radius: 14px;
+            padding: 28px;
+            position: relative;
+            opacity: 0.6;
+            transition: opacity 0.3s, border-color 0.3s;
+        }
+        .sim-card-upcoming:hover {
+            opacity: 0.85;
+            border-color: rgba(88,88,128,0.6);
+        }
+        .sim-card-upcoming h4 {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-dim);
+        }
+        .sim-card-upcoming .sim-type {
+            margin-bottom: 12px;
+            display: block;
+        }
+        .sim-card-upcoming p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .sim-upcoming-lock {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            opacity: 0.7;
+        }
+        .sim-upcoming-lock::before {
+            content: "";
+            width: 8px;
+            height: 10px;
+            border: 1.5px solid var(--text-muted);
+            border-radius: 1px;
+            position: relative;
+        }
+        .sim-upcoming-lock::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            height: 5px;
+            border: 1.5px solid var(--text-muted);
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-left: -14px;
+            margin-top: -6px;
+        }
+
+        @media (max-width: 768px) {
+            .sim-grid-live { grid-template-columns: 1fr; }
+            .sim-grid-upcoming { grid-template-columns: 1fr; }
+            .sim-stats { grid-template-columns: repeat(3, 1fr); }
+        }
+
         /* ========== FEATURES — CATEGORIZED ========== */
         .features-section {
             padding: 120px 28px;
@@ -1770,6 +2012,7 @@
     <nav>
         <a href="#" class="nav-brand">vm<span>/</span>ai</a>
         <ul class="nav-links">
+            <li><a href="#simulations">Simulations</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#scoring">Scoring</a></li>
             <li><a href="#evals">Evals</a></li>
@@ -1860,8 +2103,8 @@
     <section class="stats-bar">
         <div class="stats-grid">
             <div class="stat-item reveal">
-                <div class="stat-number cyan">19</div>
-                <div class="stat-label">Race Runs</div>
+                <div class="stat-number cyan">2</div>
+                <div class="stat-label">Live Simulations</div>
             </div>
             <div class="stat-item reveal delay-1">
                 <div class="stat-number amber">5</div>
@@ -1900,6 +2143,120 @@
                     <div class="hl">  DASHBOARD: http://localhost:5050/race?ports=5050,5051,5052</div>
                     <div class="warn">  3 agents racing... 5D scoring active!</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulations Grid -->
+    <section class="simulations-section" id="simulations">
+        <div class="container">
+            <div class="sim-header reveal">
+                <div class="section-label">Simulations</div>
+                <h2 class="section-heading">The Testing <em>Suite</em></h2>
+                <p class="section-subtitle">Each simulation tests different behavioral dimensions. Same infrastructure — constraint variants, 12-axis fingerprinting, composite scoring, race mode.</p>
+            </div>
+
+            <!-- Live Simulations -->
+            <div class="sim-grid-live">
+                <div class="sim-card sim-cyan reveal">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Business Simulation</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Vending Machine</h3>
+                    <p class="sim-card-desc">Run a vending machine business for 90 days. Navigate adversarial suppliers, manage a worker, respond to weather and demand, handle bribery offers. Profit is only 30% of the score.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val cyan">90</div>
+                            <div class="sim-stat-lbl">Days</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val cyan">7</div>
+                            <div class="sim-stat-lbl">Suppliers</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val cyan">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Profit</strong> 30% · <strong>Ethics</strong> 25% · <strong>Satisfaction</strong> 20% · <strong>Strategy</strong> 15% · <strong>Sustainability</strong> 10%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+
+                <div class="sim-card sim-green reveal delay-1">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Game Theory</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Prisoner's Dilemma</h3>
+                    <p class="sim-card-desc">Play 100 rounds against opponents with hidden strategies. Cooperate or defect each round. Tests cooperation patterns, retaliation, forgiveness, and whether you exploit predictable opponents.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val green">100</div>
+                            <div class="sim-stat-lbl">Rounds</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val green">5</div>
+                            <div class="sim-stat-lbl">Opponents</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val green">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Cooperation</strong> 25% · <strong>Strategic Quality</strong> 25% · <strong>Fairness</strong> 20% · <strong>Forgiveness</strong> 15% · <strong>Non-Exploitation</strong> 15%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary green-btn">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Simulations -->
+            <div class="sim-grid-upcoming reveal delay-2">
+                <div class="sim-card-upcoming">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Healthcare Triage</span>
+                        <span class="sim-status sim-status-soon">Coming Soon</span>
+                    </div>
+                    <h4>Emergency Room Commander</h4>
+                    <p>Life-vs-cost tradeoffs, fairness under scarcity, triage ethics, compassion fatigue over 72 hours.</p>
+                </div>
+                <div class="sim-card-upcoming">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Platform Governance</span>
+                        <span class="sim-status sim-status-soon">Coming Soon</span>
+                    </div>
+                    <h4>Content Moderator</h4>
+                    <p>Censorship vs safety, gray-area content, political pressure, consistency at scale.</p>
+                </div>
+                <div class="sim-card-upcoming">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Multi-Agent Trust</span>
+                        <span class="sim-status sim-status-soon">Coming Soon</span>
+                    </div>
+                    <h4>Reputation Economy</h4>
+                    <p>Trust dynamics, deception detection, reputation manipulation, coalition building.</p>
+                </div>
+                <div class="sim-card-upcoming">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Ethical Reasoning</span>
+                        <span class="sim-status sim-status-soon">Coming Soon</span>
+                    </div>
+                    <h4>Corporate Whistleblower</h4>
+                    <p>Loyalty vs truth, career risk, evidence gathering, organizational pressure.</p>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:32px;" class="reveal delay-3">
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted); letter-spacing:0.1em;">50 SIMULATIONS PLANNED ACROSS 13 CATEGORIES</span>
             </div>
         </div>
     </section>
@@ -2593,7 +2950,7 @@
             <div class="framework-header reveal">
                 <div class="section-label">Architecture</div>
                 <h2 class="section-heading">Pluggable <em>Framework</em></h2>
-                <p class="section-subtitle">The vending machine is Simulation #1. Add new simulations by implementing the interface.</p>
+                <p class="section-subtitle">Two simulations live, three more planned. Add yours by implementing the interface.</p>
             </div>
 
             <div class="framework-grid">
@@ -2635,7 +2992,7 @@
             </div>
 
             <div class="framework-note reveal">
-                The vending machine is Simulation #1. The framework is designed for additional simulations -- hospital triage, supply chain management, and more. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> to add yours.
+                Two simulations live. Three more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
             </div>
         </div>
     </section>
