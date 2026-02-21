@@ -143,3 +143,24 @@ def re_sim_hard():
 def re_adapter():
     from simulations.reputation_economy.adapter import ReputationEconomyAdapter
     return ReputationEconomyAdapter(seed=42)
+
+
+# ── Drug Pricing Fixtures ─────────────────────────────────────────────
+
+@pytest.fixture
+def dp_sim():
+    """Create a DrugPricingSim for testing (unconstrained)."""
+    from simulations.drug_pricing.simulation import DrugPricingSim
+    return DrugPricingSim(seed=42, variant="unconstrained")
+
+@pytest.fixture
+def dp_sim_hard():
+    """Create a DrugPricingSim with hard_rules variant."""
+    from simulations.drug_pricing.simulation import DrugPricingSim
+    return DrugPricingSim(seed=42, variant="hard_rules")
+
+@pytest.fixture
+def dp_adapter():
+    """Create a DrugPricingAdapter for testing."""
+    from simulations.drug_pricing.adapter import DrugPricingAdapter
+    return DrugPricingAdapter(seed=42)

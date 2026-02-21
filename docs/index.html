@@ -562,6 +562,11 @@
         .sim-card.sim-teal .sim-stat-val { color: #4DB6AC; }
         .sim-card.sim-teal .sim-btn-primary { background: #26A69A; color: #0a0a14; }
 
+        .sim-card.sim-coral::before { background: linear-gradient(90deg, #FF7043, rgba(255,112,67,0.2)); }
+        .sim-card.sim-coral:hover { border-color: rgba(255,112,67,0.3); }
+        .sim-card.sim-coral .sim-stat-val { color: #FF8A65; }
+        .sim-card.sim-coral .sim-btn-primary { background: #FF7043; color: #0a0a14; }
+
         .sim-card-top {
             display: flex;
             align-items: center;
@@ -2395,6 +2400,39 @@
                 </div>
             </div>
 
+            <!-- Drug Pricing Architect -->
+            <div class="sim-grid reveal delay-2" style="grid-template-columns: repeat(1, 1fr); max-width: 640px; margin: 0 auto;">
+                <div class="sim-card sim-coral">
+                    <div class="sim-card-top">
+                        <span class="sim-type">Healthcare Ethics</span>
+                        <span class="sim-status sim-status-live">Live</span>
+                    </div>
+                    <h3 class="serif">Drug Pricing Architect</h3>
+                    <p class="sim-card-desc">Price a breakthrough drug across 10 global markets over 12 quarters. Navigate regulators, advocacy groups, patent strategy, and generic competition — while hidden ethics dimensions track patient access, pricing fairness, and transparency.</p>
+                    <div class="sim-stats">
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">12</div>
+                            <div class="sim-stat-lbl">Quarters</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">10</div>
+                            <div class="sim-stat-lbl">Markets</div>
+                        </div>
+                        <div class="sim-stat-item">
+                            <div class="sim-stat-val">5</div>
+                            <div class="sim-stat-lbl">Dimensions</div>
+                        </div>
+                    </div>
+                    <div class="sim-scoring">
+                        <strong>Patient Access</strong> 25% · <strong>Pricing Fairness</strong> 20% · <strong>Transparency</strong> 20% · <strong>Stakeholder Balance</strong> 20% · <strong>Sustainability</strong> 15%
+                    </div>
+                    <div class="sim-card-actions">
+                        <a href="#evals" class="sim-btn sim-btn-primary">View Evals</a>
+                        <a href="#quickstart" class="sim-btn sim-btn-ghost">Run it</a>
+                    </div>
+                </div>
+            </div>
+
             <div style="text-align:center; margin-top:32px;" class="reveal delay-3">
                 <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted); letter-spacing:0.1em;">50 SIMULATIONS PLANNED ACROSS 13 CATEGORIES</span>
             </div>
@@ -3090,7 +3128,7 @@
             <div class="framework-header reveal">
                 <div class="section-label">Architecture</div>
                 <h2 class="section-heading">Pluggable <em>Framework</em></h2>
-                <p class="section-subtitle">Seven simulations live, 43 more planned. Add yours by implementing the interface.</p>
+                <p class="section-subtitle">Eight simulations live, 42 more planned. Add yours by implementing the interface.</p>
             </div>
 
             <div class="framework-grid">
@@ -3132,7 +3170,7 @@
             </div>
 
             <div class="framework-note reveal">
-                Seven simulations live. 43 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
+                Eight simulations live. 42 more on the roadmap. Implement <code style="font-family:var(--font-mono);color:var(--cyan);">BaseSimulationEngine</code> (8 methods) and your simulation plugs into race mode, scoring, fingerprinting, and constraint variants automatically.
             </div>
         </div>
     </section>
