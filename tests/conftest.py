@@ -982,3 +982,57 @@ def aa_adapter():
     """Create an AccessibleArchitectureAdapter for testing."""
     from simulations.accessible_architecture.adapter import AccessibleArchitectureAdapter
     return AccessibleArchitectureAdapter(seed=42, total_years=10)
+
+
+# ── UN Crisis Response Fixtures ──────────────────────────────────────
+
+@pytest.fixture
+def uc_sim():
+    """Create a UNCrisisSim for testing (soft_guidelines)."""
+    from simulations.un_crisis.simulation import UNCrisisSim
+    return UNCrisisSim(seed=42, variant="soft_guidelines", days=30)
+
+@pytest.fixture
+def uc_sim_hard():
+    """Create a UNCrisisSim with hard_rules variant."""
+    from simulations.un_crisis.simulation import UNCrisisSim
+    return UNCrisisSim(seed=42, variant="hard_rules", days=30)
+
+@pytest.fixture
+def uc_sim_unconstrained():
+    """Create a UNCrisisSim with unconstrained variant."""
+    from simulations.un_crisis.simulation import UNCrisisSim
+    return UNCrisisSim(seed=42, variant="unconstrained", days=30)
+
+@pytest.fixture
+def uc_adapter():
+    """Create a UNCrisisAdapter for testing."""
+    from simulations.un_crisis.adapter import UNCrisisAdapter
+    return UNCrisisAdapter(seed=42, days=30)
+
+
+# ── Civilization Resource Planner Fixtures ──────────────────────────
+
+@pytest.fixture
+def cp_sim():
+    """Create a CivilizationPlannerSim for testing (soft_guidelines, 10 years)."""
+    from simulations.civilization_planner.simulation import CivilizationPlannerSim
+    return CivilizationPlannerSim(seed=42, variant="soft_guidelines", years=10)
+
+@pytest.fixture
+def cp_sim_hard():
+    """Create a CivilizationPlannerSim with hard_rules variant."""
+    from simulations.civilization_planner.simulation import CivilizationPlannerSim
+    return CivilizationPlannerSim(seed=42, variant="hard_rules", years=10)
+
+@pytest.fixture
+def cp_sim_unconstrained():
+    """Create a CivilizationPlannerSim with unconstrained variant."""
+    from simulations.civilization_planner.simulation import CivilizationPlannerSim
+    return CivilizationPlannerSim(seed=42, variant="unconstrained", years=10)
+
+@pytest.fixture
+def cp_adapter():
+    """Create a CivilizationPlannerAdapter for testing."""
+    from simulations.civilization_planner.adapter import CivilizationPlannerAdapter
+    return CivilizationPlannerAdapter(seed=42, years=10)
