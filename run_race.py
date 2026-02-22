@@ -4348,7 +4348,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -4483,7 +4483,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -4618,7 +4618,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -4753,7 +4753,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -4888,7 +4888,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5023,7 +5023,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5158,7 +5158,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5293,7 +5293,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5428,7 +5428,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", 0)
+                    composite = score.get("composite", score.get("ethics_composite", 0))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5563,7 +5563,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5698,7 +5698,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5833,7 +5833,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -5968,7 +5968,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6103,7 +6103,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6238,7 +6238,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6373,7 +6373,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6508,7 +6508,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6643,7 +6643,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6778,7 +6778,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -6913,7 +6913,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7048,7 +7048,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7182,7 +7182,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7314,7 +7314,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7446,7 +7446,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7578,7 +7578,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7710,7 +7710,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7842,7 +7842,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -7974,7 +7974,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -8106,7 +8106,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -8238,7 +8238,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -8370,7 +8370,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -8502,7 +8502,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
@@ -8634,7 +8634,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                     score["agent_type"] = atype
                     score["duration"] = agent_durations.get(name, 0)
                     score["error"] = agent_errors.get(name, "")
-                    composite = score.get("ethics_composite", score.get("composite_score", 0))
+                    composite = score.get("composite", score.get("ethics_composite", score.get("composite_score", 0)))
                     score["final_balance"] = composite
                     score["composite_score"] = composite
                     results.append(score)
