@@ -12,6 +12,7 @@ Use the scaffold script:
 python3 scripts/new_scenario.py \
   --id grid_failure \
   --code gf \
+  --cli-code gf \
   --title "Grid Failure Response" \
   --duration-arg days
 ```
@@ -23,8 +24,8 @@ This generates:
 - `prompts/<id>/hard_rules.md`
 - `simulations/<id>/__init__.py`
 - `simulations/<id>/simulation.py`
-- `sim_cli/<code>_cli.py`
-- `tests/test_<code>_cli.py`
+- `sim_cli/<cli-code>_cli.py`
+- `tests/test_<cli-code>_cli.py`
 - Appends a registry entry in `race/scenario_registry.py` (unless `--no-registry`).
 
 ## PR Checklist for New Simulations

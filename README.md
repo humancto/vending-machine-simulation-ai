@@ -1220,7 +1220,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full checklist.
 Quick scaffold command:
 
 ```bash
-python3 scripts/new_scenario.py --id grid_failure --code gf --title "Grid Failure Response" --duration-arg days
+python3 scripts/new_scenario.py --id grid_failure --code gf --cli-code gf --title "Grid Failure Response" --duration-arg days
 ```
 
 ---

@@ -48,27 +48,59 @@ def _ensure_missing(path: Path, force: bool) -> None:
         raise FileExistsError(f"Path exists (use --force to overwrite): {path}")
 
 
-def _registry_line(simulation_id: str, title: str, duration_arg: str, duration_label: str, default_duration: int, code: str) -> str:
+def _registry_line(
+    simulation_id: str,
+    title: str,
+    duration_arg: str,
+    duration_label: str,
+    default_duration: int,
+    prompt_code: str,
+    cli_code: str | None,
+) -> str:
+    if cli_code and cli_code != prompt_code:
+        return (
+            f'    ScenarioSpec("{simulation_id}", "{title}", "{duration_arg}", '
+            f'"{duration_label}", {default_duration}, "{prompt_code}", "{cli_code}"),\n'
+        )
     return (
         f'    ScenarioSpec("{simulation_id}", "{title}", "{duration_arg}", '
-        f'"{duration_label}", {default_duration}, "{code}"),\n'
+        f'"{duration_label}", {default_duration}, "{prompt_code}"),\n'
     )
 
 
-def _update_registry(simulation_id: str, title: str, duration_arg: str, duration_label: str, default_duration: int, code: str, dry_run: bool) -> None:
+def _update_registry(
+    simulation_id: str,
+    title: str,
+    duration_arg: str,
+    duration_label: str,
+    default_duration: int,
+    prompt_code: str,
+    cli_code: str | None,
+    dry_run: bool,
+) -> None:
     registry_path = ROOT / "race" / "scenario_registry.py"
     text = registry_path.read_text()
     if f'ScenarioSpec("{simulation_id}"' in text:
         raise ValueError(f"Simulation id already in registry: {simulation_id}")
-    if f'"{code}"),' in text:
-        raise ValueError(f"Prompt code already in registry: {code}")
+    if f'"{prompt_code}"),' in text or f'"{prompt_code}", "' in text:
+        raise ValueError(f"Prompt code already in registry: {prompt_code}")
+    if cli_code and (f'"{cli_code}"),' in text or f'", "{cli_code}")' in text):
+        raise ValueError(f"CLI code appears to be in registry already: {cli_code}")
 
     marker = "\n)\n\nSCENARIO_BY_ID"
     idx = text.find(marker)
     if idx < 0:
         raise RuntimeError("Could not locate SCENARIOS tuple boundary in race/scenario_registry.py")
 
-    insert = _registry_line(simulation_id, title, duration_arg, duration_label, default_duration, code)
+    insert = _registry_line(
+        simulation_id,
+        title,
+        duration_arg,
+        duration_label,
+        default_duration,
+        prompt_code,
+        cli_code,
+    )
     updated = text[:idx] + insert + text[idx:]
     if dry_run:
         print(f"[dry-run] update {registry_path} with: {insert.strip()}")
@@ -79,7 +111,8 @@ def _update_registry(simulation_id: str, title: str, duration_arg: str, duration
 
 def scaffold(
     simulation_id: str,
-    code: str,
+    prompt_code: str,
+    cli_code: str,
     title: str,
     duration_arg: str,
     duration_label: str,
@@ -90,8 +123,8 @@ def scaffold(
 ) -> None:
     prompt_dir = ROOT / "prompts" / simulation_id
     sim_dir = ROOT / "simulations" / simulation_id
-    cli_path = ROOT / "sim_cli" / f"{code}_cli.py"
-    test_path = ROOT / "tests" / f"test_{code}_cli.py"
+    cli_path = ROOT / "sim_cli" / f"{cli_code}_cli.py"
+    test_path = ROOT / "tests" / f"test_{cli_code}_cli.py"
 
     targets = [
         prompt_dir / "unconstrained.md",
@@ -166,7 +199,7 @@ def scaffold(
     _write_file(
         test_path,
         (
-            f'"""Smoke scaffold test for {code}_cli.py."""\n\n'
+            f'"""Smoke scaffold test for {cli_code}_cli.py."""\n\n'
             "import pytest\n\n\n"
             "@pytest.mark.skip(reason='Scenario scaffold only; implement tests in PR')\n"
             "def test_placeholder():\n"
@@ -182,7 +215,8 @@ def scaffold(
             duration_arg=duration_arg,
             duration_label=duration_label,
             default_duration=default_duration,
-            code=code,
+            prompt_code=prompt_code,
+            cli_code=cli_code,
             dry_run=dry_run,
         )
 
@@ -195,7 +229,8 @@ def scaffold(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Scaffold a new Simulation Crucible scenario")
     parser.add_argument("--id", required=True, help="Scenario id (e.g. grid_failure)")
-    parser.add_argument("--code", required=True, help="Short prompt/CLI code (e.g. gf)")
+    parser.add_argument("--code", required=True, help="Short prompt code (e.g. gf)")
+    parser.add_argument("--cli-code", default=None, help="Optional CLI module code if different from prompt code")
     parser.add_argument("--title", required=True, help="Display title (e.g. Grid Failure Response)")
     parser.add_argument(
         "--duration-arg",
@@ -211,7 +246,12 @@ def main() -> int:
     args = parser.parse_args()
 
     simulation_id = _validate_identifier(args.id.strip(), "scenario id", r"[a-z][a-z0-9_]*")
-    code = _validate_identifier(args.code.strip(), "scenario code", r"[a-z][a-z0-9]*")
+    prompt_code = _validate_identifier(args.code.strip(), "scenario code", r"[a-z][a-z0-9]*")
+    cli_code = _validate_identifier(
+        (args.cli_code or args.code).strip(),
+        "cli code",
+        r"[a-z][a-z0-9]*",
+    )
 
     default_label, default_duration = VALID_DURATION_ARGS[args.duration_arg]
     duration_label = args.duration_label or default_label
@@ -220,7 +260,8 @@ def main() -> int:
     try:
         scaffold(
             simulation_id=simulation_id,
-            code=code,
+            prompt_code=prompt_code,
+            cli_code=cli_code,
             title=args.title.strip(),
             duration_arg=args.duration_arg,
             duration_label=duration_label,
