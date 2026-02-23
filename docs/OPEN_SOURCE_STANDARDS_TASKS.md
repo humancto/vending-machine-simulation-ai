@@ -76,3 +76,10 @@ Goal: Raise the project to a high-trust, contributor-friendly OSS baseline.
 - [x] Add shared runner module `race/local_mode.py` for parallel launch, scoring, leaderboard, and persistence flow.
 - [x] Resolve prompt/score helpers dynamically from scenario registry metadata (`prompt_code`, `cli_code`, `duration_arg`).
 - [x] Add focused tests for local-mode runner behavior in `tests/test_race_local_mode.py`.
+
+## Batch 6.2: Server-Mode Runner Consolidation (Completed)
+
+- [x] Extract vending-machine server orchestration into `race/server_mode.py`.
+- [x] Replace inline server mode branch in `run_race.py` with a shared runner call.
+- [x] Add focused tests for server mode startup/teardown and happy path in `tests/test_race_server_mode.py`.
+- [x] Include server mode runner tests in CI contract coverage.

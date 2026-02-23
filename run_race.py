@@ -16,13 +16,11 @@ Usage:
 
 import json
 import os
-import signal
 import subprocess
 import sys
 import time
 import urllib.request
 import urllib.error
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from race import config as race_config
 from race import execution as race_execution
@@ -30,6 +28,7 @@ from race import local_mode as race_local_mode
 from race import preflight as race_preflight
 from race import results as race_results
 from race import scenario_io as race_scenario_io
+from race import server_mode as race_server_mode
 from race.results import print_leaderboard
 from race.scenario_registry import (
     get_scenario,
@@ -426,164 +425,32 @@ def main():
         )
         return
 
-    # ── Vending Machine mode: start servers ──
-    servers = []
-    for name, port in zip(agent_names, ports):
-        print(f"  Starting server for {name} on port {port}...")
-        srv = start_server(port)
-        servers.append(srv)
-
-    print("  Waiting for servers to be ready...")
-    for port in ports:
-        if not wait_for_server(port):
-            print(f"  ERROR: Server on port {port} failed to start!")
-            print(f"  Check /tmp/vending-race-server-{port}.log")
-            for s in servers:
-                s.terminate()
-            sys.exit(1)
-    print("  All servers ready!")
-    # Give Flask a few extra seconds to fully stabilize (WebSocket, routes, etc.)
-    time.sleep(3)
-    print()
-
-    # Print dashboard URL
-    ports_param = ",".join(str(p) for p in ports)
-    names_param = ",".join(agent_names)
-    dashboard_url = f"http://localhost:{ports[0]}/race?ports={ports_param}&names={names_param}"
-    print(f"  DASHBOARD: {dashboard_url}")
-    print()
-
-    def cleanup(signum=None, frame=None):
-        print("\n  Shutting down all servers...")
-        for s in servers:
-            try:
-                s.terminate()
-            except Exception:
-                pass
-        for s in servers:
-            try:
-                s.wait(timeout=5)
-            except Exception:
-                s.kill()
-        sys.exit(0)
-
-    signal.signal(signal.SIGINT, cleanup)
-    signal.signal(signal.SIGTERM, cleanup)
-
-    # ── Launch all agents in parallel ──
-    print(f"  Launching {n} agent(s) in parallel (fully autonomous)...")
-    print()
-
-    # Track agent durations and errors
-    agent_durations = {}
-    agent_errors = {}
-
-    try:
-        with ThreadPoolExecutor(max_workers=n) as executor:
-            futures = {}
-            for name, atype, port, model in zip(agent_names, final_types, ports, final_models):
-                prompt = race_scenario_io.build_agent_prompt(name, args.days, args.seed, port, no_constraints=args.no_constraints, variant=args.variant)
-                detected_model, _ = detect_model(atype)
-                effective_model = model or detected_model
-                future = executor.submit(
-                    run_agent, name, atype, port, prompt, args.max_turns, model
-                )
-                futures[future] = (name, atype, port)
-                log_file = f"/tmp/vending-race-agent-{name}.log"
-                display = AGENT_DEFS.get(atype, {}).get("display", atype)
-                print(f"  [{name}] Started ({display}, model: {effective_model}, port {port})")
-                print(f"           Log: {log_file}")
-
-            print()
-            print("  Race in progress... agents running fully autonomously.")
-            print("  Watch the dashboard or check logs for progress.")
-            print(f"  Results page: http://localhost:{ports[0]}/results")
-            print()
-
-            # Wait for all agents to finish
-            for future in as_completed(futures):
-                name, atype, port = futures[future]
-                try:
-                    agent_name, agent_port, rc, duration, error_summary = future.result()
-                    agent_durations[agent_name] = duration
-                    agent_errors[agent_name] = error_summary
-                    if rc == 0:
-                        status_msg = f"Finished in {duration:.0f}s"
-                        if error_summary:
-                            status_msg += f" (warnings: {error_summary})"
-                        print(f"  [{agent_name}] {status_msg}")
-                    elif rc == -1:
-                        print(f"  [{agent_name}] FAILED — {error_summary or 'CLI tool not found or crashed'}")
-                    else:
-                        print(f"  [{agent_name}] Exited (code {rc}) after {duration:.0f}s — {error_summary or 'unknown error'}")
-                except Exception as e:
-                    print(f"  [{name}] ERROR: {e}")
-                    agent_errors[name] = str(e)
-
-        # ── Collect scores ──
-        print("\n  Collecting scores...")
-        results = []
-        for name, atype, port in zip(agent_names, final_types, ports):
-            score = collect_score(port)
-            if score:
-                score["agent"] = name
-                score["agent_type"] = atype
-                score["port"] = port
-                score["duration"] = agent_durations.get(name, 0)
-                score["error"] = agent_errors.get(name, "")
-                results.append(score)
-                print(f"  [{name}] Balance: ${score.get('final_balance', 0):.2f} | "
-                      f"Profit: ${score.get('total_profit', 0):.2f} | "
-                      f"Items sold: {score.get('total_items_sold', 0)} | "
-                      f"Time: {score.get('duration', 0):.0f}s")
-            else:
-                error = agent_errors.get(name, "Could not collect score")
-                results.append({
-                    "agent": name,
-                    "agent_type": atype,
-                    "port": port,
-                    "final_balance": 0,
-                    "total_profit": 0,
-                    "total_items_sold": 0,
-                    "total_days": 0,
-                    "duration": agent_durations.get(name, 0),
-                    "error": error,
-                })
-                print(f"  [{name}] Could not collect score — {error}")
-
-        # Print leaderboard
-        print_leaderboard(results)
-
-        # Save results
-        append_race_record(
-            args.results_file,
-            build_race_record(
-                simulation_id="vending_machine",
-                args=args,
-                agent_names=agent_names,
-                agent_types=final_types,
-                model_overrides=final_models,
-                results=results,
-            ),
-        )
-
-    finally:
-        # Shut down all servers
-        print("\n  Shutting down servers...")
-        for s in servers:
-            try:
-                s.terminate()
-            except Exception:
-                pass
-        for s in servers:
-            try:
-                s.wait(timeout=5)
-            except Exception:
-                try:
-                    s.kill()
-                except Exception:
-                    pass
-        print("  Done!")
+    race_server_mode.run_vending_server_race(
+        args=args,
+        agent_names=agent_names,
+        agent_types=final_types,
+        ports=ports,
+        model_overrides=final_models,
+        agent_defs=AGENT_DEFS,
+        start_server_cb=start_server,
+        wait_for_server_cb=wait_for_server,
+        run_agent_cb=run_agent,
+        detect_model_cb=detect_model,
+        collect_score_cb=collect_score,
+        build_prompt_cb=lambda name, port: race_scenario_io.build_agent_prompt(
+            name,
+            args.days,
+            args.seed,
+            port,
+            no_constraints=args.no_constraints,
+            variant=args.variant,
+        ),
+        print_leaderboard_cb=print_leaderboard,
+        build_race_record_cb=build_race_record,
+        append_race_record_cb=append_race_record,
+        results_file=args.results_file,
+        print_fn=print,
+    )
 
 
 if __name__ == "__main__":
