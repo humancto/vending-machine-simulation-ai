@@ -1219,7 +1219,8 @@ The vending machine is Simulation #1 on a framework designed for multiple simula
 | `race/orchestrator.py`         | Top-level race dispatch and mode routing        |
 | `race/local_mode.py`           | Shared no-server race execution across scenarios |
 | `race/server_mode.py`          | Shared vending-machine server-backed race flow   |
-| `race/scenario_io.py`          | Scenario prompt builders + local score collectors |
+| `race/scenario_io.py`          | Scenario IO compatibility layer + vending/IPD helpers |
+| `race/scenario_io_scenarios.py` | Extracted local-scenario prompt builders + score collectors |
 | `docs/RUNNER_EXTENSION_POINTS.md` | Contributor guide for runner extension points |
 | `server.py`                    | Flask server, REST API, WebSocket              |
 | `simulation.py`                | V1 simulation engine                           |

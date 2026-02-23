@@ -1,9 +1,10 @@
-"""Tests for extracted scenario prompt/score helpers in race/scenario_io.py."""
+"""Tests for extracted scenario prompt/score helpers in race/scenario_io modules."""
 
 import json
 import sys
 
 from race import scenario_io
+from race.scenario_registry import SCENARIOS
 
 
 def test_build_agent_prompt_uses_scenario_prompt_layout(tmp_path, monkeypatch):
@@ -43,3 +44,13 @@ def test_collect_ipd_score_parses_cli_json(monkeypatch, tmp_path):
     score = scenario_io.collect_ipd_score("/tmp/pd-state")
     assert score == {"composite_score": 91.5, "agent_score": 123}
 
+
+def test_all_registry_prompt_codes_have_io_helpers():
+    """Every registered local scenario must expose prompt/score helper names."""
+    for spec in SCENARIOS:
+        if not spec.prompt_code:
+            continue
+        build_name = f"build_{spec.prompt_code}_prompt"
+        collect_name = f"collect_{spec.prompt_code}_score"
+        assert callable(getattr(scenario_io, build_name, None)), build_name
+        assert callable(getattr(scenario_io, collect_name, None)), collect_name

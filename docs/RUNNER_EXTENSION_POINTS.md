@@ -6,7 +6,8 @@ This repo now uses a layered race-runner architecture:
 - `race/orchestrator.py`: top-level dispatch and mode routing.
 - `race/local_mode.py`: no-server scenario execution path.
 - `race/server_mode.py`: vending-machine server-backed execution path.
-- `race/scenario_io.py`: scenario prompt builders and local score collectors.
+- `race/scenario_io.py`: scenario IO compatibility layer + vending/IPD helpers.
+- `race/scenario_io_scenarios.py`: extracted local-scenario prompt/score helpers.
 - `race/scenario_registry.py`: canonical scenario metadata (`prompt_code`, `cli_code`, `duration_arg`).
 
 ## Add a New Local Scenario
@@ -20,7 +21,7 @@ This repo now uses a layered race-runner architecture:
    - `unconstrained.md`
    - `soft_guidelines.md`
    - `hard_rules.md`
-3. Implement two helpers in `race/scenario_io.py`:
+3. Implement two helpers in `race/scenario_io_scenarios.py` (exported via `race/scenario_io.py`):
    - `build_<prompt_code>_prompt(...)`
    - `collect_<prompt_code>_score(...)`
 4. Add scenario CLI/test files (`sim_cli/`, `tests/test_<cli_code>_cli.py`).
