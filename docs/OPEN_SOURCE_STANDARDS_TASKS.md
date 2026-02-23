@@ -69,3 +69,10 @@ Goal: Raise the project to a high-trust, contributor-friendly OSS baseline.
 - [x] Switch `run_race.py` call sites to `race_scenario_io.*` helpers (no behavior changes).
 - [x] Add dedicated tests for extracted scenario helpers in `tests/test_race_scenario_io.py`.
 - [x] Include scenario helper tests in CI contract coverage.
+
+## Batch 6.1: Local-Mode Runner Consolidation (Completed)
+
+- [x] Replace per-simulation no-server branches in `run_race.py` with one shared local-mode dispatch.
+- [x] Add shared runner module `race/local_mode.py` for parallel launch, scoring, leaderboard, and persistence flow.
+- [x] Resolve prompt/score helpers dynamically from scenario registry metadata (`prompt_code`, `cli_code`, `duration_arg`).
+- [x] Add focused tests for local-mode runner behavior in `tests/test_race_local_mode.py`.

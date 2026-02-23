@@ -10,7 +10,7 @@ python3 run_race.py --help
 python3 run_benchmark.py --help
 bash -n run_benchmark.sh
 pytest -q tests/test_scenario_registry.py tests/test_race_prompts.py tests/test_new_scenario_script.py
-pytest -q tests/test_race_config.py tests/test_race_preflight.py tests/test_race_scenario_io.py
+pytest -q tests/test_race_config.py tests/test_race_preflight.py tests/test_race_local_mode.py tests/test_race_scenario_io.py
 ```
 
 ## Full CLI Regression Suite

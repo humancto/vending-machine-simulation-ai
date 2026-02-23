@@ -25,6 +25,7 @@ jobs:
             tests/test_scenario_registry.py \
             tests/test_race_config.py \
             tests/test_race_preflight.py \
+            tests/test_race_local_mode.py \
             tests/test_race_scenario_io.py \
             tests/test_race_prompts.py \
             tests/test_new_scenario_script.py \
