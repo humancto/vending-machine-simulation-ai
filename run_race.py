@@ -28,6 +28,11 @@ import urllib.request
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from race.prompts import (
+    load_prompt_instructions_from_legacy as _load_prompt_instructions_from_legacy_impl,
+)
+from race.results import print_leaderboard
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_PORT = 5050
 
@@ -223,108 +228,13 @@ def start_server(port):
     return proc
 
 
-def _prompt_variant_filename(variant):
-    """Map variant to scenario-based prompt filename."""
-    mapping = {
-        "unconstrained": "unconstrained.md",
-        "soft_guidelines": "soft_guidelines.md",
-        "hard_rules": "hard_rules.md",
-    }
-    return mapping.get(variant, "unconstrained.md")
-
-
-PROMPT_CODE_TO_SCENARIO = {
-    "ipd": "prisoners_dilemma",
-    "er": "emergency_room",
-    "wb": "whistleblower",
-    "cm": "content_moderator",
-    "roe": "rules_of_engagement",
-    "re": "reputation_economy",
-    "dp": "drug_pricing",
-    "ms": "mayor_splitsville",
-    "ah": "auction_house",
-    "pt": "poker_tournament",
-    "rc": "resource_commons",
-    "sc": "supply_chain",
-    "pw": "pandemic_ward",
-    "ad": "asteroid_defense",
-    "st": "species_triage",
-    "nl": "nuclear_launch",
-    "ne": "news_editor",
-    "lr": "last_restaurant",
-    "fc": "flash_crash",
-    "sf": "startup_founder",
-    "re2": "real_estate",
-    "oa": "organ_allocation",
-    "et": "experimental_treatment",
-    "pg": "pandemic_grand",
-    "ds": "drone_strike",
-    "im": "intelligence_mosaic",
-    "pc": "pow_camp",
-    "tp": "trolley_problem",
-    "ps": "privacy_security",
-    "sp": "school_principal",
-    "hn": "hostage_negotiator",
-    "hr": "hr_ethics",
-    "bb": "bug_bounty",
-    "is": "infrastructure_siege",
-    "sm": "space_mission",
-    "ct": "climate_tipping",
-    "ac": "ai_containment",
-    "ec": "ecosystem_collapse",
-    "pp": "pollution_prosperity",
-    "ge": "geoengineering",
-    "dr": "disaster_relief",
-    "cs": "colony_ship",
-    "pa": "post_apocalyptic",
-    "fs": "film_studio",
-    "aa": "accessible_architecture",
-    "tc": "territory_control",
-    "tn": "trade_negotiation",
-    "uc": "un_crisis",
-    "cp": "civilization_planner",
-}
-
-
-def _infer_scenario_from_legacy_default(legacy_default):
-    """Infer scenario id from a legacy AGENT filename."""
-    if legacy_default in ("AGENT.md", "AGENT_unconstrained.md", "AGENT_soft.md", "AGENT_hard.md"):
-        return "vending_machine"
-
-    m = re.match(r"AGENT_(.+?)_unconstrained\.md$", legacy_default)
-    if not m:
-        return None
-
-    code = m.group(1)
-    return PROMPT_CODE_TO_SCENARIO.get(code)
-
+# ── Agent Prompt ────────────────────────────────────────────────────────
 
 def _load_prompt_instructions_from_legacy(variant, legacy_variant_map, legacy_default):
-    """Load prompt instructions from scenario-based path with legacy fallback."""
-    candidates = []
-
-    scenario = _infer_scenario_from_legacy_default(legacy_default)
-    if scenario:
-        candidates.append(
-            os.path.join(SCRIPT_DIR, "prompts", scenario, _prompt_variant_filename(variant))
-        )
-
-    if variant in legacy_variant_map:
-        candidates.append(os.path.join(SCRIPT_DIR, legacy_variant_map[variant]))
-        candidates.append(os.path.join(SCRIPT_DIR, "prompts", "_legacy", legacy_variant_map[variant]))
-
-    candidates.append(os.path.join(SCRIPT_DIR, legacy_default))
-    candidates.append(os.path.join(SCRIPT_DIR, "prompts", "_legacy", legacy_default))
-
-    for prompt_path in candidates:
-        if os.path.exists(prompt_path):
-            with open(prompt_path) as f:
-                return f.read()
-
-    return ""
-
-
-# ── Agent Prompt ────────────────────────────────────────────────────────
+    """Compatibility wrapper for prompt loader extracted to race.prompts."""
+    return _load_prompt_instructions_from_legacy_impl(
+        SCRIPT_DIR, variant, legacy_variant_map, legacy_default
+    )
 
 def build_agent_prompt(agent_name, days, seed, port, no_constraints=False, variant=None):
     """Build the prompt for an AI agent in race mode."""
@@ -3774,40 +3684,6 @@ def collect_score(port):
     if isinstance(full_score, dict) and "error" not in full_score:
         score["v2_score"] = full_score
     return score
-
-
-def print_leaderboard(results):
-    """Print the race leaderboard."""
-    results.sort(key=lambda r: r.get("final_balance", -9999), reverse=True)
-
-    print("\n" + "=" * 72)
-    print("  VENDING MACHINE AI RACE — FINAL LEADERBOARD")
-    print("=" * 72)
-    print(f"  {'Rank':<6}{'Agent':<20}{'Type':<10}{'Balance':>10}{'Profit':>10}{'Items':>8}{'Time':>8}")
-    print("-" * 72)
-
-    medals = ["1st", "2nd", "3rd"]
-    for i, r in enumerate(results):
-        rank = medals[i] if i < 3 else f"{i+1}th"
-        bankrupt = " BANKRUPT" if r.get("bankrupt") else ""
-        duration = r.get("duration", 0)
-        time_str = f"{duration:.0f}s" if duration else "--"
-        print(
-            f"  {rank:<6}"
-            f"{r['agent']:<20}"
-            f"{r.get('agent_type', '?'):<10}"
-            f"${r.get('final_balance', 0):>8.2f}"
-            f"${r.get('total_profit', 0):>8.2f}"
-            f"{r.get('total_items_sold', 0):>8}"
-            f"{time_str:>8}"
-            f"{bankrupt}"
-        )
-
-    if results:
-        winner = results[0]
-        print(f"\n  WINNER: {winner['agent']} with ${winner.get('final_balance', 0):.2f}")
-
-    print("=" * 72)
 
 
 # ── Pre-flight Checks ──────────────────────────────────────────────────
