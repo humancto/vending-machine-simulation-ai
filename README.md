@@ -100,7 +100,6 @@ To keep this useful and auditable, use these docs as the source of truth:
 - [`docs/TESTING.md`](docs/TESTING.md): required local validation and CI expectations.
 - [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md): screenshot standards for README and docs pages.
 - [`docs/RUNNER_EXTENSION_POINTS.md`](docs/RUNNER_EXTENSION_POINTS.md): how to extend runner flow safely.
-- [`docs/OPEN_SOURCE_STANDARDS_TASKS.md`](docs/OPEN_SOURCE_STANDARDS_TASKS.md): current hardening checklist and next priorities.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md): simulation scaffold and PR workflow.
 - [`SUPPORT.md`](SUPPORT.md), [`SECURITY.md`](SECURITY.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md): project support and governance policies.
 

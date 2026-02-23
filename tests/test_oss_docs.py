@@ -18,7 +18,7 @@ REQUIRED_FILES = [
     "docs/WHAT_THIS_TESTS.md",
     "docs/TESTING.md",
     "docs/SCREENSHOTS.md",
-    "docs/OPEN_SOURCE_STANDARDS_TASKS.md",
+    "docs/RUNNER_EXTENSION_POINTS.md",
     "race/schemas/race_record_v1.schema.json",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
@@ -37,7 +37,7 @@ def test_readme_links_methodology_docs():
     assert "docs/WHAT_THIS_TESTS.md" in readme
     assert "docs/TESTING.md" in readme
     assert "docs/SCREENSHOTS.md" in readme
-    assert "docs/OPEN_SOURCE_STANDARDS_TASKS.md" in readme
+    assert "docs/RUNNER_EXTENSION_POINTS.md" in readme
 
 
 def test_readme_scope_claim_boundary_present():
