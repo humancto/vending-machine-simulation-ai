@@ -32,6 +32,11 @@ from race.prompts import (
     load_prompt_instructions_from_legacy as _load_prompt_instructions_from_legacy_impl,
 )
 from race.results import print_leaderboard
+from race.scenario_registry import (
+    scenario_duration_for_args,
+    scenario_ids,
+    scenario_label,
+)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_PORT = 5050
@@ -3748,7 +3753,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
     )
     parser.add_argument(
         "--simulation", type=str, default="vending_machine",
-        choices=["vending_machine", "prisoners_dilemma", "emergency_room", "whistleblower", "content_moderator", "rules_of_engagement", "reputation_economy", "drug_pricing", "mayor_splitsville", "auction_house", "poker_tournament", "resource_commons", "supply_chain", "pandemic_ward", "asteroid_defense", "species_triage", "nuclear_launch", "news_editor", "last_restaurant", "flash_crash", "startup_founder", "real_estate", "organ_allocation", "experimental_treatment", "pandemic_grand", "drone_strike", "intelligence_mosaic", "pow_camp", "trolley_problem", "privacy_security", "school_principal", "hostage_negotiator", "hr_ethics", "bug_bounty", "infrastructure_siege", "space_mission", "climate_tipping", "ai_containment", "ecosystem_collapse", "pollution_prosperity", "geoengineering", "disaster_relief", "colony_ship", "post_apocalyptic", "film_studio", "accessible_architecture", "territory_control", "trade_negotiation", "un_crisis", "civilization_planner"],
+        choices=scenario_ids(),
         help="Simulation type (default: vending_machine)"
     )
     parser.add_argument(
@@ -3865,56 +3870,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
 
     # ── Pre-flight checks ──
     print()
-    sim_label = ("PRISONER'S DILEMMA" if is_ipd
-                  else "EMERGENCY ROOM" if is_er
-                  else "CORPORATE WHISTLEBLOWER" if is_wb
-                  else "CONTENT MODERATOR" if is_cm
-                  else "RULES OF ENGAGEMENT" if is_roe
-                  else "REPUTATION ECONOMY" if is_re
-                  else "DRUG PRICING ARCHITECT" if is_dp
-                  else "MAYOR OF SPLITSVILLE" if is_ms
-                  else "AUCTION HOUSE" if is_ah
-                  else "POKER INTELLIGENCE" if is_pt
-                  else "RESOURCE COMMONS" if is_rc
-                  else "SUPPLY CHAIN DOMINOS" if is_sc
-                  else "PANDEMIC WARD ZERO" if is_pw
-                  else "ASTEROID DEFENSE COORDINATOR" if is_ad
-                  else "SPECIES TRIAGE OFFICER" if is_st
-                  else "NUCLEAR LAUNCH AUTHORITY" if is_nl
-                  else "NEWS EDITOR UNDER FIRE" if is_ne
-                  else "LAST RESTAURANT STANDING" if is_lr
-                  else "FLASH CRASH TRADER" if is_fc
-                  else "STARTUP FOUNDER GAUNTLET" if is_sf
-                  else "REAL ESTATE EMPIRE" if is_re2
-                  else "ORGAN ALLOCATION BOARD" if is_oa
-                  else "EXPERIMENTAL TREATMENT TRIBUNAL" if is_et
-                  else "PANDEMIC GRAND STRATEGY" if is_pg
-                  else "DRONE STRIKE AUTHORIZATION" if is_ds
-                  else "INTELLIGENCE MOSAIC" if is_im
-                  else "POW CAMP COMMANDER" if is_pc
-                  else "TROLLEY PROBLEMS AT SCALE" if is_tp
-                  else "PRIVACY VS. SECURITY TRIBUNAL" if is_ps
-                  else "SCHOOL PRINCIPAL IN CRISIS" if is_sp
-                  else "HOSTAGE NEGOTIATOR" if is_hn
-                  else "HR ETHICS TRIBUNAL" if is_hre
-                  else "BUG BOUNTY BATTLEFIELD" if is_bb
-                  else "INFRASTRUCTURE UNDER SIEGE" if is_is
-                  else "SPACE MISSION CONTROL" if is_sm
-                  else "CLIMATE TIPPING POINT COUNCIL" if is_ct
-                  else "AI CONTAINMENT PROTOCOL" if is_ac
-                  else "ECOSYSTEM COLLAPSE MANAGER" if is_ec
-                  else "POLLUTION VS. PROSPERITY" if is_pp
-                  else "GEOENGINEERING GOVERNOR" if is_ge
-                  else "DISASTER RELIEF COMMANDER" if is_dr
-                  else "COLONY SHIP RESOURCE ALLOCATION" if is_cs
-                  else "POST-APOCALYPTIC REBUILDER" if is_pa
-                  else "FILM STUDIO GREEN-LIGHT" if is_fs
-                  else "ACCESSIBLE ARCHITECTURE FIRM" if is_aa
-                  else "TERRITORY CONTROL" if is_tc
-                  else "TRADE NEGOTIATION MARATHON" if is_tn
-                  else "UN CRISIS RESPONSE" if is_uc
-                  else "CIVILIZATION RESOURCE PLANNER" if is_cp
-                  else "VENDING MACHINE")
+    sim_label = scenario_label(args.simulation)
     print("  ╔══════════════════════════════════════════════╗")
     print(f"  ║    {sim_label + ' AI RACE':<42} ║")
     print("  ╚══════════════════════════════════════════════╝")
@@ -3969,109 +3925,11 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
 
     print(f"  Simulation: {args.simulation}")
     print(f"  Seed: {args.seed or 'random'}")
-    if is_ipd:
-        print(f"  Rounds: {args.rounds}")
-    elif is_er:
-        print(f"  Hours: {args.hours}")
-    elif is_wb:
-        print(f"  Weeks: {args.weeks}")
-    elif is_cm:
-        print(f"  Hours: {args.hours}")
-    elif is_roe:
-        print(f"  Hours: {args.hours}")
-    elif is_re:
-        print(f"  Days: {args.days}")
-    elif is_dp:
-        print(f"  Quarters: {args.quarters if hasattr(args, 'quarters') else 12}")
-    elif is_ms:
-        print(f"  Months: {args.months}")
-    elif is_ah:
-        print(f"  Sessions: {args.sessions}")
-    elif is_pt:
-        print(f"  Hands: {args.hands}")
-    elif is_rc:
-        print(f"  Seasons: {args.seasons}")
-    elif is_sc:
-        print(f"  Weeks: {args.weeks}")
-    elif is_pw:
-        print(f"  Days: {args.days}")
-    elif is_ad:
-        print(f"  Months: {args.months}")
-    elif is_st:
-        print(f"  Quarters: {args.quarters}")
-    elif is_nl:
-        print(f"  Hours: {args.hours}")
-    elif is_ne:
-        print(f"  Hours: {args.hours}")
-    elif is_lr:
-        print(f"  Weeks: {args.weeks}")
-    elif is_fc:
-        print(f"  Hours: {args.hours}")
-    elif is_sf:
-        print(f"  Months: {args.months}")
-    elif is_re2:
-        print(f"  Months: {args.months}")
-    elif is_oa:
-        print(f"  Weeks: {args.weeks}")
-    elif is_et:
-        print(f"  Months: {args.months}")
-    elif is_pg:
-        print(f"  Months: {args.months}")
-    elif is_ds:
-        print(f"  Hours: {args.hours}")
-    elif is_im:
-        print(f"  Days: {args.days}")
-    elif is_pc:
-        print(f"  Weeks: {args.weeks}")
-    elif is_tp:
-        print(f"  Rounds: {args.rounds}")
-    elif is_ps:
-        print(f"  Days: {args.days}")
-    elif is_sp:
-        print(f"  Weeks: {args.weeks}")
-    elif is_hn:
-        print(f"  Hours: {args.hours}")
-    elif is_hre:
-        print(f"  Days: {args.days}")
-    elif is_bb:
-        print(f"  Days: {args.days}")
-    elif is_is:
-        print(f"  Hours: {args.hours}")
-    elif is_sm:
-        print(f"  Days: {args.days}")
-    elif is_ct:
-        print(f"  Years: {args.years}")
-    elif is_ac:
-        print(f"  Days: {args.days}")
-    elif is_ec:
-        print(f"  Months: {args.months}")
-    elif is_pp:
-        print(f"  Years: {args.years}")
-    elif is_ge:
-        print(f"  Years: {args.years}")
-    elif is_dr:
-        print(f"  Days: {args.days}")
-    elif is_cs:
-        print(f"  Years: {args.years}")
-    elif is_pa:
-        print(f"  Years: {args.years}")
-    elif is_fs:
-        print(f"  Years: {args.years}")
-    elif is_aa:
-        print(f"  Years: {args.years}")
-    elif is_tc:
-        print(f"  Rounds: {args.rounds}")
-    elif is_tn:
-        print(f"  Rounds: {args.rounds}")
-    elif is_uc:
-        print(f"  Days: {args.days}")
-    elif is_cp:
-        print(f"  Years: {args.years}")
-    else:
-        print(f"  Days: {args.days}")
+    duration_label, duration_value = scenario_duration_for_args(args.simulation, args)
+    print(f"  {duration_label}: {duration_value}")
     print(f"  Variant: {args.variant}")
     print(f"  Max turns: {args.max_turns}")
-    if not is_ipd and not is_er and not is_wb and not is_cm and not is_roe and not is_re and not is_dp and not is_ms and not is_ah and not is_pt and not is_rc and not is_sc and not is_pw and not is_ad and not is_st and not is_nl and not is_ne and not is_lr and not is_fc and not is_sf and not is_re2 and not is_oa and not is_et and not is_pg and not is_ds and not is_im and not is_pc and not is_tp and not is_ps and not is_sp and not is_hn and not is_hre and not is_bb and not is_is and not is_sm and not is_ct and not is_ac and not is_ec and not is_pp and not is_ge and not is_dr and not is_cs and not is_pa and not is_fs and not is_aa and not is_tc and not is_tn and not is_uc and not is_cp:
+    if args.simulation == "vending_machine":
         print(f"  Ports: {', '.join(str(p) for p in ports)}")
     print()
 

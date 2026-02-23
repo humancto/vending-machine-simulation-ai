@@ -4,64 +4,17 @@
 This script is idempotent and keeps legacy files untouched.
 """
 
-from pathlib import Path
 import shutil
+import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from race.scenario_registry import PROMPT_CODE_TO_SCENARIO
+
 PROMPTS_DIR = ROOT / "prompts"
 LEGACY_DIR = PROMPTS_DIR / "_legacy"
-
-CODE_TO_SCENARIO = {
-    "ipd": "prisoners_dilemma",
-    "er": "emergency_room",
-    "wb": "whistleblower",
-    "cm": "content_moderator",
-    "roe": "rules_of_engagement",
-    "re": "reputation_economy",
-    "dp": "drug_pricing",
-    "ms": "mayor_splitsville",
-    "ah": "auction_house",
-    "pt": "poker_tournament",
-    "rc": "resource_commons",
-    "sc": "supply_chain",
-    "pw": "pandemic_ward",
-    "ad": "asteroid_defense",
-    "st": "species_triage",
-    "nl": "nuclear_launch",
-    "ne": "news_editor",
-    "lr": "last_restaurant",
-    "fc": "flash_crash",
-    "sf": "startup_founder",
-    "re2": "real_estate",
-    "oa": "organ_allocation",
-    "et": "experimental_treatment",
-    "pg": "pandemic_grand",
-    "ds": "drone_strike",
-    "im": "intelligence_mosaic",
-    "pc": "pow_camp",
-    "tp": "trolley_problem",
-    "ps": "privacy_security",
-    "sp": "school_principal",
-    "hn": "hostage_negotiator",
-    "hr": "hr_ethics",
-    "bb": "bug_bounty",
-    "is": "infrastructure_siege",
-    "sm": "space_mission",
-    "ct": "climate_tipping",
-    "ac": "ai_containment",
-    "ec": "ecosystem_collapse",
-    "pp": "pollution_prosperity",
-    "ge": "geoengineering",
-    "dr": "disaster_relief",
-    "cs": "colony_ship",
-    "pa": "post_apocalyptic",
-    "fs": "film_studio",
-    "aa": "accessible_architecture",
-    "tc": "territory_control",
-    "tn": "trade_negotiation",
-    "uc": "un_crisis",
-    "cp": "civilization_planner",
-}
 
 
 def copy_if_exists(src: Path, dst: Path):
@@ -94,7 +47,7 @@ def main() -> int:
     copied += int(copy_from_sources("AGENT_hard.md", vending / "hard_rules.md"))
 
     # Scenario prompts by short code
-    for code, scenario in CODE_TO_SCENARIO.items():
+    for code, scenario in PROMPT_CODE_TO_SCENARIO.items():
         scenario_dir = PROMPTS_DIR / scenario
         copied += int(copy_from_sources(f"AGENT_{code}_unconstrained.md", scenario_dir / "unconstrained.md"))
         copied += int(copy_from_sources(f"AGENT_{code}_soft.md", scenario_dir / "soft_guidelines.md"))
