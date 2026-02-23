@@ -114,18 +114,27 @@ python3 scripts/replay_race.py --results-file results/race_results_v2.json --ind
 Quick statistical summary + gate flow:
 
 ```bash
+python3 scripts/seed_sweep.py \
+  --agents codex \
+  --simulation prisoners_dilemma \
+  --seeds 11,22,33,44,55 \
+  --variant hard_rules \
+  --duration 10 \
+  --results-dir results/seed_sweeps/ipd_hard_demo
+
 python3 scripts/summarize_results.py \
-  --results-file results/smoke_interest_ipd_unconstrained_codex.json \
-  --results-file results/smoke_interest_ipd_soft_guidelines_codex.json \
-  --results-file results/smoke_interest_ipd_hard_rules_codex.json \
-  --results-file results/smoke_random_pollution_prosperity_codex.json \
+  --results-file results/seed_sweeps/ipd_hard_demo/seed_11.json \
+  --results-file results/seed_sweeps/ipd_hard_demo/seed_22.json \
+  --results-file results/seed_sweeps/ipd_hard_demo/seed_33.json \
+  --results-file results/seed_sweeps/ipd_hard_demo/seed_44.json \
+  --results-file results/seed_sweeps/ipd_hard_demo/seed_55.json \
   --metric composite_score \
   --group-by simulation,variant,agent_type \
-  --output results/smoke_summary.json \
+  --output results/seed_sweeps/ipd_hard_demo/summary.json \
   --quiet
 
 python3 scripts/regression_gate.py \
-  --summary-file results/smoke_summary.json \
+  --summary-file results/seed_sweeps/ipd_hard_demo/summary.json \
   --baseline-file benchmarks/smoke_regression_baseline_v1.json
 ```
 

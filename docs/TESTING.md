@@ -12,7 +12,7 @@ bash -n run_benchmark.sh
 pytest -q tests/test_scenario_registry.py tests/test_race_prompts.py tests/test_new_scenario_script.py
 pytest -q tests/test_race_config.py tests/test_race_preflight.py tests/test_race_local_mode.py tests/test_race_orchestrator.py tests/test_race_server_mode.py tests/test_race_scenario_io.py
 pytest -q tests/test_run_race_entrypoint.py
-pytest -q tests/test_summarize_results_script.py tests/test_regression_gate_script.py
+pytest -q tests/test_summarize_results_script.py tests/test_regression_gate_script.py tests/test_seed_sweep_script.py
 ```
 
 ## Full CLI Regression Suite
@@ -30,6 +30,15 @@ pytest -q tests/test_run_race_results.py tests/test_run_race_schema.py
 ## Statistical Summary and Regression Gate
 
 ```bash
+python3 scripts/seed_sweep.py \
+  --agents codex \
+  --simulation prisoners_dilemma \
+  --seeds 11,22,33 \
+  --variant hard_rules \
+  --duration 10 \
+  --results-dir /tmp/ipd_seed_sweep_demo \
+  --dry-run
+
 python3 scripts/summarize_results.py \
   --results-file results/smoke_interest_ipd_unconstrained_codex.json \
   --results-file results/smoke_interest_ipd_soft_guidelines_codex.json \

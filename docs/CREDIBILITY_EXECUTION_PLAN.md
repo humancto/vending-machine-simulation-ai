@@ -23,9 +23,9 @@ Ship a practical "credibility pack" without over-claiming:
 ## Workstream A: Statistical Reliability
 
 ### A1. Seed Sweep Runner
-- [ ] Add `scripts/seed_sweep.py` to run `run_race.py` across seed lists.
-- [ ] Support scenario, variant, duration, agent list, and output directory.
-- [ ] Emit one artifact per run plus merged index JSON.
+- [x] Add `scripts/seed_sweep.py` to run `run_race.py` across seed lists.
+- [x] Support scenario, variant, duration, agent list, and output directory.
+- [x] Emit one artifact per run plus merged index JSON (seed sweep manifest).
 
 ### A2. Confidence Reporting
 - [x] Aggregate mean/std/95% CI by group.
