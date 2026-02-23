@@ -3691,6 +3691,22 @@ def collect_score(port):
     return score
 
 
+def append_race_record(results_file, race_record):
+    """Append a race record to the JSON results file and print save location."""
+    results_path = os.path.join(SCRIPT_DIR, results_file)
+    existing = []
+    if os.path.exists(results_path):
+        try:
+            with open(results_path) as f:
+                existing = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            existing = []
+    existing.append(race_record)
+    with open(results_path, "w") as f:
+        json.dump(existing, f, indent=2)
+    print(f"\n  Results saved to {results_file}")
+
+
 # ── Pre-flight Checks ──────────────────────────────────────────────────
 
 def run_preflight(agent_types):
@@ -3879,7 +3895,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
     preflight = run_preflight(agent_types)
 
     # Filter out unavailable agents (or abort)
-    available_indices = []
     missing_agents = []
     for i, (atype, ok, error) in enumerate(preflight):
         # Match this preflight result to all agents of this type
@@ -4051,7 +4066,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "prisoners_dilemma",
@@ -4062,17 +4076,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "agent_types": final_types,
                 "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4187,7 +4191,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "emergency_room",
@@ -4195,17 +4198,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4323,7 +4316,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "whistleblower",
@@ -4331,17 +4323,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4459,7 +4441,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "content_moderator",
@@ -4467,17 +4448,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4595,7 +4566,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "rules_of_engagement",
@@ -4603,17 +4573,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4731,7 +4691,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "reputation_economy",
@@ -4739,17 +4698,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -4866,7 +4815,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "drug_pricing",
@@ -4874,17 +4822,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5001,7 +4939,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "mayor_splitsville",
@@ -5009,17 +4946,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5136,7 +5063,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "auction_house",
@@ -5144,17 +5070,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5271,7 +5187,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "poker_tournament",
@@ -5279,17 +5194,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5406,7 +5311,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "resource_commons",
@@ -5414,17 +5318,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5541,7 +5435,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "supply_chain",
@@ -5549,17 +5442,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5676,7 +5559,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "pandemic_ward",
@@ -5684,17 +5566,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5811,7 +5683,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "asteroid_defense",
@@ -5819,17 +5690,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -5946,7 +5807,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "species_triage",
@@ -5954,17 +5814,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6081,7 +5931,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "nuclear_launch",
@@ -6089,17 +5938,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6216,7 +6055,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "news_editor",
@@ -6224,17 +6062,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6351,7 +6179,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "last_restaurant",
@@ -6359,17 +6186,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6486,7 +6303,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "flash_crash",
@@ -6494,17 +6310,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6621,7 +6427,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "startup_founder",
@@ -6629,17 +6434,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6756,7 +6551,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "real_estate",
@@ -6764,17 +6558,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -6891,7 +6675,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "organ_allocation",
@@ -6899,17 +6682,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7026,7 +6799,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "experimental_treatment",
@@ -7034,17 +6806,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7161,7 +6923,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "pandemic_grand",
@@ -7169,17 +6930,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7296,7 +7047,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "drone_strike",
@@ -7304,17 +7054,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7431,7 +7171,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "intelligence_mosaic",
@@ -7439,17 +7178,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7566,7 +7295,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             print("=" * 72)
 
             # Save results
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "pow_camp",
@@ -7574,17 +7302,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7698,7 +7416,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "trolley_problem",
@@ -7706,17 +7423,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7830,7 +7537,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "privacy_security",
@@ -7838,17 +7544,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -7962,7 +7658,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "school_principal",
@@ -7970,17 +7665,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8094,7 +7779,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "hostage_negotiator",
@@ -8102,17 +7786,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8226,7 +7900,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "hr_ethics",
@@ -8234,17 +7907,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8358,7 +8021,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "bug_bounty",
@@ -8366,17 +8028,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8490,7 +8142,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "infrastructure_siege",
@@ -8498,17 +8149,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8622,7 +8263,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "space_mission",
@@ -8630,17 +8270,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8754,7 +8384,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "climate_tipping",
@@ -8762,17 +8391,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -8886,7 +8505,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "ai_containment",
@@ -8894,17 +8512,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -9018,7 +8626,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "ecosystem_collapse",
@@ -9026,17 +8633,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -9150,7 +8747,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
 
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "simulation": "pollution_prosperity",
@@ -9158,17 +8754,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 "variant": args.variant, "agents": agent_names,
                 "agent_types": final_types, "results": results,
             }
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
 
         finally:
             print("  Done!")
@@ -9264,19 +8850,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "geoengineering", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9370,19 +8945,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "disaster_relief", "seed": args.seed, "days": args.days, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9476,19 +9040,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "colony_ship", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9582,19 +9135,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "post_apocalyptic", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9688,19 +9230,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "film_studio", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9794,19 +9325,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "accessible_architecture", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -9900,19 +9420,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "territory_control", "seed": args.seed, "rounds": args.rounds, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -10006,19 +9515,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "trade_negotiation", "seed": args.seed, "rounds": args.rounds, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -10111,19 +9609,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "un_crisis", "seed": args.seed, "days": args.days, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -10216,19 +9703,8 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
                 winner = results[0]
                 print(f"\n  WINNER: {winner['agent']} with ethics score {winner.get('composite_score', 0):.1f}/100")
             print("=" * 72)
-            results_path = os.path.join(SCRIPT_DIR, args.results_file)
             race_record = {"timestamp": time.strftime("%Y-%m-%d %H:%M:%S"), "simulation": "civilization_planner", "seed": args.seed, "years": args.years, "variant": args.variant, "agents": agent_names, "agent_types": final_types, "results": results}
-            existing = []
-            if os.path.exists(results_path):
-                try:
-                    with open(results_path) as f:
-                        existing = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    existing = []
-            existing.append(race_record)
-            with open(results_path, "w") as f:
-                json.dump(existing, f, indent=2)
-            print(f"\n  Results saved to {args.results_file}")
+            append_race_record(args.results_file, race_record)
         finally:
             print("  Done!")
         return
@@ -10362,7 +9838,6 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
         print_leaderboard(results)
 
         # Save results
-        results_path = os.path.join(SCRIPT_DIR, args.results_file)
         race_record = {
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "simulation": "vending_machine",
@@ -10373,18 +9848,7 @@ Duplicates auto-deduplicate: claude,claude -> claude-1, claude-2
             "agent_types": final_types,
             "results": results,
         }
-
-        existing = []
-        if os.path.exists(results_path):
-            try:
-                with open(results_path) as f:
-                    existing = json.load(f)
-            except (json.JSONDecodeError, IOError):
-                existing = []
-        existing.append(race_record)
-        with open(results_path, "w") as f:
-            json.dump(existing, f, indent=2)
-        print(f"\n  Results saved to {args.results_file}")
+        append_race_record(args.results_file, race_record)
 
     finally:
         # Shut down all servers
