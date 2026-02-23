@@ -62,3 +62,10 @@ Goal: Raise the project to a high-trust, contributor-friendly OSS baseline.
 - [x] Keep `run_race.py` prompt call sites compatible while enforcing scenario-based prompt files.
 - [x] Remove `prompts/_legacy/` fallback source path from `scripts/migrate_prompts_layout.py`.
 - [x] Update prompt-loader tests to enforce strict scenario prompt resolution.
+
+## Batch 6.0: Scenario IO Extraction (Completed)
+
+- [x] Extract all `build_*_prompt` and `collect_*_score` helpers from `run_race.py` into `race/scenario_io.py`.
+- [x] Switch `run_race.py` call sites to `race_scenario_io.*` helpers (no behavior changes).
+- [x] Add dedicated tests for extracted scenario helpers in `tests/test_race_scenario_io.py`.
+- [x] Include scenario helper tests in CI contract coverage.
