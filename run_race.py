@@ -2,29 +2,17 @@
 """
 The Simulation Crucible — AI Race Runner
 
-Starts N server instances and launches N AI agents in parallel so they
-compete on identical simulations side-by-side.
-
-Supports Claude Code, OpenAI Codex, and Google Gemini CLI tools.
-Supports multiple simulation types: vending_machine, prisoners_dilemma, emergency_room, whistleblower, content_moderator, rules_of_engagement, reputation_economy, drug_pricing, mayor_splitsville, auction_house, poker_tournament, resource_commons, supply_chain, pandemic_ward, asteroid_defense, species_triage, nuclear_launch, news_editor, last_restaurant, flash_crash, startup_founder, real_estate, organ_allocation, experimental_treatment, pandemic_grand, drone_strike, intelligence_mosaic, pow_camp, trolley_problem, privacy_security, school_principal, hostage_negotiator, hr_ethics, bug_bounty, infrastructure_siege, space_mission, climate_tipping, ai_containment, ecosystem_collapse, pollution_prosperity, geoengineering, disaster_relief, colony_ship, post_apocalyptic, film_studio, accessible_architecture, territory_control, trade_negotiation, un_crisis, civilization_planner.
-
-Usage:
-    python3 run_race.py --agents claude,codex,gemini --seed 42 --days 90
-    python3 run_race.py --agents claude,codex --seed 42 --days 30
-    python3 run_race.py --simulation prisoners_dilemma --agents claude,codex --seed 42
+Thin entrypoint for race orchestration. Core orchestration lives in
+`race/orchestrator.py` and runner modules under `race/`.
 """
 
-import json
 import os
-import subprocess
 import sys
-import time
-import urllib.request
-import urllib.error
 
 from race import config as race_config
 from race import execution as race_execution
 from race import local_mode as race_local_mode
+from race import orchestrator as race_orchestrator
 from race import preflight as race_preflight
 from race import results as race_results
 from race import scenario_io as race_scenario_io
@@ -38,131 +26,56 @@ from race.scenario_registry import (
 )
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BASE_PORT = 5050
-
-# ── Agent CLI Definitions ──────────────────────────────────────────────
-# Each entry maps an agent type to how it's detected and launched.
-
-AGENT_DEFS = {
-    "claude": {
-        "binary": "claude",
-        "display": "Claude Code",
-        "check_version": ["claude", "--version"],
-        "env_key": "ANTHROPIC_API_KEY",
-    },
-    "codex": {
-        "binary": "codex",
-        "display": "OpenAI Codex",
-        "check_version": ["codex", "--version"],
-        "env_key": "OPENAI_API_KEY",
-    },
-    "gemini": {
-        "binary": "gemini",
-        "display": "Google Gemini",
-        "check_version": ["gemini", "--version"],
-        "env_key": "GEMINI_API_KEY",
-    },
-}
+BASE_PORT = race_orchestrator.BASE_PORT
+AGENT_DEFS = race_orchestrator.AGENT_DEFS
 
 
-# ── Helpers ─────────────────────────────────────────────────────────────
+# ── Compatibility Helpers ──────────────────────────────────────────────
 
 def deduplicate_names(names):
     """Auto-deduplicate agent names: [claude, claude] -> [claude-1, claude-2]."""
-    from collections import Counter
-    counts = Counter(names)
-    result = []
-    seen = {}
-    for name in names:
-        if counts[name] > 1:
-            idx = seen.get(name, 0) + 1
-            seen[name] = idx
-            result.append(f"{name}-{idx}")
-        else:
-            result.append(name)
-    return result
+    return race_orchestrator.deduplicate_names(names)
 
 
 def get_agent_type(name):
     """Extract the base agent type from a name like 'claude-2' or 'codex'."""
-    base = name.split("-")[0].lower()
-    if base in AGENT_DEFS:
-        return base
-    return None
+    return race_orchestrator.get_agent_type(name, AGENT_DEFS)
 
 
 def check_agent_available(agent_type):
     """Check if an agent CLI tool is installed and accessible."""
-    return race_preflight.check_agent_available(AGENT_DEFS, agent_type)
+    return race_orchestrator.check_agent_available(AGENT_DEFS, race_preflight, agent_type)
 
 
 def check_api_key(agent_type):
     """Check if the expected API key env var is set."""
-    return race_preflight.check_api_key(AGENT_DEFS, agent_type)
+    return race_orchestrator.check_api_key(AGENT_DEFS, race_preflight, agent_type)
 
 
 def detect_model(agent_type):
     """Auto-detect configured/available model for an agent CLI."""
-    return race_preflight.detect_model(agent_type)
+    return race_orchestrator.detect_model(race_preflight, agent_type)
 
 
 def wait_for_server(port, timeout=30):
     """Wait for a server to respond on the given port."""
-    for _ in range(timeout):
-        try:
-            req = urllib.request.Request(f"http://localhost:{port}/api/status")
-            with urllib.request.urlopen(req, timeout=2):
-                return True
-        except Exception:
-            time.sleep(1)
-    return False
+    return race_orchestrator.wait_for_server(port, timeout=timeout)
 
 
 def api_post(port, path, data=None):
     """POST to a server API."""
-    payload = json.dumps(data or {}).encode()
-    req = urllib.request.Request(
-        f"http://localhost:{port}{path}",
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            return json.loads(resp.read())
-    except urllib.error.HTTPError as e:
-        return json.loads(e.read())
+    return race_orchestrator.api_post(port, path, data=data)
 
 
 def api_get(port, path):
     """GET from a server API."""
-    req = urllib.request.Request(f"http://localhost:{port}{path}")
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            return json.loads(resp.read())
-    except urllib.error.HTTPError as e:
-        return json.loads(e.read())
-    except Exception:
-        return {"error": "Connection failed"}
+    return race_orchestrator.api_get(port, path)
 
 
 def start_server(port):
     """Start a Flask server instance on the given port."""
-    log_path = f"/tmp/vending-race-server-{port}.log"
-    log = open(log_path, "w", buffering=1)
-    proc = subprocess.Popen(
-        [sys.executable, "-u", "server.py", "--port", str(port)],
-        cwd=SCRIPT_DIR,
-        stdout=log,
-        stderr=log,
-    )
-    return proc
+    return race_orchestrator.start_server(SCRIPT_DIR, port)
 
-
-# ── Scenario Prompt/Score Helpers ─────────────────────────────────────
-# Extracted to race.scenario_io to keep run_race.py focused on orchestration.
-
-# ── Agent Launcher and Score Collection ────────────────────────────────
 
 def build_agent_command(agent_name, agent_type, prompt, max_turns, port, model_override=None):
     """Build the CLI command to launch an agent autonomously."""
@@ -311,8 +224,6 @@ def append_race_record(results_file, race_record):
     )
 
 
-# ── Pre-flight Checks ──────────────────────────────────────────────────
-
 def run_preflight(agent_types):
     """Check which agents are available. Returns list of (type, available, info)."""
     return race_preflight.run_preflight(
@@ -328,128 +239,29 @@ def run_preflight(agent_types):
 # ── Main ────────────────────────────────────────────────────────────────
 
 def main():
-    args, _sim_flags, raw_names, model_overrides, agent_types = race_config.parse_run_configuration(
+    race_orchestrator.run_main(
         script_dir=SCRIPT_DIR,
         base_port=BASE_PORT,
-        simulation_choices=scenario_ids(),
-        get_agent_type_cb=get_agent_type,
-        warn_fn=print,
-    )
-
-    # ── Pre-flight checks ──
-    print()
-    sim_label = scenario_label(args.simulation)
-    print("  ╔══════════════════════════════════════════════╗")
-    print(f"  ║    {sim_label + ' AI RACE':<42} ║")
-    print("  ╚══════════════════════════════════════════════╝")
-    print()
-
-    preflight = run_preflight(agent_types)
-
-    final_names, final_types, final_models, missing_agents = race_preflight.build_final_agent_lists(
-        raw_names=raw_names,
-        agent_types=agent_types,
-        model_overrides=model_overrides,
-        preflight_rows=preflight,
-    )
-
-    if missing_agents:
-        for name, atype in missing_agents:
-            defn = AGENT_DEFS.get(atype, {})
-            display = defn.get("display", atype)
-            print(f"  WARNING: Skipping '{name}' — {display} CLI not installed")
-        print()
-
-    if not final_names:
-        print("  ERROR: No agents available to race! Install at least one CLI tool:")
-        print("    Claude:  npm install -g @anthropic-ai/claude-code")
-        print("    Codex:   npm install -g @openai/codex")
-        print("    Gemini:  npm install -g @google/gemini-cli")
-        sys.exit(1)
-
-    # Deduplicate
-    agent_names = deduplicate_names(final_names)
-    n = len(agent_names)
-    ports = [args.base_port + i for i in range(n)]
-
-    if n == 1:
-        print(f"  NOTE: Only 1 agent available — running solo benchmark (not a race)")
-    else:
-        print(f"  Racing {n} agents: {', '.join(agent_names)}")
-
-    print(f"  Simulation: {args.simulation}")
-    print(f"  Seed: {args.seed or 'random'}")
-    duration_label, duration_value = scenario_duration_for_args(args.simulation, args)
-    print(f"  {duration_label}: {duration_value}")
-    print(f"  Variant: {args.variant}")
-    print(f"  Max turns: {args.max_turns}")
-    if args.simulation == "vending_machine":
-        print(f"  Ports: {', '.join(str(p) for p in ports)}")
-    print()
-
-    # ── Local CLI modes (all non-vending simulations) ──
-    if args.simulation != "vending_machine":
-        spec = get_scenario(args.simulation)
-        helper_code = spec.prompt_code
-        if not helper_code:
-            print(f"  ERROR: Missing prompt code for simulation '{args.simulation}'")
-            sys.exit(1)
-
-        prompt_builder = getattr(race_scenario_io, f"build_{helper_code}_prompt", None)
-        score_collector = getattr(race_scenario_io, f"collect_{helper_code}_score", None)
-        if prompt_builder is None or score_collector is None:
-            print(f"  ERROR: Missing scenario helpers for '{args.simulation}' (code: {helper_code})")
-            sys.exit(1)
-
-        duration_value = getattr(args, spec.duration_arg)
-        state_prefix = spec.cli_code or spec.prompt_code
-        race_local_mode.run_local_cli_race(
-            simulation_id=args.simulation,
-            scenario_title=scenario_label(args.simulation),
-            args=args,
-            agent_names=agent_names,
-            agent_types=final_types,
-            ports=ports,
-            model_overrides=final_models,
-            agent_defs=AGENT_DEFS,
-            run_agent_cb=run_agent,
-            detect_model_cb=detect_model,
-            prompt_builder=prompt_builder,
-            score_collector=score_collector,
-            duration_value=duration_value,
-            state_prefix=state_prefix,
-            build_race_record_cb=build_race_record,
-            append_race_record_cb=append_race_record,
-            results_file=args.results_file,
-            print_fn=print,
-        )
-        return
-
-    race_server_mode.run_vending_server_race(
-        args=args,
-        agent_names=agent_names,
-        agent_types=final_types,
-        ports=ports,
-        model_overrides=final_models,
-        agent_defs=AGENT_DEFS,
-        start_server_cb=start_server,
-        wait_for_server_cb=wait_for_server,
-        run_agent_cb=run_agent,
+        scenario_ids_cb=scenario_ids,
+        scenario_label_cb=scenario_label,
+        scenario_duration_for_args_cb=scenario_duration_for_args,
+        get_scenario_cb=get_scenario,
+        parse_run_configuration_cb=race_config.parse_run_configuration,
+        build_final_agent_lists_cb=race_preflight.build_final_agent_lists,
+        deduplicate_names_cb=deduplicate_names,
+        run_preflight_cb=run_preflight,
         detect_model_cb=detect_model,
+        run_agent_cb=run_agent,
         collect_score_cb=collect_score,
-        build_prompt_cb=lambda name, port: race_scenario_io.build_agent_prompt(
-            name,
-            args.days,
-            args.seed,
-            port,
-            no_constraints=args.no_constraints,
-            variant=args.variant,
-        ),
-        print_leaderboard_cb=print_leaderboard,
         build_race_record_cb=build_race_record,
         append_race_record_cb=append_race_record,
-        results_file=args.results_file,
+        local_mode_runner_cb=race_local_mode.run_local_cli_race,
+        server_mode_runner_cb=race_server_mode.run_vending_server_race,
+        scenario_io_module=race_scenario_io,
+        print_leaderboard_cb=print_leaderboard,
+        agent_defs=AGENT_DEFS,
         print_fn=print,
+        exit_fn=sys.exit,
     )
 
 

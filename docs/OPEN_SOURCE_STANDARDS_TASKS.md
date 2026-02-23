@@ -83,3 +83,10 @@ Goal: Raise the project to a high-trust, contributor-friendly OSS baseline.
 - [x] Replace inline server mode branch in `run_race.py` with a shared runner call.
 - [x] Add focused tests for server mode startup/teardown and happy path in `tests/test_race_server_mode.py`.
 - [x] Include server mode runner tests in CI contract coverage.
+
+## Batch 6.3: Entrypoint Slim + Orchestrator (Completed)
+
+- [x] Extract top-level race dispatch orchestration into `race/orchestrator.py`.
+- [x] Keep `run_race.py` as a thin compatibility entrypoint that delegates orchestration.
+- [x] Add focused orchestrator dispatch tests in `tests/test_race_orchestrator.py`.
+- [x] Include orchestrator tests in CI contract coverage.

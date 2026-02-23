@@ -1216,6 +1216,7 @@ The vending machine is Simulation #1 on a framework designed for multiple simula
 | File                           | Purpose                                        |
 | ------------------------------ | ---------------------------------------------- |
 | `run_race.py`                  | Race runner — pre-flight, launch, scoring      |
+| `race/orchestrator.py`         | Top-level race dispatch and mode routing        |
 | `race/local_mode.py`           | Shared no-server race execution across scenarios |
 | `race/server_mode.py`          | Shared vending-machine server-backed race flow   |
 | `race/scenario_io.py`          | Scenario prompt builders + local score collectors |
