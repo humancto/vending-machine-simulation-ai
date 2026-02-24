@@ -11,7 +11,7 @@ Ship a practical "credibility pack" without over-claiming:
 - Explicit regression gates
 - Clear documentation of what claims are valid
 
-## Current Status (Batch 7.0b)
+## Current Status (Batch 7.1)
 
 - [x] Multi-run summary tool with mean/std/95% CI: `scripts/summarize_results.py`
 - [x] Threshold-based regression gate: `scripts/regression_gate.py`
@@ -79,21 +79,21 @@ Ship a practical "credibility pack" without over-claiming:
 ## Workstream E: Reporting and Governance
 
 ### E1. Evaluation Protocol
-- [ ] Publish `docs/EVALUATION_PROTOCOL.md`:
+- [x] Publish `docs/EVALUATION_PROTOCOL.md`:
   - valid claims
   - invalid claims
   - required metadata
   - anti-gaming policy
 
 ### E2. Artifact Standards
-- [ ] Require manifest block + seed policy in published reports.
-- [ ] Add release checklist for benchmark result posts.
+- [x] Require manifest block + seed policy in published reports.
+- [x] Add release checklist for benchmark result posts.
 
 ## Workstream F: Contribution Path
 
 ### F1. Easy PR Onboarding
-- [ ] Add `docs/CONTRIBUTOR_TASK_BOARD.md` with "good first issue" labels mapped to workstreams.
-- [ ] Add ready-to-copy issue templates for each workstream.
+- [x] Add `docs/CONTRIBUTOR_TASK_BOARD.md` with "good first issue" labels mapped to workstreams.
+- [x] Add ready-to-copy issue templates for each workstream.
 
 ### F2. Done Criteria for Any New Simulation
 - [ ] Require:

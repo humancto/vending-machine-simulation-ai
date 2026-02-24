@@ -8,6 +8,9 @@ Before contributing, read:
 
 - `docs/WHAT_THIS_TESTS.md`
 - `docs/TESTING.md`
+- `docs/EVALUATION_PROTOCOL.md`
+- `docs/RELEASE_CHECKLIST.md`
+- `docs/CONTRIBUTOR_TASK_BOARD.md`
 - `docs/RUNNER_EXTENSION_POINTS.md` (if you touch runner/orchestration code)
 - `docs/SCREENSHOTS.md` (if UI/docs visuals change)
 - `SECURITY.md` and `CODE_OF_CONDUCT.md`
@@ -47,7 +50,8 @@ This generates:
    - display label
    - prompt code
    - duration arg/label/default
-6. Add or update scenario docs in `README.md` if user-facing.
+6. Add at least one fairness or integrity check in scoring/reporting output.
+7. Add or update scenario docs in `README.md` if user-facing.
 
 ## Validation Before Opening a PR
 

@@ -113,6 +113,11 @@ To keep this useful and auditable, use these docs as the source of truth:
 
 - [`docs/WHAT_THIS_TESTS.md`](docs/WHAT_THIS_TESTS.md): evaluation scope, valid claims, and non-goals.
 - [`docs/TESTING.md`](docs/TESTING.md): required local validation and CI expectations.
+- [`docs/EVALUATION_PROTOCOL.md`](docs/EVALUATION_PROTOCOL.md): valid/invalid claims, minimum metadata, and anti-gaming policy.
+- [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md): release readiness checklist for clone-and-run + publication quality.
+- [`docs/RELEASE_PACKET.md`](docs/RELEASE_PACKET.md): current release snapshot with validation status and copy-ready announcement.
+- [`docs/CONTRIBUTOR_TASK_BOARD.md`](docs/CONTRIBUTOR_TASK_BOARD.md): workstream-mapped contribution backlog with PR-ready tasks.
+- [`docs/LAUNCH_POST_TEMPLATES.md`](docs/LAUNCH_POST_TEMPLATES.md): copy-ready launch text for public release channels.
 - [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md): screenshot standards for README and docs pages.
 - [`docs/RUNNER_EXTENSION_POINTS.md`](docs/RUNNER_EXTENSION_POINTS.md): how to extend runner flow safely.
 - [`docs/CREDIBILITY_EXECUTION_PLAN.md`](docs/CREDIBILITY_EXECUTION_PLAN.md): contributor task map for statistical rigor and regression gating.
@@ -150,6 +155,10 @@ python3 scripts/summarize_results.py \
 python3 scripts/regression_gate.py \
   --summary-file results/seed_sweeps/ipd_hard_demo/summary.json \
   --baseline-file benchmarks/smoke_regression_baseline_v1.json
+
+python3 scripts/results_coverage.py \
+  --output results/coverage/release_snapshot.json \
+  --quiet
 ```
 
 ## Fairness Disparity Metrics

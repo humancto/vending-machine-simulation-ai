@@ -1,0 +1,63 @@
+name: Credibility workstream task
+description: Open a scoped task aligned to the credibility execution plan.
+title: "[Credibility][W?]: "
+labels:
+  - enhancement
+  - evaluation
+body:
+  - type: dropdown
+    id: workstream
+    attributes:
+      label: Workstream
+      options:
+        - A - Statistical Reliability
+        - B - Regression Gating
+        - C - Fairness and Harm Metrics
+        - D - Baseline Agents
+        - E - Reporting and Governance
+        - F - Contribution Path
+    validations:
+      required: true
+  - type: input
+    id: task_id
+    attributes:
+      label: Task ID
+      description: Use IDs like A-01, B-02, C-01
+      placeholder: A-01
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What should change and why?
+      placeholder: Add median/IQR support in summarize_results output.
+    validations:
+      required: true
+  - type: textarea
+    id: done_criteria
+    attributes:
+      label: Done criteria
+      description: Concrete acceptance checks.
+      placeholder: |
+        - Output schema updated
+        - Backward compatibility preserved
+        - Tests pass
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation commands
+      description: Paste exact commands expected in PR.
+      placeholder: |
+        pytest -q tests/test_summarize_results_script.py
+        python3 -m py_compile $(rg --files -g '*.py')
+    validations:
+      required: true
+  - type: textarea
+    id: docs
+    attributes:
+      label: Documentation updates
+      description: Which docs must change?
+      placeholder: README.md, docs/CREDIBILITY_EXECUTION_PLAN.md

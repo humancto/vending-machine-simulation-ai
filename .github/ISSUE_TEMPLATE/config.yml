@@ -9,3 +9,9 @@ contact_links:
   - name: What this tests
     url: https://github.com/humancto/simulation-crucible/blob/main/docs/WHAT_THIS_TESTS.md
     about: Understand benchmark scope and limitations before interpreting results.
+  - name: Evaluation protocol
+    url: https://github.com/humancto/simulation-crucible/blob/main/docs/EVALUATION_PROTOCOL.md
+    about: Review valid claim boundaries and minimum reporting standards.
+  - name: Contributor task board
+    url: https://github.com/humancto/simulation-crucible/blob/main/docs/CONTRIBUTOR_TASK_BOARD.md
+    about: Pick a scoped workstream task to contribute.

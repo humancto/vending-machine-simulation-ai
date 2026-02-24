@@ -2145,7 +2145,7 @@
     <section class="stats-bar">
         <div class="stats-grid">
             <div class="stat-item reveal">
-                <div class="stat-number cyan">2</div>
+                <div class="stat-number cyan">50</div>
                 <div class="stat-label">Live Simulations</div>
             </div>
             <div class="stat-item reveal delay-1">
@@ -2177,13 +2177,19 @@
                 <div class="terminal-body">
                     <div><span class="cmd">$</span> git clone https://github.com/humancto/simulation-crucible.git</div>
                     <div><span class="cmd">$</span> cd simulation-crucible</div>
-                    <div><span class="cmd">$</span> pip3 install -r requirements.txt</div>
+                    <div><span class="cmd">$</span> python3 -m venv .venv</div>
+                    <div><span class="cmd">$</span> source .venv/bin/activate</div>
+                    <div><span class="cmd">$</span> pip install -r requirements.txt</div>
+                    <div><span class="cmd">$</span> python3 scripts/doctor.py --skip-agents</div>
                     <div>&nbsp;</div>
-                    <div><span class="dim"># Race with ethical constraints</span></div>
-                    <div><span class="cmd">$</span> python3 run_race.py --agents claude,codex,gemini --seed 42 --variant soft_guidelines</div>
+                    <div><span class="dim"># Local dashboard demo</span></div>
+                    <div><span class="cmd">$</span> python3 server.py</div>
                     <div>&nbsp;</div>
-                    <div class="hl">  DASHBOARD: http://localhost:5050/race?ports=5050,5051,5052</div>
-                    <div class="warn">  3 agents racing... 5D scoring active!</div>
+                    <div><span class="dim"># Race mode (model CLIs + auth required)</span></div>
+                    <div><span class="cmd">$</span> python3 scripts/doctor.py --strict-race</div>
+                    <div><span class="cmd">$</span> python3 run_race.py --agents claude,codex --simulation prisoners_dilemma --seed 42 --variant soft_guidelines</div>
+                    <div class="hl">  DASHBOARD: http://localhost:5050/race?ports=5050,5051</div>
+                    <div class="warn">  Comparative behavior run in progress...</div>
                 </div>
             </div>
         </div>
@@ -3935,9 +3941,15 @@
             &nbsp;&bull;&nbsp;
             <a href="https://github.com/humancto/simulation-crucible/blob/main/docs/TESTING.md">Testing Guide</a>
             &nbsp;&bull;&nbsp;
+            <a href="https://github.com/humancto/simulation-crucible/blob/main/docs/EVALUATION_PROTOCOL.md">Evaluation Protocol</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://github.com/humancto/simulation-crucible/blob/main/docs/RELEASE_CHECKLIST.md">Release Checklist</a>
+            &nbsp;&bull;&nbsp;
             <a href="https://github.com/humancto/simulation-crucible/blob/main/docs/CREDIBILITY_EXECUTION_PLAN.md">Credibility Plan</a>
             &nbsp;&bull;&nbsp;
             <a href="https://github.com/humancto/simulation-crucible/blob/main/CONTRIBUTING.md">Contributing</a>
+            &nbsp;&bull;&nbsp;
+            <a href="https://github.com/humancto/simulation-crucible/blob/main/docs/CONTRIBUTOR_TASK_BOARD.md">Task Board</a>
             &nbsp;&bull;&nbsp; MIT License &nbsp;&bull;&nbsp;
             The Simulation Crucible — AI Behavioral Testing Framework
         </p>

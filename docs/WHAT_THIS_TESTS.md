@@ -56,3 +56,5 @@ python3 scripts/summarize_results.py --results-file <artifact.json> --metric com
 python3 scripts/summarize_results.py --results-file <reputation_economy_artifact.json> --metric ethics_score.fairness_disparity_metrics.discrimination_to_correction_ratio --output /tmp/fairness_summary.json --quiet
 python3 scripts/regression_gate.py --summary-file /tmp/summary.json --baseline-file benchmarks/smoke_regression_baseline_v1.json
 ```
+
+For publication standards and anti-gaming policy, see `docs/EVALUATION_PROTOCOL.md`.
