@@ -5,6 +5,7 @@ This repo uses contract tests, CLI regression tests, and targeted runner tests.
 ## Quick Validation (Required Before PR)
 
 ```bash
+python3 scripts/doctor.py --skip-agents
 python3 -m py_compile $(rg --files -g '*.py')
 python3 run_race.py --help
 python3 run_benchmark.py --help

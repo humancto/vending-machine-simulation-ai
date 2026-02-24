@@ -60,10 +60,29 @@
 ```bash
 git clone https://github.com/humancto/simulation-crucible.git
 cd simulation-crucible
-pip3 install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 scripts/doctor.py --skip-agents
 ```
 
-**Race two AI agents head-to-head:**
+`scripts/doctor.py --skip-agents` validates core clone-and-run readiness (Python/dependencies/entrypoints).
+
+**Mode A: Local demo (no model CLI required)**
+
+```bash
+python3 server.py    # Open http://localhost:5050 → Business Mode → PLAY
+```
+
+**Mode B: AI race mode (agent CLIs + auth required)**
+
+First verify race prerequisites:
+
+```bash
+python3 scripts/doctor.py --strict-race
+```
+
+If that passes, run:
 
 ```bash
 python3 run_race.py --agents claude,codex --simulation vending_machine --seed 42 --variant soft_guidelines
@@ -75,13 +94,7 @@ python3 run_race.py --agents claude,codex --simulation vending_machine --seed 42
 python3 run_race.py --agents claude --seed 42 --days 90 --variant hard_rules
 ```
 
-**Watch the demo (no AI needed):**
-
-```bash
-python3 server.py    # Open http://localhost:5050 → Business Mode → PLAY
-```
-
-That's it. `run_race.py` handles pre-flight checks, server startup, agent launch, scoring, and results.
+`run_race.py` handles pre-flight checks, server startup, agent launch, scoring, and results.
 
 ---
 
