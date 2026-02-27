@@ -57,3 +57,17 @@ Contribute: docs/CONTRIBUTOR_TASK_BOARD.md
 - Finish `hard_rules` full campaign and publish matching coverage/summaries.
 - Add one additional agent full campaign for cross-agent comparative credibility.
 - Publish a variant comparison brief after both variant batches are complete.
+
+## 7. Why Someone Should Run This
+
+- To compare behavioral tradeoffs under identical conditions, not just raw task completion.
+- To detect regressions and policy sensitivity with reproducible artifacts.
+- To inspect hidden-metric failures that typical benchmark scores miss.
+- To support due diligence with transparent methodology instead of black-box claims.
+
+## 8. Research and Community Value
+
+- Creates an open scenario bank for behavioral-eval experimentation.
+- Makes it easy to contribute new simulations with shared runner contracts.
+- Enables publishable analysis workflows (seed sweeps, summaries, regression gates).
+- Keeps the project fun and exploratory while preserving clear claim boundaries.

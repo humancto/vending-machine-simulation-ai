@@ -2,6 +2,17 @@
 
 This repo uses contract tests, CLI regression tests, and targeted runner tests.
 
+## What Each Suite Validates
+
+| Suite | Command | What it validates |
+| ----- | ------- | ----------------- |
+| Compile integrity | `python3 -m py_compile $(rg --files -g '*.py')` | Python syntax/import sanity across repo |
+| Orchestrator contracts | `pytest -q tests/test_race_config.py tests/test_race_preflight.py tests/test_race_local_mode.py tests/test_race_orchestrator.py tests/test_race_server_mode.py tests/test_race_scenario_io.py tests/test_run_race_entrypoint.py tests/test_run_race_results.py tests/test_run_race_schema.py` | race runner correctness and schema output |
+| Scenario registry + prompts | `pytest -q tests/test_scenario_registry.py tests/test_race_prompts.py tests/test_new_scenario_script.py` | simulation wiring and prompt mapping |
+| Tooling scripts | `pytest -q tests/test_doctor_script.py tests/test_results_coverage_script.py tests/test_full_campaign_script.py tests/test_summarize_results_script.py tests/test_regression_gate_script.py tests/test_seed_sweep_script.py` | reproducibility/reporting tooling correctness |
+| OSS release guardrails | `pytest -q tests/test_oss_docs.py` | docs/governance consistency for public release |
+| Scenario CLI behavior | `pytest -q tests/test_*_cli.py` | per-scenario command behavior and score contracts |
+
 ## Quick Validation (Required Before PR)
 
 ```bash

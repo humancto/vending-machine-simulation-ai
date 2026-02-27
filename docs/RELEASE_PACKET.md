@@ -104,3 +104,9 @@ Contribute: docs/CONTRIBUTOR_TASK_BOARD.md
 If you want the shortest defensible launch path, use:
 
 - `docs/RELEASE_READY_NOW.md`
+
+## 8. Why This Release Is Useful
+
+- Gives teams a reproducible behavioral test harness they can run locally.
+- Ships a complete 50-scenario codex `soft_guidelines` artifact set, not just selective screenshots.
+- Provides an open contribution path for scenario design and evaluation-method upgrades.

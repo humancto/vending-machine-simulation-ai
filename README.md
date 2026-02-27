@@ -17,6 +17,9 @@
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#why-run-this">Why Run This</a> &bull;
+  <a href="#run-matrix">Run Matrix</a> &bull;
+  <a href="#test-matrix">Test Matrix</a> &bull;
   <a href="#quality-and-methodology">Methodology</a> &bull;
   <a href="#fairness-disparity-metrics">Fairness Metrics</a> &bull;
   <a href="#simulations">Simulations</a> &bull;
@@ -116,6 +119,68 @@ This repo is an **open behavioral experiment platform and stress-test suite** fo
 - `hard_rules` all-simulation codex campaign: **in progress (TODO track for this release)**.
   - Active campaign directory: `results/campaigns/all_sims_hard_codex_20260227-163429/`
 - Important: this snapshot is a **single-agent codex batch**. Multi-agent comparative claims still require additional campaign runs.
+
+## Why Run This
+
+If you are evaluating AI behavior under pressure, this gives you a practical and reproducible sandbox:
+
+- **Model teams**: catch behavioral regressions across prompt/runtime/model changes before shipping.
+- **Safety/evals teams**: surface hidden failure modes that do not appear in single-task benchmarks.
+- **Product teams**: test policy sensitivity (`unconstrained` vs `soft_guidelines` vs `hard_rules`) on the same scenario.
+- **Researchers**: generate transparent artifacts for comparative studies and replication.
+- **Open-source contributors**: add new scenarios and scoring logic with shared runner contracts.
+
+## Run Matrix
+
+Everything runnable now, from fastest to deepest:
+
+| Objective | Command | Typical output |
+| --------- | ------- | -------------- |
+| Clone-and-run health check | `python3 scripts/doctor.py --skip-agents` | dependency and entrypoint readiness |
+| Local UI demo (no model CLI) | `python3 server.py` | interactive simulation dashboard |
+| Single scenario race | `python3 run_race.py --agents codex --simulation prisoners_dilemma --seed 42 --variant soft_guidelines --skip-missing` | one artifact JSON + leaderboard |
+| Replay prior artifact | `python3 scripts/replay_race.py --results-file results/race_results_v2.json --index -1` | exact command reconstruction |
+| Multi-seed reliability sweep | `python3 scripts/seed_sweep.py --agents codex --simulation prisoners_dilemma --seeds 11,22,33 --variant hard_rules --duration 10 --results-dir /tmp/ipd_sweep` | seed manifest + per-seed artifacts |
+| Summary statistics | `python3 scripts/summarize_results.py --results-file <artifact.json> --metric auto --group-by simulation,variant,agent_type,effective_model --output /tmp/summary.json --quiet` | grouped mean/std/ci95 summary |
+| Regression gate | `python3 scripts/regression_gate.py --summary-file /tmp/summary.json --baseline-file benchmarks/smoke_regression_baseline_v1.json` | pass/fail thresholds |
+| Coverage audit | `python3 scripts/results_coverage.py --results-glob \"results/**/*.json\" --output /tmp/coverage.json --quiet` | scenario coverage report |
+| Full all-sim campaign | `python3 scripts/full_campaign.py --agents codex --variant soft_guidelines --skip-missing --continue-on-failure` | resumable campaign with postprocess reports |
+
+## Test Matrix
+
+Core validation blocks and what each proves:
+
+| Suite | Command | Purpose |
+| ----- | ------- | ------- |
+| Compile checks | `python3 -m py_compile $(rg --files -g '*.py')` | import/syntax sanity across repo |
+| Contract + runner tests | `pytest -q tests/test_scenario_registry.py tests/test_race_config.py tests/test_race_preflight.py tests/test_race_local_mode.py tests/test_race_orchestrator.py tests/test_race_server_mode.py tests/test_race_scenario_io.py tests/test_run_race_entrypoint.py tests/test_run_race_results.py tests/test_run_race_schema.py` | orchestration stability |
+| Script tests | `pytest -q tests/test_doctor_script.py tests/test_results_coverage_script.py tests/test_full_campaign_script.py tests/test_summarize_results_script.py tests/test_regression_gate_script.py tests/test_seed_sweep_script.py` | tooling reliability |
+| OSS docs guardrails | `pytest -q tests/test_oss_docs.py` | release/governance doc consistency |
+| CLI regression suite | `pytest -q tests/test_*_cli.py` | scenario CLI behavior contracts |
+
+## Practical Value and Benefit
+
+- Converts subjective model impressions into comparable run artifacts.
+- Makes claim boundaries explicit so results are harder to over-market.
+- Supports fast iteration loops for scenario design, scoring changes, and policy variants.
+- Helps teams do due diligence with reproducible commands instead of screenshots-only claims.
+
+## Research Utility
+
+Useful for studies on:
+
+- how constraints change behavior quality across the same task
+- how often visible-objective optimization harms hidden metrics
+- which failure modes are stable across seeds vs noisy
+- how fairness disparity indicators move under policy variants
+
+This is most credible when paired with multi-seed runs, explicit metadata, and published artifacts.
+
+## Fun of the Exercise
+
+- Stress-testing model behavior in strange, high-pressure scenarios is inherently engaging.
+- The scenario bank is a creative sandbox for designing adversarial and ethical dilemmas.
+- Community contributors can add new simulations and immediately see models compete in them.
 
 ## Quality and Methodology
 
