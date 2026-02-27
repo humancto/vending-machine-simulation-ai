@@ -38,6 +38,7 @@ jobs:
             tests/test_replay_race_script.py \
             tests/test_doctor_script.py \
             tests/test_results_coverage_script.py \
+            tests/test_full_campaign_script.py \
             tests/test_summarize_results_script.py \
             tests/test_regression_gate_script.py \
             tests/test_seed_sweep_script.py

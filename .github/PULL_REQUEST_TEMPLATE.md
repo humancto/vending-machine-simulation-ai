@@ -19,6 +19,7 @@ Describe the change and why it is needed.
 - [ ] `bash -n run_benchmark.sh`
 - [ ] `pytest -q tests/test_scenario_registry.py tests/test_race_prompts.py tests/test_new_scenario_script.py`
 - [ ] `pytest -q tests/test_oss_docs.py tests/test_doctor_script.py tests/test_results_coverage_script.py`
+- [ ] `pytest -q tests/test_full_campaign_script.py`
 - [ ] `pytest -q tests/test_*_cli.py` (if CLI/simulation behavior changed)
 
 ## Documentation

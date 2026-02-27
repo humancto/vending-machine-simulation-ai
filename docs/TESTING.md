@@ -14,6 +14,7 @@ pytest -q tests/test_scenario_registry.py tests/test_race_prompts.py tests/test_
 pytest -q tests/test_race_config.py tests/test_race_preflight.py tests/test_race_local_mode.py tests/test_race_orchestrator.py tests/test_race_server_mode.py tests/test_race_scenario_io.py
 pytest -q tests/test_run_race_entrypoint.py
 pytest -q tests/test_summarize_results_script.py tests/test_regression_gate_script.py tests/test_seed_sweep_script.py
+pytest -q tests/test_full_campaign_script.py
 pytest -q tests/test_doctor_script.py tests/test_results_coverage_script.py tests/test_oss_docs.py
 ```
 
@@ -66,6 +67,14 @@ python3 scripts/regression_gate.py \
 python3 scripts/results_coverage.py \
   --output results/coverage/snapshot.json \
   --quiet
+
+# Full-campaign dry-run smoke (no model calls):
+python3 scripts/full_campaign.py \
+  --agents codex \
+  --variant soft_guidelines \
+  --limit 2 \
+  --dry-run \
+  --results-dir /tmp/campaign_dryrun_demo
 ```
 
 ## Replay a Published Record
